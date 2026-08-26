@@ -75,7 +75,7 @@ set. Never weaken a failed gate to make an unknown image fit.
 mkdir -p out
 python tools/mf885_build_variant.py --list
 python tools/mf885_build_variant.py \
-  --variant community-r2.1 \
+  --variant community-r2.2 \
   --golden input/MF885_golden.bin \
   --identity-xml input/mf885-base.xml \
   --output-dir out \
@@ -84,7 +84,7 @@ python tools/mf885_build_variant.py \
 
 The Logs variants are research observers and `sms-r1` is a historical
 send/delete prototype. Choose them only after reading their source and
-manifest; `community-r2.1` is the recommended product-oriented profile. The
+manifest; `community-r2.2` is the recommended product-oriented profile. The
 output and a JSON report are created exclusively; rerunning does not overwrite
 them. Delete or move an old local output deliberately before rebuilding.
 
@@ -94,28 +94,34 @@ them. Delete or move an old local output deliberately before rebuilding.
 python tools/mf885_firmware_inspect.py \
   input/MF885_golden.bin \
   --identity-xml input/mf885-base.xml \
-  --compare out/MF885_Community_0.2.1-community-r2-cafe-r2.bin \
+  --compare out/MF885_Community_0.2.2-community-r2-cafe-r2.bin \
   --json
 ```
 
-For `community-r2.1`, the report must show exactly 10 reviewed replacements,
-three additions (Community auth, Diagnostics HTML and Diagnostics JavaScript),
-and 18 removed locale records. Only WEBI may differ; all other partitions must
+For `community-r2.2`, the report must show exactly 10 reviewed replacements,
+11 additions (the inherited R2.1 assets plus unique cache-safe bootstrap,
+style, Home, SMS and Diagnostics routes), and 18 removed locale records. Only
+WEBI may differ; all other partitions must
 remain byte-identical. The output keeps the fixed 8,323,644-byte container and
 turns the removed locale space into WEBI padding. Because every build starts
 from golden, it contains no custom Logs loader or native `detailed_log` panel.
-The predecessor `community-r2` remains immutable at 10 replacements, one
-addition and 18 removals.
+The predecessors remain immutable: `community-r2.1` stays at 10/3/18 and
+`community-r2` at 10/1/18.
 
-Community R2.1 inherits R2's auth component and stores no plaintext password.
-Its opt-in tab convenience stores
+Community R2.2 derives R2's auth component into the unique cache-safe
+`r22auth.js` route, applies the same strict device identity proof used by SMS,
+and stores no plaintext password. Its opt-in tab convenience stores
 Digest HA1, which is still a password-equivalent credential; read its manifest
 and on-device warning before enabling it.
 
-The exact reference R2.1 build has been installed once and its declared static
-asset set was observed after boot. This is a narrow live-canary result, not a
-general flash guarantee: SMS mutations, cold boot, repeatability and rollback
-remain unqualified, and the artifact is not stable or restore-allowlisted.
+The exact reference R2.2 build is offline-only. Its fixed size is 8,323,644
+bytes, reference-unit SHA-256 is
+`80e94750bf820e1fdbf6f51b8b2462cad633e28d19571610ce744bac7e6e04d5`,
+and portable plaintext SHA-256 is
+`c712f4774d8d4dc05e1a70ddd34cb8f508e705705b9cb16e3174bbb991d612ec`.
+It is not stable or restore-allowlisted. R2.1 remains the installed narrow
+live canary; its SMS mutations, cold boot, repeatability and rollback are
+unqualified.
 
 The output header remains bound to the supplied unit. Consequently its raw
 SHA-256 can differ from the reference manifest even when the portable plaintext

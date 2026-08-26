@@ -20,10 +20,37 @@ import mf885_firmware_inspect as inspector
 import mf885_webi_builder as base
 import mf885_community_r2 as community_r2
 import mf885_community_r21 as community_r21
+import mf885_community_r22 as community_r22
 
 
 ROOT = Path(__file__).resolve().parents[1]
 STAGE_PROFILES: dict[str, dict[str, Any]] = {
+    "0.2.2-community-r2": {
+        "kind": "webui-community",
+        "marker": community_r22.MARKER,
+        "artifact": "MF885_Community_0.2.2-community-r2-cafe-r2.bin",
+        "patcher": "community-r2.2",
+        "files": {},
+        "safety": {
+            "routerRequestsOnPageLoad": [
+                "GET locale/status for stock login",
+                "at most one opt-in Digest resume attempt and one status1 proof",
+                "semantic-read POST GET_RCV_SMS_LOCAL pages after opening Messages",
+                "one each of status1, wan and Engineer_parameter after opening Diagnostics",
+            ],
+            "mutationContract": "one explicitly confirmed SMS send or inbox delete POST, no automatic retry, followed by bounded command status and complete folder readback",
+            "mutationUnknownLocksPageSession": True,
+            "automaticMutationRetries": 0,
+            "tabAuthStoresPlaintextPassword": False,
+            "tabAuthStoresPasswordEquivalentHA1": True,
+            "languages": ["en"],
+            "nativeDetailedLog": False,
+            "backgroundDiagnosticsPolling": False,
+            "cacheSafeCommunityAssets": True,
+            "exactStatus1MutationGate": True,
+            "exactStatus1AuthGate": True,
+        },
+    },
     "0.2.1-community-r2": {
         "kind": "webui-community",
         "marker": community_r21.MARKER,
@@ -121,6 +148,7 @@ STAGE_PROFILES: dict[str, dict[str, Any]] = {
 DERIVED_PATCHERS = {
     "community-r2": (community_r2, community_r2.CommunityR2Error),
     "community-r2.1": (community_r21, community_r21.CommunityR21Error),
+    "community-r2.2": (community_r22, community_r22.CommunityR22Error),
 }
 
 
@@ -264,6 +292,37 @@ def write_exclusive(path: Path, data: bytes) -> None:
         raise StageBuildError(f"could not write {path.name} atomically") from exc
 
 
+def derived_source_records(patcher: object) -> list[dict[str, object]]:
+    records: list[dict[str, object]] = []
+    seen: set[str] = set()
+    for target in sorted(patcher.CUSTOM_FILES):
+        source, size, digest = patcher.CUSTOM_FILES[target]
+        records.append(
+            {"target": target, "source": source, "size": size, "sha256": digest}
+        )
+        seen.add(target)
+    for target in sorted(patcher.OUTPUT_RECORDS):
+        size, digest = patcher.OUTPUT_RECORDS[target]
+        if target not in seen:
+            records.append(
+                {
+                    "target": target,
+                    "source": "derived from exact reviewed golden anchors",
+                    "size": size,
+                    "sha256": digest,
+                }
+            )
+            seen.add(target)
+    for target in sorted(getattr(patcher, "ADDITION_OUTPUT_RECORDS", {})):
+        size, digest, source = patcher.ADDITION_OUTPUT_RECORDS[target]
+        if target not in seen:
+            records.append(
+                {"target": target, "source": source, "size": size, "sha256": digest}
+            )
+            seen.add(target)
+    return records
+
+
 def parser() -> argparse.ArgumentParser:
     value = argparse.ArgumentParser(
         description="Build an exact-golden, structural-only MF885 WebUI stage"
@@ -327,27 +386,7 @@ def main(argv: list[str] | None = None) -> int:
         source_records = []
         if specification.get("patcher"):
             patcher = DERIVED_PATCHERS[specification["patcher"]][0]
-            for target in sorted(patcher.CUSTOM_FILES):
-                source, size, digest = patcher.CUSTOM_FILES[target]
-                source_records.append(
-                    {
-                        "target": target,
-                        "source": source,
-                        "size": size,
-                        "sha256": digest,
-                    }
-                )
-            for target in sorted(patcher.OUTPUT_RECORDS):
-                size, digest = patcher.OUTPUT_RECORDS[target]
-                if target not in patcher.CUSTOM_FILES:
-                    source_records.append(
-                        {
-                            "target": target,
-                            "source": "derived from exact reviewed golden anchors",
-                            "size": size,
-                            "sha256": digest,
-                        }
-                    )
+            source_records = derived_source_records(patcher)
         else:
             source_records = [
                 {

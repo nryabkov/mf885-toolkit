@@ -3,13 +3,23 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
 const path=require('node:path');
+const child=require('node:child_process');
 
 let parseHTML=null;
 for(const candidate of ['linkedom','/opt/openclaw-runtime/releases/2026.7.1-2/lib/node_modules/openclaw/node_modules/linkedom']){try{({parseHTML}=require(candidate));break}catch(_){}}
 
-const source=fs.readFileSync(path.join(__dirname,'../firmware/community-r2.1/community_diagnostics.js'),'utf8');
-const html=fs.readFileSync(path.join(__dirname,'../firmware/community-r2.1/Diagnostics.html'),'utf8');
-const statusXml='<RGW><sysinfo><model_name>MF885</model_name><hardware_version>MF96 Ver.D</hardware_version><version_num>2.5.94_release_MF855_NZ_CP_2.129.003</version_num><current_device_mac>secret-mac</current_device_mac></sysinfo><batteryinfo><Battery_percent>74</Battery_percent><Battery_status>1</Battery_status><Charger_status>0</Charger_status><Charger_current>250</Charger_current><Output_current>90</Output_current></batteryinfo><wan><ip/><cellular><pdp_context_list><Item><ipv4>NA</ipv4><v4dns1>NONE</v4dns1><v4gateway>NULL</v4gateway></Item></pdp_context_list></cellular><IMEI>secret-imei</IMEI><ICCID>secret-iccid</ICCID><MSISDN>secret-msisdn</MSISDN></wan><statistics><WanStatistics><tx_byte_all>1234</tx_byte_all><rx_byte_all>5678</rx_byte_all><tx_byte>12</tx_byte><rx_byte>34</rx_byte><conn_days>1</conn_days><conn_hours>2</conn_hours><conn_minutes>3</conn_minutes><conn_seconds>4</conn_seconds></WanStatistics></statistics><lan><ip>192.168.21.1</ip><mac>secret-lan-mac</mac></lan><message><content>secret-sms</content></message></RGW>';
+const runR22=process.env.MF885_TEST_R22_DIAGNOSTICS==='1';
+const root=path.resolve(__dirname,'..');
+const generated=runR22?child.spawnSync('python3',['-c',"from pathlib import Path; import mf885_community_r22 as r; print(r._derive_diagnostics(Path('.')).decode())"],{cwd:root,encoding:'utf8',env:{...process.env,PYTHONPATH:path.join(root,'tools')}}):null;
+if(generated&&generated.status!==0)throw new Error(generated.stderr);
+const source=runR22?generated.stdout:fs.readFileSync(path.join(__dirname,'../firmware/community-r2.1/community_diagnostics.js'),'utf8');
+const html=fs.readFileSync(path.join(__dirname,runR22?'../firmware/community-r2.2/Diagnostics.html':'../firmware/community-r2.1/Diagnostics.html'),'utf8');
+const bootstrap=runR22?fs.readFileSync(path.join(__dirname,'../firmware/community-r2.2/community_bootstrap.js'),'utf8'):'';
+const communityId=runR22?'0.2.2-community-r2':'0.2.1-community-r2';
+const baseStatusXml='<RGW><sysinfo><model_name>MF885</model_name><hardware_version>MF96 Ver.D</hardware_version><version_num>2.5.94_release_MF855_NZ_CP_2.129.003</version_num><current_device_mac>secret-mac</current_device_mac></sysinfo><batteryinfo><Battery_percent>74</Battery_percent><Battery_status>1</Battery_status><Charger_status>0</Charger_status><Charger_current>250</Charger_current><Output_current>90</Output_current></batteryinfo><wan><ip/><cellular><pdp_context_list><Item><ipv4>NA</ipv4><v4dns1>NONE</v4dns1><v4gateway>NULL</v4gateway></Item></pdp_context_list></cellular><IMEI>secret-imei</IMEI><ICCID>secret-iccid</ICCID><MSISDN>secret-msisdn</MSISDN></wan><statistics><WanStatistics><tx_byte_all>1234</tx_byte_all><rx_byte_all>5678</rx_byte_all><tx_byte>12</tx_byte><rx_byte>34</rx_byte><conn_days>1</conn_days><conn_hours>2</conn_hours><conn_minutes>3</conn_minutes><conn_seconds>4</conn_seconds></WanStatistics></statistics><lan><ip>192.168.21.1</ip><mac>secret-lan-mac</mac></lan><message><content>secret-sms</content></message></RGW>';
+// The reviewed 2.5.94 response keeps sysinfo, batteryinfo, wan and statistics
+// as direct RGW children. R2.2 must prove identity without changing that scope.
+const statusXml=baseStatusXml;
 const wanXml='<RGW><wan><SIM_status>0</SIM_status><NW_register_status>5</NW_register_status><roaming>1</roaming><ConnType>3</ConnType><network_name>Carrier &amp; Co</network_name><connect_disconnect>1</connect_disconnect><pdp_type>2</pdp_type><cellular><active_apn>private.apn</active_apn><ip_address>10.0.0.9</ip_address><v4dns1>1.1.1.1</v4dns1><v4gateway>10.0.0.1</v4gateway><password>secret-password</password><imsi>secret-imsi</imsi></cellular></wan><HA1>secret-ha1</HA1></RGW>';
 const engineerXml='<RGW><Engineer_parameter><LTE_band>3</LTE_band><EARFCN>1300</EARFCN><PCI>77</PCI><Cell_ID>secret-cell</Cell_ID><TAC>secret-tac</TAC><RSRP>-94</RSRP><RSRQ>-10</RSRQ><SINR>14</SINR><RSSI>-66</RSSI></Engineer_parameter></RGW>';
 
@@ -23,7 +33,7 @@ function fixture(options={}){
   };
   window.jQuery=jquery;window.location={protocol:'http:',host:'192.168.21.1'};window.callProductHTML=()=>html;window.getAuthHeader=method=>'Digest '+method;
   window.document.execCommand=()=>false;
-  const context={window,document,console,Date,JSON,Array,Object,String,Number,Boolean,RegExp,Error,Promise,Map,Set};vm.createContext(context);vm.runInContext(source,context);
+  const context={window,document,console,Date,JSON,Array,Object,String,Number,Boolean,RegExp,Error,Promise,Map,Set};vm.createContext(context);if(runR22)vm.runInContext(bootstrap,context);vm.runInContext(source,context);
   const controller=jquery.fn.objDiagnostics.call({});controller.setXMLName('status1');if(options.auto!==false)controller.onLoad();
   return {window,document,calls,controller,setResponses(next){responses=next}};
 }
@@ -32,7 +42,7 @@ test('R2.1 diagnostics reads only the three fixed GET endpoints in order and ren
   const value=fixture();assert.deepEqual(value.calls.map(call=>call.name),['status1','wan','Engineer_parameter']);
   for(const call of value.calls){assert.equal(call.config.type,'GET');assert.equal(call.config.timeout,10000);assert.equal(call.config.cache,false);assert.equal(call.headers.Authorization,'Digest GET')}
   const visible=value.document.getElementById('mfDiagValues').textContent;
-  for(const expected of ['0.2.1-community-r2','MF96 Ver.D','Carrier & Co','4G · LTE','10.0.0.9','1d 02h 03m 04s','1234','5678','250','90','-94','secret-cell','secret-tac'])assert.match(visible,new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+  for(const expected of [communityId,'MF96 Ver.D','Carrier & Co','4G · LTE','10.0.0.9','1d 02h 03m 04s','1234','5678','250','90','-94','secret-cell','secret-tac'])assert.match(visible,new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
   assert.doesNotMatch(visible,/192\.168\.21\.1|secret-password|secret-imei/);
   assert.match(value.document.getElementById('mfDiagStatus').textContent,/three fixed endpoints/);
 });
@@ -40,7 +50,7 @@ test('R2.1 diagnostics reads only the three fixed GET endpoints in order and ren
 test('R2.1 safe copy is allowlisted and excludes private network and cell values',{skip:!parseHTML},()=>{
   const value=fixture();value.document.getElementById('mfDiagCopy').click();
   const report=value.document.getElementById('mfDiagReport').value,parsed=JSON.parse(report);
-  assert.equal(parsed.schema,'mf885-community-safe-diagnostics/v1');assert.deepEqual(parsed.community,{value:'0.2.1-community-r2',stale:false});assert.equal(parsed.identity.model.value,'MF885');
+  assert.equal(parsed.schema,'mf885-community-safe-diagnostics/v1');assert.deepEqual(parsed.community,{value:communityId,stale:false});assert.equal(parsed.identity.model.value,'MF885');
   assert.equal(parsed.wan.connectionTime.value,'1d 02h 03m 04s');assert.equal(parsed.battery.outputCurrent.value,'90');
   for(const secret of ['private.apn','10.0.0.9','1.1.1.1','10.0.0.1','192.168.21.1','secret-cell','secret-tac','1300','77','secret-password','secret-ha1','secret-imsi','secret-imei','secret-iccid','secret-msisdn','secret-mac','secret-lan-mac','secret-sms'])assert.doesNotMatch(report,new RegExp(secret.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
   assert.equal(value.document.getElementById('mfDiagCopyFallback').hidden,false);

@@ -5,6 +5,7 @@ None is distributed as a firmware binary.
 
 | Wrapper name | Logical ID | Source | Status |
 |---|---|---|---|
+| `community-r2.2` | `0.2.2-community-r2-cafe2` | `firmware/community-r2.2/` plus exact R2.1 derivation rules | Recommended offline source: cache-safe auth/Diagnostics assets, shared exact live-shape SMS/HA1 identity gate and unified legacy-safe visual system; structurally verified and unflashed |
 | `community-r2.1` | `0.2.1-community-r2-cafe2` | `firmware/community-r2.1/` plus exact R2 derivation rules | Installed live canary: exact static state, Remember and read-only Diagnostics/Messages observed; Diagnostics menu label and SMS mutation identity gate have fail-closed live defects; mutations, cold boot and rollback unqualified |
 | `community-r2` | `0.2-community-r2-cafe2` | `firmware/community-r2/` plus exact derivation rules | Superseded immutable source: Community R1 SMS safety, native Messages menu, home build badge/Inbox shortcut, reviewed English fixes, English-only locale set and opt-in tab-scoped HA1 login; structurally verified and unflashed |
 | `community-r1` | `0.1-community-r1-cafe2` | `firmware/community-r1/` | Superseded minimal source: installed once with exact static assets and an authenticated empty inbox; deletion and rollback remain unqualified; no composer, send request, page log or custom Logs panel |
@@ -20,9 +21,10 @@ device merely because it reconstructs offline.
 Earlier Logs artifacts are retained in their manifests as quarantined history.
 Some omitted the stock Digest header; later revisions fixed authentication but
 did not mask every WAN username and IPv6 representation before Copy/Export.
-`community-r1`, `community-r2` and `community-r2.1` are built directly from
-golden rather than layered on a Logs artifact. R2.1 adds Safe Diagnostics, not
-the native `detailed_log` canary or a raw request/console observer.
+`community-r1`, `community-r2`, `community-r2.1` and `community-r2.2` are built
+directly from golden rather than layered on a Logs artifact. R2.1/R2.2 add Safe
+Diagnostics, not the native `detailed_log` canary or a raw request/console
+observer.
 
 ## Adding a variant
 

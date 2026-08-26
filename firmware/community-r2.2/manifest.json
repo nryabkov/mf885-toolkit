@@ -1,0 +1,146 @@
+{
+  "schema": "mf885-webui-stage-source/v2",
+  "id": "0.2.2-community-r2-cafe2",
+  "logical_id": "0.2.2-community-r2",
+  "container_revision": 2,
+  "kind": "webui-community",
+  "artifact": {
+    "file": "MF885_Community_0.2.2-community-r2-cafe-r2.bin",
+    "size": 8323644,
+    "sha256": "80e94750bf820e1fdbf6f51b8b2462cad633e28d19571610ce744bac7e6e04d5",
+    "sha256_scope": "reference-unit build",
+    "portable_plaintext_sha256": "c712f4774d8d4dc05e1a70ddd34cb8f508e705705b9cb16e3174bbb991d612ec"
+  },
+  "base": {
+    "file": "MF885_golden.bin",
+    "size": 8323644,
+    "sha256": "2b5880fc26805918bb574d07341ea9b863f8261be34c3bf9766fac0929204531",
+    "sha256_scope": "reference-unit capture",
+    "portable_plaintext_sha256": "2bf4151a6e209845fd8d30f576577f6a66fe4cdf6d770c8bb45f0204c3486850"
+  },
+  "marker": "MF885 Community R2.2 SMS Safe Diagnostics 0.2.2-community-r2",
+  "sources": [
+    {
+      "target": "www\\js\\r22boot.js",
+      "file": "community_bootstrap.js",
+      "size": 2327,
+      "sha256": "8a868f139ed052ddffc60b1ba3782480c6d631d1fd008b3825ac0c023fb8c05d"
+    },
+    {
+      "target": "www\\css\\r22ui.css",
+      "file": "community_ui.css",
+      "size": 3950,
+      "sha256": "6bceff4ee6bf23716611741d09760afd161d092e7601a811a03b5173e70cc2c0"
+    },
+    {
+      "target": "www\\html\\Community\\r22sms.html",
+      "file": "SMS.html",
+      "size": 1976,
+      "sha256": "4830cfb2ddb36b97f86c9b84f8f219930ad9d9120321ac2be99ed8a49490d1aa"
+    },
+    {
+      "target": "www\\html\\Community\\r22diag.html",
+      "file": "Diagnostics.html",
+      "size": 955,
+      "sha256": "3a7bf999f3aa4dd9f1c610e67f41db65251d8bf431d2c71fe583b08e680f831d"
+    },
+    {
+      "target": "www\\js\\panel\\SMS\\r22sms.js",
+      "file": "../community-r2.1/SMS.js",
+      "size": 19450,
+      "sha256": "8ce3f06d2fd1620d74bd9efe2b19ca4143ab349941ec5637b90d7738723327cd",
+      "transformation": "exact Community R2.2 cache path, identity gate, namespace and visual classes"
+    },
+    {
+      "target": "www\\js\\r22diag.js",
+      "file": "../community-r2.1/community_diagnostics.js",
+      "size": 16514,
+      "sha256": "fa208b9032afe623636d422f0e9affc7fae59c57b40ed5cd2edce7567780421a",
+      "transformation": "exact Community R2.2 cache path, shared identity proof and visual classes"
+    }
+  ],
+  "derived_script_outputs": [
+    {
+      "target": "www\\js\\r22auth.js",
+      "size": 8084,
+      "sha256": "4a820b497262c53d0e30ce11bf81125bd2532edeb80507d2a8262113ca2af01f"
+    },
+    {
+      "target": "www\\js\\panel\\SMS\\r22sms.js",
+      "size": 19148,
+      "sha256": "601c01239346fe02e051cc19e8b67c3a4cd3baa48eebf0b8c95dd0e8c777b599"
+    },
+    {
+      "target": "www\\js\\r22diag.js",
+      "size": 16592,
+      "sha256": "ecca26d09a4ac2b00a1aa209043760df0df1d2dd4d7cfd8215bdd74f0ca066ff"
+    },
+    {
+      "target": "www\\html\\Community\\r22dash.html",
+      "size": 10175,
+      "sha256": "1e4ac14a8feaa47c2fea1b43b18ac6550aead9e211f842f2db9ebb1de979f3dc"
+    },
+    {
+      "target": "www\\js\\panel\\r22dash.js",
+      "size": 59938,
+      "sha256": "a49ea2480acf2e05edfb40096a49b59c9d0fa59ec9431624cb6c119d4c1f02a9"
+    }
+  ],
+  "derived_from_reviewed_golden": [
+    "www\\index.html",
+    "www\\js\\base\\utils.js",
+    "www\\js\\base\\ajax_calls.js",
+    "www\\xml\\ui_mifi.xml",
+    "www\\html\\adminApp.html",
+    "www\\html\\dashboard.html",
+    "www\\properties\\Messages_en.properties",
+    "www\\help_en.html"
+  ],
+  "logical_change_counts": {
+    "replaced": 10,
+    "added": 11,
+    "removed": 18
+  },
+  "removed_locales": ["cn", "hk", "jp"],
+  "removed_archive_bytes": 263312,
+  "raw_diff_bytes": 1671736,
+  "webi_padding_bytes_remaining": 162428,
+  "non_webi_partitions_byte_identical": true,
+  "structurally_verified": true,
+  "reproducible": true,
+  "live_tested": false,
+  "sms_send_live_tested": false,
+  "inbox_delete_live_tested": false,
+  "fbf_wrapper_available": false,
+  "flash_qualified": false,
+  "restore_allowlisted": false,
+  "release_status": "experimental-unflashed",
+  "stable": false,
+  "capabilities": {
+    "languages": ["en"],
+    "messages_menu": true,
+    "inbox_read": true,
+    "single_inbox_delete": true,
+    "sms_send_request": true,
+    "sms_send_max_ucs2_segments": 4,
+    "diagnostics_menu": true,
+    "diagnostics_manual_reads": ["status1", "wan", "Engineer_parameter"],
+    "native_detailed_log": false,
+    "background_diagnostics_polling": false,
+    "raw_http_bodies_stored": false,
+    "safe_snapshot_schema": "mf885-community-safe-diagnostics/v1",
+    "dashboard_version_badge": true,
+    "remember_tab_opt_in": true,
+    "remember_tab_plaintext_password": false,
+    "remember_tab_password_equivalent_ha1": true,
+    "remember_tab_max_idle_seconds": 600,
+    "automatic_auth_retries": 0,
+    "automatic_mutation_retries": 0,
+    "cache_safe_community_asset_paths": true,
+    "diagnostics_labels_seeded_before_layout": true,
+    "exact_status1_sms_identity_gate": true,
+    "exact_status1_auth_identity_gate": true,
+    "legacy_safe_unified_visual_system": true,
+    "semantic_ui_live_verified": false
+  }
+}

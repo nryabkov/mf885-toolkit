@@ -1,0 +1,29 @@
+<div id="mfCommunityR22Sms" class="mfCommunityShell">
+  <h2 class="mfCommunityTitle">Messages</h2>
+  <p id="mfSmsFolder" class="mfCommunityFolder">Device inbox</p>
+  <p class="mfCommunitySubtitle">Open a message to read it. Sending and deletion always require confirmation.</p>
+  <div class="mfCommunityToolbar">
+    <button type="button" id="mfSmsRefresh" class="mfCommunityButton">Refresh</button>
+    <button type="button" id="mfSmsNew" class="mfCommunityButton mfCommunityButtonPrimary">New message</button>
+  </div>
+  <section id="mfSmsComposer" hidden class="mfCommunityPanel">
+    <label for="mfSmsNumber" class="mfCommunityLabel">Phone number</label>
+    <input id="mfSmsNumber" type="tel" inputmode="tel" maxlength="16" placeholder="+79991234567">
+    <label for="mfSmsBody" class="mfCommunityLabel">Message</label>
+    <textarea id="mfSmsBody" rows="5" maxlength="268"></textarea>
+    <div id="mfSmsCount" class="mfCommunityMeta">0 / 268 · 0 of 4 UCS-2 segments</div>
+    <button type="button" id="mfSmsReview" class="mfCommunityButton mfCommunityButtonPrimary">Review</button>
+    <button type="button" id="mfSmsCancel" class="mfCommunityButton">Cancel</button>
+  </section>
+  <section id="mfSmsConfirm" hidden class="mfCommunityPanel mfCommunityConfirm">
+    <strong>Send this SMS once?</strong>
+    <p class="mfCommunitySubtitle">The mobile operator may charge for every segment. Router acceptance does not prove delivery.</p>
+    <div><strong>To:</strong> <span id="mfSmsReviewNumber"></span></div>
+    <pre id="mfSmsReviewBody" class="mfCommunityReviewBody"></pre>
+    <div id="mfSmsReviewSegments" class="mfCommunityMeta"></div>
+    <button type="button" id="mfSmsSend" class="mfCommunityButton mfCommunityButtonDanger">Send once</button>
+    <button type="button" id="mfSmsBack" class="mfCommunityButton">Back</button>
+  </section>
+  <div id="mfSmsStatus" role="status" aria-live="polite" class="mfCommunityStatus"></div>
+  <div id="mfSmsList"></div>
+</div>

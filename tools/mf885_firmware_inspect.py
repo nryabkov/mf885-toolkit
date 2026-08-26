@@ -995,6 +995,14 @@ KNOWN_ARTIFACTS = {
         "restorable": False,
         "issue": "golden-derived Community R2.1 profile was installed once with its exact static assets observed after boot, but SMS mutations, cold boot, repeatability and rollback remain unproved and it is not flash-qualified",
     },
+    "80e94750bf820e1fdbf6f51b8b2462cad633e28d19571610ce744bac7e6e04d5": {
+        "id": "mf885-community-0.2.2-community-r2-cafe2",
+        "size": 8_323_644,
+        "role": "webui-community",
+        "structural_status": "verified-not-flash-qualified",
+        "restorable": False,
+        "issue": "golden-derived Community R2.2 profile is reproducible and structurally verified, but it is unflashed and live behavior, cold boot, repeatability and rollback remain unproved",
+    },
 }
 
 

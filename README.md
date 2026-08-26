@@ -83,7 +83,7 @@ python -m pip install -r requirements.txt
 mkdir -p out
 python tools/mf885_build_variant.py --list
 python tools/mf885_build_variant.py \
-  --variant community-r2.1 \
+  --variant community-r2.2 \
   --acknowledge-brick-risk
 ```
 
@@ -98,43 +98,42 @@ reference-unit raw hash is documented only as a reproducibility example. Any
 semantic mismatch is rejected; do not bypass this check or use another unit's
 built binary.
 
-`community-r2.1` is the recommended product-oriented source profile. It keeps
-Community R2's Messages menu, home-page build badge, reviewed English copy and
-English-only UI. It adds a review-first, one-POST/no-replay SMS sender for one
-recipient and at most four UCS-2 segments, plus a separate **Diagnostics** tab
-that manually reads three fixed endpoints and creates a privacy-allowlisted
-safe snapshot. It never restores the old native `detailed_log` observer, raw
-request capture or background diagnostics polling. The immutable Community R2
-artifact remains available as a superseded, unflashed source revision.
+`community-r2.2` is the recommended product-oriented source profile. It keeps
+R2.1's review-first, one-POST/no-replay SMS sender and manual **Diagnostics**
+tab, fixes the installed canary's stale-label cache path and exact live
+`status1` identity gate, and adds one compact legacy-safe visual system for
+login, Home, Messages and Diagnostics. It never restores the old native
+`detailed_log` observer, raw request capture or background polling. R2.1
+remains an immutable installed canary rather than being silently replaced.
 
-R2.1 still removes 18 Chinese, Hong Kong and Japanese locale records,
+R2.2 still removes 18 Chinese, Hong Kong and Japanese locale records,
 reclaiming 263,312 bytes inside WEBI without changing the fixed 8,323,644-byte
 firmware size. Its reference-unit SHA-256 is
-`51bd396c69e9c8db96249455092634b6b54552f64f5c4daee6f710b644759c95`;
+`80e94750bf820e1fdbf6f51b8b2462cad633e28d19571610ce744bac7e6e04d5`;
 another compatible unit normally has a different raw hash because the header
 is unit-bound.
 
-That exact reference build has been installed once on the reviewed hardware.
-Postboot checks matched every declared R2.1 asset and removed-locale route and
-proved the same unit returned, so its status is
-`experimental-live-qualified-canary`. SMS Send/Delete, cold-boot persistence,
-repeatability and rollback remain unqualified. It is still not stable,
-flash-qualified or restore-allowlisted.
+The exact R2.2 reference build is deterministic and structurally verified but
+has not been flashed. Its status is `experimental-unflashed`; SMS Send/Delete,
+cold-boot persistence, repeatability and rollback remain unqualified. It is
+not stable, flash-qualified or restore-allowlisted.
 
-Authenticated read-only validation also proved Remember reload/logout, reads
+Authenticated read-only validation of immutable R2.1 proved Remember reload/logout, reads
 of all four empty Messages folders, the three fixed Diagnostics reads and the
 safe copied snapshot. It found two fail-closed UI defects: the Diagnostics menu
 label renders as `undefined`, and the SMS mutation identity gate stays closed.
-The reference build is therefore not semantic-UI qualified; those fixes belong
-to a new immutable revision.
+R2.1 is therefore not semantic-UI qualified; R2.2 contains the offline-tested
+fixes without rewriting the installed artifact's history.
 
-The inherited optional **Remember me in this tab** control stores Digest HA1 in
+The optional **Remember me in this tab** control stores Digest HA1 in
 `sessionStorage`, not the plaintext password. HA1 is nevertheless a
 password-equivalent credential readable by same-origin page scripts. Use it
 only on a trusted device; sign-out, authentication failure, ten minutes without
 keyboard/touch/mouse activity, or normally closing the tab clears it. Reload
 uses one fresh challenge, one login and one protected exact-version read, with
-no automatic retry. The Logs variants remain research material.
+no automatic retry. R2.2 loads a uniquely named auth script after its strict
+model/hardware/full-version bootstrap and applies that same proof before HA1 is
+retained or renewed. The Logs variants remain research material.
 
 Inspector and builder reports can contain stable pseudonymous fingerprints of
 your unit and derived-key checks. Keep reports private and never attach raw

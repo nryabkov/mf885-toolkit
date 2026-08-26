@@ -1,0 +1,14 @@
+<div id="mfCommunityDiagnostics" class="mfCommunityShell">
+  <h2 class="mfCommunityTitle">Safe Diagnostics</h2>
+  <p class="mfCommunitySubtitle">Manual, read-only status from this MF885. No background polling or native detailed log is used.</p>
+  <div class="mfCommunityToolbar">
+    <button type="button" id="mfDiagRefresh" class="mfCommunityButton mfCommunityButtonPrimary">Refresh diagnostics</button>
+    <button type="button" id="mfDiagCopy" class="mfCommunityButton" disabled>Copy safe snapshot</button>
+  </div>
+  <div id="mfDiagStatus" role="status" aria-live="polite" class="mfCommunityStatus">Press Refresh diagnostics to read three fixed endpoints once.</div>
+  <div id="mfDiagValues" class="mfCommunityValues"></div>
+  <section id="mfDiagCopyFallback" hidden class="mfCommunityCopyFallback">
+    <p>Select and copy this privacy-filtered snapshot manually.</p>
+    <textarea id="mfDiagReport" rows="16" readonly></textarea>
+  </section>
+</div>

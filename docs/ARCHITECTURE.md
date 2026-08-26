@@ -14,20 +14,20 @@ does not authorize cross-flashing or reuse of native offsets.
 
 ## Development order
 
-1. **Community R2.1 WebUI** — English-only UI, native Messages navigation,
+1. **Community R2.2 WebUI** — English-only UI, native Messages navigation,
    read/expand SMS, one explicitly confirmed inbox delete, review-first bounded
    SMS Send, build identity on the home page, and opt-in tab-scoped login
-   continuity. This remains WEBI-only.
+   continuity. SMS mutation and HA1 retention share one exact
+   model/hardware/full-version identity proof. This remains WEBI-only.
 2. **Safe Diagnostics** — implemented as a separate page/menu with one manual
    sequential read of `status1`, `wan` and `Engineer_parameter`. It shows
    SIM/registration, operator/RAT/band/cell, signal, WAN, traffic and battery
    data. Its copied snapshot omits unit IDs, addresses/APN, cell location,
    credentials, phone numbers and SMS bodies; there is no background polling,
    raw capture or native `detailed_log`.
-3. **Unified visual system** — in the next separate revision, consolidate Home,
-   Messages and Diagnostics around shared colors, typography, spacing, cards,
-   buttons and loading/error/confirmation states. Keep this as a separate
-   WEBI-only revision so visual changes do not obscure functional validation.
+3. **Unified visual system** — implemented in R2.2 with shared colors,
+   typography, spacing, cards, buttons and loading/error/confirmation states.
+   It remains legacy-browser-safe and fixes the oversized Remember checkbox.
 4. **Narrow native control plane** — a version-bound, authenticated community
    model with bounded inputs/outputs and no generic command execution. A
    harmless version/echo endpoint comes before state-changing features.

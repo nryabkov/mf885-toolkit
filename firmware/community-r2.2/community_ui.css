@@ -1,0 +1,197 @@
+/* MF885 Community R2.2 legacy-safe visual system */
+#mfRememberTab {
+  display:inline-block !important;
+  float:none !important;
+  width:16px !important;
+  min-width:16px !important;
+  height:16px !important;
+  min-height:16px !important;
+  margin:0 7px 0 0 !important;
+  padding:0 !important;
+  border:0 !important;
+  vertical-align:middle !important;
+}
+.mfRememberRow {
+  display:block;
+  width:234px;
+  margin:10px auto 4px auto;
+  text-align:left;
+  line-height:18px;
+  color:#3f4b59;
+}
+.mfRememberHelp {
+  display:block;
+  width:234px;
+  margin:0 auto 10px auto;
+  text-align:left;
+  color:#667085;
+  font-size:11px;
+  line-height:15px;
+}
+#mfCommunityDashboard {
+  margin:12px 0 0 0;
+  padding:10px 0 0 0;
+  border-top:1px solid #e4e7ec;
+  line-height:18px;
+}
+#mfCommunityDashboard .mfCommunityBuild {
+  display:block;
+  color:#243447;
+  font-weight:bold;
+}
+#mfCommunityDashboard .mfCommunityBase {
+  display:block;
+  color:#667085;
+  font-size:11px;
+}
+#mfCommunityDashboard .mfCommunityDashboardActions {
+  display:block;
+  margin-top:7px;
+  white-space:nowrap;
+}
+#mfCommunityDashboard .mfCommunityDashboardActions a {
+  display:inline-block;
+  margin:0 10px 0 0;
+  color:#267dcc;
+  font-weight:bold;
+  text-decoration:none;
+}
+.mfCommunityShell {
+  max-width:760px;
+  margin:0 auto;
+  padding:16px 14px 22px 14px;
+  color:#243447;
+  font-family:Arial,Helvetica,sans-serif;
+}
+.mfCommunityTitle {
+  margin:0 0 5px 0;
+  color:#243447;
+  font-size:22px;
+  line-height:28px;
+}
+.mfCommunityFolder,
+.mfCommunitySubtitle {
+  margin:0 0 6px 0;
+  color:#667085;
+  line-height:18px;
+}
+.mfCommunityToolbar {
+  display:block;
+  margin:12px 0 10px 0;
+}
+.mfCommunityButton {
+  display:inline-block;
+  width:auto !important;
+  height:auto !important;
+  min-height:30px;
+  margin:0 7px 5px 0;
+  padding:6px 13px;
+  border:1px solid #98a2b3;
+  border-radius:4px;
+  background:#fff;
+  color:#344054;
+  font-weight:bold;
+  line-height:16px;
+  cursor:pointer;
+}
+.mfCommunityButtonPrimary {
+  border-color:#2176bd;
+  background:#2f86d1;
+  color:#fff;
+}
+.mfCommunityButtonDanger {
+  border-color:#8f1d14;
+  background:#b42318;
+  color:#fff;
+}
+.mfCommunityButton[disabled] {
+  border-color:#d0d5dd;
+  background:#f2f4f7;
+  color:#98a2b3;
+  cursor:default;
+}
+.mfCommunityPanel {
+  margin:10px 0 12px 0;
+  padding:13px;
+  border:1px solid #d0d5dd;
+  border-radius:6px;
+  background:#fff;
+}
+.mfCommunityConfirm {
+  border:2px solid #b42318;
+  background:#fffafa;
+}
+.mfCommunityLabel {
+  display:block;
+  margin:0 0 4px 0;
+  color:#344054;
+  font-weight:bold;
+}
+#mfSmsNumber,
+#mfSmsBody,
+#mfDiagReport {
+  width:100% !important;
+  box-sizing:border-box;
+  margin:0 0 9px 0;
+  padding:7px 8px;
+  border:1px solid #98a2b3;
+  border-radius:4px;
+  background:#fff;
+  color:#243447;
+}
+.mfCommunityMeta {
+  margin:4px 0 9px 0;
+  color:#667085;
+  font-size:12px;
+}
+.mfCommunityReviewBody {
+  margin:8px 0;
+  padding:9px;
+  border:1px solid #eaecf0;
+  background:#f8fafc;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+.mfCommunityStatus {
+  min-height:22px;
+  margin:8px 0 11px 0;
+  padding:7px 9px;
+  border-left:3px solid #84b9e7;
+  background:#f5f9fd;
+  line-height:18px;
+}
+.mfCommunityValues {
+  overflow:hidden;
+  border-top:1px solid #eaecf0;
+}
+.mfCommunityValue {
+  float:left;
+  width:47%;
+  min-height:44px;
+  margin:0 3% 0 0;
+  padding:7px 0;
+  border-bottom:1px solid #eaecf0;
+}
+.mfCommunityValueLabel {
+  display:block;
+  color:#667085;
+  font-size:11px;
+  line-height:15px;
+}
+.mfCommunityValueText {
+  display:block;
+  overflow-wrap:anywhere;
+  color:#243447;
+  line-height:17px;
+}
+.mfCommunityMessage {
+  margin:8px 0;
+  padding:10px;
+  border:1px solid #d0d5dd;
+  border-radius:6px;
+  background:#fff;
+}
+.mfCommunityMessageSummary { cursor:pointer; }
+.mfCommunityMessageDate { margin-left:8px;color:#667085;font-size:11px; }
+.mfCommunityMessageBody { margin-top:10px;white-space:pre-wrap;word-break:break-word; }
+.mfCommunityCopyFallback { margin-top:12px; }
