@@ -288,6 +288,23 @@ const WEBUI_SMS_R1 = Object.freeze({
   quarantineReason: "The canonical CAFE container is reproducible and structurally verified, but it is unflashed, has no delivery wrapper, and rollback remains unproved."
 });
 
+const WEBUI_COMMUNITY_R1 = Object.freeze({
+  id: "0.1-community-r1-cafe2",
+  logicalId: "0.1-community-r1",
+  kind: "webui-community",
+  file: "MF885_Community_0.1-community-r1-cafe-r2.bin",
+  size: 8323644,
+  sha256: "d42a912e31aafed4e57c6c98d94932444a0b2cf1fe0f8e223c95b3df22dae676",
+  baseSha256: GOLDEN_IMAGE.sha256,
+  restoreMethod: "RestoreFw",
+  nativeOsloPatch: false,
+  logicalChanges: ["WEBI:www/html/SMS/SMS.html", "WEBI:www/js/panel/SMS/SMS.js"],
+  restorable: false,
+  stable: false,
+  structuralStatus: "verified-not-qualified",
+  quarantineReason: "The golden-derived read/delete SMS profile is reproducible and structurally verified, but it is unflashed and rollback remains unproved."
+});
+
 const KNOWN_IMAGES = Object.freeze([
   GOLDEN_IMAGE,
   WEBUI_CANARY_R3,
@@ -306,7 +323,8 @@ const KNOWN_IMAGES = Object.freeze([
   WEBUI_CANARY_LOGS_R2_AUTH_R3,
   WEBUI_CANARY_LOGS_R1,
   WEBUI_CANARY_LOGS_R2,
-  WEBUI_SMS_R1
+  WEBUI_SMS_R1,
+  WEBUI_COMMUNITY_R1
 ]);
 const SAFE_IMAGES = Object.freeze([GOLDEN_IMAGE]);
 const REQUIRED_FIRMWARE = "2.5.94_release_MF855_NZ_CP_2.129.003";
@@ -1164,6 +1182,7 @@ module.exports = {
   WEBUI_CANARY_LOGS_R1,
   WEBUI_CANARY_LOGS_R2,
   WEBUI_SMS_R1,
+  WEBUI_COMMUNITY_R1,
   KNOWN_IMAGES,
   SAFE_IMAGES,
   REQUIRED_FIRMWARE,

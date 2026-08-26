@@ -1,0 +1,59 @@
+{
+  "schema": "mf885-webui-stage-source/v2",
+  "id": "0.1-community-r1-cafe2",
+  "logical_id": "0.1-community-r1",
+  "container_revision": 2,
+  "kind": "webui-community",
+  "artifact": {
+    "file": "MF885_Community_0.1-community-r1-cafe-r2.bin",
+    "size": 8323644,
+    "sha256": "d42a912e31aafed4e57c6c98d94932444a0b2cf1fe0f8e223c95b3df22dae676",
+    "sha256_scope": "reference-unit build",
+    "portable_plaintext_sha256": "6b6163036abb0b86b800b1ccc694c51bacc665231160baa911ca401fd8069ed0"
+  },
+  "base": {
+    "file": "MF885_golden.bin",
+    "size": 8323644,
+    "sha256": "2b5880fc26805918bb574d07341ea9b863f8261be34c3bf9766fac0929204531",
+    "sha256_scope": "reference-unit capture",
+    "portable_plaintext_sha256": "2bf4151a6e209845fd8d30f576577f6a66fe4cdf6d770c8bb45f0204c3486850"
+  },
+  "marker": "MF885 Community R1 SMS read-delete 0.1-community-r1",
+  "sources": [
+    {
+      "target": "www\\html\\SMS\\SMS.html",
+      "file": "SMS.html",
+      "size": 601,
+      "sha256": "64b5dc600ff4aff228439168b4cad5b1a429ca055a11622bb03b3f418ca834a9"
+    },
+    {
+      "target": "www\\js\\panel\\SMS\\SMS.js",
+      "file": "SMS.js",
+      "size": 11822,
+      "sha256": "5102a7c29ff325d3d9481ceaa0069b273849986b9ef2c8fe9dcc6bff0a99b679"
+    }
+  ],
+  "logical_changes": [
+    "WEBI:www/html/SMS/SMS.html",
+    "WEBI:www/js/panel/SMS/SMS.js"
+  ],
+  "raw_diff_bytes": 1441125,
+  "webi_padding_bytes_remaining": 48472,
+  "non_webi_partitions_byte_identical": true,
+  "structurally_verified": true,
+  "reproducible": true,
+  "live_tested": false,
+  "fbf_wrapper_available": false,
+  "flash_qualified": false,
+  "restore_allowlisted": false,
+  "release_status": "experimental-unflashed",
+  "stable": false,
+  "capabilities": {
+    "inbox_read": true,
+    "single_inbox_delete": true,
+    "sms_send_request": false,
+    "sms_page_log": false,
+    "custom_logs_panel_added": false,
+    "automatic_mutation_retries": 0
+  }
+}

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a deterministic WEBI-only MF885 canary from the exact golden image.
+"""Build a deterministic WEBI-only MF885 canary from a reviewed golden image.
 
 The tool never contacts a router. It patches one fixed-size CAFE record, appends
 one record inside existing padding, recalculates the
@@ -27,6 +27,17 @@ import mf885_firmware_inspect as inspector
 
 GOLDEN_SHA256 = "2b5880fc26805918bb574d07341ea9b863f8261be34c3bf9766fac0929204531"
 EXPECTED_SIZE = 8_323_644
+REVIEWED_PLAINTEXT_SHA256 = "2bf4151a6e209845fd8d30f576577f6a66fe4cdf6d770c8bb45f0204c3486850"
+REVIEWED_HEADER_SHA256 = "9bcd77127729bb225cc8bb688c858cd4a0b909b0f9923b9af484668a9ac493e9"
+REVIEWED_BODY_SHA256 = "cca8c01b80651abaf7c53dbcab26976ab2bce349f8f7c121d195d172e9a234ab"
+REVIEWED_PARTITIONS = (
+    ("OSLO", 0x00023C, 0x460000, 0x232C9A1E, "8b3da09d8d1aa4c8dbc493b8b1ceaeaabb51746744515dc8cdf66d65461260ca"),
+    ("GRBI", 0x46023C, 0x0C0000, 0x06CB4BB8, "e2f0e115ae091bc018c6c2bac6560368dbdf1d4b66a3334450f113548f244de0"),
+    ("WEBI", 0x52023C, 0x1C0000, 0x097C3A03, "86fda63366438a166c7ef334042af410e55289e7591a0743c47797404c08bb56"),
+    ("WIFI", 0x6E023C, 0x080000, 0x05AD8FBA, "db5a098ae78ed29206b97afaa9329d743d934290df53eab6e4feec75e3b448cd"),
+    ("WCAL", 0x76023C, 0x080000, 0x06736250, "aab1c19f4ec1f5c9da3099d1041754ab9dfa9e7daa22fcc02a3b4db74d618eeb"),
+    ("RFBN", 0x7E023C, 0x010000, 0x00CCE703, "644d300771c71b193030066a52ae1ff0723bfb84b218861a60de4ce3f5202902"),
+)
 INDEX_PATH = "www\\index.html"
 SCRIPT_PATH = "www\\js\\canary_logs.js"
 INDEX_LOADER = b'<script src="js/canary_logs.js"></script>'
@@ -67,15 +78,44 @@ def encode_cafe_data(logical_data: bytes) -> tuple[bytes, int, int]:
     return stored_data, padding_bytes, (padding_bytes << 24) | len(stored_data)
 
 
-def require_exact_golden(path: Path) -> bytes:
+def portable_plaintext_sha256(data: bytes, identity: inspector.IdentityMaterial) -> str:
+    """Hash the decrypted ZIMI header plus the unchanged partition bytes."""
+    header = inspector.decrypt_header(data, identity)
+    return inspector.sha256(header + data[inspector.HEADER_SIZE :])
+
+
+def require_reviewed_golden(path: Path, identity: inspector.IdentityMaterial) -> bytes:
+    """Accept only the reviewed 2.5.94/Ver.D image, independent of unit encryption."""
     try:
         data = path.read_bytes()
     except OSError as exc:
         raise BuildError("could not read the golden image") from exc
-    if len(data) != EXPECTED_SIZE or inspector.sha256(data) != GOLDEN_SHA256:
-        raise BuildError(
-            f"golden must be the exact {EXPECTED_SIZE}-byte image with SHA-256 {GOLDEN_SHA256}"
+    if len(data) != EXPECTED_SIZE:
+        raise BuildError(f"golden must be exactly {EXPECTED_SIZE} bytes")
+
+    parsed = inspector.inspect_image(path, identity, include_records=True)
+    if parsed.report["verification"]["status"] != "verified":
+        raise BuildError("golden did not pass the full independent inspector")
+    header = inspector.decrypt_header(data, identity)
+    if inspector.sha256(header) != REVIEWED_HEADER_SHA256:
+        raise BuildError("golden decrypted header is not the reviewed 2.5.94/Ver.D base")
+    if inspector.sha256(data[inspector.HEADER_SIZE :]) != REVIEWED_BODY_SHA256:
+        raise BuildError("golden partition body is not the reviewed base")
+    if portable_plaintext_sha256(data, identity) != REVIEWED_PLAINTEXT_SHA256:
+        raise BuildError("golden portable plaintext fingerprint does not match")
+
+    actual_partitions = tuple(
+        (
+            part.name,
+            part.offset,
+            part.length,
+            part.checksum,
+            inspector.sha256(data[part.offset : part.offset + part.length]),
         )
+        for part in parsed.partitions
+    )
+    if actual_partitions != REVIEWED_PARTITIONS:
+        raise BuildError("golden partition layout or payload fingerprints do not match")
     return data
 
 
@@ -349,8 +389,8 @@ def main(argv: list[str] | None = None) -> int:
             raise BuildError("output and report directories must already exist")
         if args.output.exists() or args.report.exists() or temporary.exists():
             raise BuildError("output, report, or verification temporary already exists")
-        golden_raw = require_exact_golden(args.golden)
         identity = inspector.load_identity(args.identity_xml)
+        golden_raw = require_reviewed_golden(args.golden, identity)
         script = args.script.read_bytes()
         golden = inspector.inspect_image(args.golden, identity, include_records=True)
         if golden.report["verification"]["status"] != "verified":
@@ -377,11 +417,19 @@ def main(argv: list[str] | None = None) -> int:
             "logical_id": args.profile,
             "container_revision": 2,
             "marker": CANARY_PROFILES[args.profile]["marker"].decode("ascii"),
-            "source": {"size": len(golden_raw), "sha256": GOLDEN_SHA256},
+            "source": {
+                "size": len(golden_raw),
+                "sha256": inspector.sha256(golden_raw),
+                "raw_sha256": inspector.sha256(golden_raw),
+                "reference_raw_sha256": GOLDEN_SHA256,
+                "portable_plaintext_sha256": REVIEWED_PLAINTEXT_SHA256,
+            },
             "artifact": {
                 "file": args.output.name,
                 "size": len(candidate),
                 "sha256": inspector.sha256(candidate),
+                "raw_sha256": inspector.sha256(candidate),
+                "portable_plaintext_sha256": portable_plaintext_sha256(candidate, identity),
             },
             "identity_fingerprint_sha256": identity.fingerprint,
             "script_sha256": inspector.sha256(script),

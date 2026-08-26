@@ -8,6 +8,9 @@ const root=path.join(__dirname,'..');
 const sms=fs.readFileSync(path.join(root,'firmware/webui-sms-r1/SMS.js'),'utf8');
 const smsHtml=fs.readFileSync(path.join(root,'firmware/webui-sms-r1/SMS.html'),'utf8');
 const smsManifest=JSON.parse(fs.readFileSync(path.join(root,'firmware/webui-sms-r1/manifest.json'),'utf8'));
+const community=fs.readFileSync(path.join(root,'firmware/community-r1/SMS.js'),'utf8');
+const communityHtml=fs.readFileSync(path.join(root,'firmware/community-r1/SMS.html'),'utf8');
+const communityManifest=JSON.parse(fs.readFileSync(path.join(root,'firmware/community-r1/manifest.json'),'utf8'));
 const ussd=fs.readFileSync(path.join(root,'firmware/webui-ussd-r1/custom_fw.js'),'utf8');
 const ussdHtml=fs.readFileSync(path.join(root,'firmware/webui-ussd-r1/custom_fw_rules.html'),'utf8');
 const ussdContract=JSON.parse(fs.readFileSync(path.join(root,'firmware/webui-ussd-r1/contract.json'),'utf8'));
@@ -38,6 +41,30 @@ test('SMS r1 is a bounded exact-stock message client with no firmware or power r
   assert.equal(smsManifest.stable,false);
   assert.equal(smsManifest.flash_qualified,false);
   assert.equal(smsManifest.restore_allowlisted,false);
+});
+
+test('community r1 is the exact read-delete product profile with logs and sending absent',()=>{
+  assert.doesNotThrow(()=>new Function(community));
+  assert.match(community,/MF885 Community R1 SMS read-delete 0\.1-community-r1/);
+  assert.match(community,/GET_RCV_SMS_LOCAL/);
+  assert.match(community,/DELETE_SMS/);
+  assert.match(community,/STATUS_POLLS=10/);
+  assert.match(community,/MAX_PAGES=20,MAX_MESSAGES=200/);
+  assert.match(community,/Deletion outcome unknown\. Reload the page before any retry/);
+  assert.equal((community.match(/PostXMLWithResponse/g)||[]).length,1);
+  for(const forbidden of ['SEND_SMS','detailed_log','canary_logs','mfSmsLog','RestoreFw','file=reset','file=poweroff','debugmodeon'])assert.doesNotMatch(community,new RegExp(forbidden,'i'));
+  assert.doesNotMatch(communityHtml,/send|composer|technical log/i);
+  assert.match(communityHtml,/Nothing is sent automatically/);
+  const sourceByFile=new Map(communityManifest.sources.map(item=>[item.file,item]));
+  for(const [file,data] of [['SMS.js',Buffer.from(community)],['SMS.html',Buffer.from(communityHtml)]]){
+    const expected=sourceByFile.get(file);assert.ok(expected);assert.equal(data.length,expected.size);assert.equal(crypto.createHash('sha256').update(data).digest('hex'),expected.sha256);
+  }
+  assert.equal(communityManifest.artifact.sha256,'d42a912e31aafed4e57c6c98d94932444a0b2cf1fe0f8e223c95b3df22dae676');
+  assert.equal(communityManifest.capabilities.sms_send_request,false);
+  assert.equal(communityManifest.capabilities.sms_page_log,false);
+  assert.equal(communityManifest.capabilities.custom_logs_panel_added,false);
+  assert.equal(communityManifest.live_tested,false);
+  assert.equal(communityManifest.stable,false);
 });
 
 test('USSD r1 remains an unbuildable zero-transport audit scaffold',()=>{

@@ -2,6 +2,7 @@ import lzma
 import os
 import struct
 import sys
+import tempfile
 import unittest
 import zlib
 from pathlib import Path
@@ -39,6 +40,42 @@ def cafe_payload(path: str, data: bytes, size: int = 4096) -> bytes:
 
 
 class WebiBuilderTests(unittest.TestCase):
+    def test_portable_plaintext_fingerprint_ignores_only_unit_header_encryption(self):
+        header = bytes((index * 17 + 3) & 0xFF for index in range(inspector.HEADER_SIZE))
+        body = b"reviewed synthetic partition bytes"
+        first = inspector.IdentityMaterial(
+            serial=b"SYNTHETIC000001",
+            mac=bytes.fromhex("020000000001"),
+            fingerprint="a" * 64,
+            key_fingerprint="b" * 64,
+            key=bytes.fromhex("00112233445566778899aabbccddeeff"),
+        )
+        second = inspector.IdentityMaterial(
+            serial=b"SYNTHETIC000002",
+            mac=bytes.fromhex("020000000002"),
+            fingerprint="c" * 64,
+            key_fingerprint="d" * 64,
+            key=bytes.fromhex("ffeeddccbbaa99887766554433221100"),
+        )
+
+        def bind(identity):
+            return (
+                builder.encrypt_header(header, identity.key)
+                + header[inspector.ENCRYPTED_HEADER_SIZE :]
+                + body
+            )
+
+        first_raw, second_raw = bind(first), bind(second)
+        self.assertNotEqual(inspector.sha256(first_raw), inspector.sha256(second_raw))
+        self.assertEqual(
+            builder.portable_plaintext_sha256(first_raw, first),
+            builder.portable_plaintext_sha256(second_raw, second),
+        )
+        self.assertNotEqual(
+            builder.portable_plaintext_sha256(first_raw, second),
+            builder.portable_plaintext_sha256(first_raw, first),
+        )
+
     def test_lzma_inspection_stops_at_the_uncompressed_size_limit(self):
         payload = lzma.compress(b"A" * 4096, format=lzma.FORMAT_ALONE)
         with mock.patch.object(inspector, "MAX_LZMA_UNCOMPRESSED_BYTES", 1024):
@@ -605,6 +642,7 @@ class WebiBuilderTests(unittest.TestCase):
             "a1d970c68bde7534519b942bd73a57c6805d321860dead6b437392b0319fe922",
             "aeaceb9cd193a44100bd33c3f14dc48ede6d2e163d7a214a87411d7875adf07f",
             "c27b5f7989ac4e4ac6ff1ebdd603685f6f1fe777918458059b620b1c36ec73ce",
+            "d42a912e31aafed4e57c6c98d94932444a0b2cf1fe0f8e223c95b3df22dae676",
         }
         for digest in corrected:
             item = inspector.KNOWN_ARTIFACTS[digest]
@@ -714,6 +752,40 @@ class WebiBuilderTests(unittest.TestCase):
         added = next(record for record in records if record.path == builder.SCRIPT_PATH)
         self.assertTrue(added.padding_valid)
         self.assertEqual(added.logical_sha256, inspector.sha256(script))
+
+    @unittest.skipUnless(
+        LOCAL_GOLDEN.is_file() and LOCAL_IDENTITY.is_file(),
+        "exact local golden and identity are optional in CI",
+    )
+    def test_private_golden_matches_portable_reviewed_base(self):
+        identity = inspector.load_identity(LOCAL_IDENTITY)
+        raw = builder.require_reviewed_golden(LOCAL_GOLDEN, identity)
+        self.assertEqual(len(raw), builder.EXPECTED_SIZE)
+        self.assertEqual(
+            builder.portable_plaintext_sha256(raw, identity),
+            builder.REVIEWED_PLAINTEXT_SHA256,
+        )
+        rebound_identity = inspector.IdentityMaterial(
+            serial=b"SYNTHETIC000003",
+            mac=bytes.fromhex("020000000003"),
+            fingerprint="e" * 64,
+            key_fingerprint="f" * 64,
+            key=bytes.fromhex("102132435465768798a9bacbdcedfe0f"),
+        )
+        header = inspector.decrypt_header(raw, identity)
+        rebound = (
+            builder.encrypt_header(header, rebound_identity.key)
+            + header[inspector.ENCRYPTED_HEADER_SIZE :]
+            + raw[inspector.HEADER_SIZE :]
+        )
+        self.assertNotEqual(inspector.sha256(rebound), inspector.sha256(raw))
+        with tempfile.TemporaryDirectory() as temporary:
+            rebound_path = Path(temporary) / "synthetic-other-unit.bin"
+            rebound_path.write_bytes(rebound)
+            self.assertEqual(
+                builder.require_reviewed_golden(rebound_path, rebound_identity),
+                rebound,
+            )
 
     @unittest.skipUnless(
         LOCAL_GOLDEN.is_file() and LOCAL_IDENTITY.is_file(),

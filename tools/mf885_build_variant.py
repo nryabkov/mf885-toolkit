@@ -27,6 +27,11 @@ DEFAULT_IDENTITY = ROOT / "input" / "mf885-base.xml"
 DEFAULT_OUTPUT = ROOT / "out"
 
 VARIANTS: dict[str, dict[str, Any]] = {
+    "community-r1": {
+        "kind": "stage",
+        "profile": "0.1-community-r1",
+        "artifact": "MF885_Community_0.1-community-r1-cafe-r2.bin",
+    },
     "logs-r1": {
         "kind": "logs",
         "profile": "0.0-logs-r1",

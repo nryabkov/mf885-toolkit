@@ -16,6 +16,20 @@ LOCAL_IDENTITY = Path(os.environ.get("MF885_TEST_IDENTITY", ROOT / "input/mf885-
 
 
 class WebuiStageBuilderTests(unittest.TestCase):
+    def test_community_profile_is_bound_to_safe_exact_sources(self):
+        replacements = stage.load_profile_sources("0.1-community-r1")
+        specification = stage.STAGE_PROFILES["0.1-community-r1"]
+        self.assertEqual(set(replacements), set(specification["files"]))
+        joined = b"\n".join(replacements.values())
+        self.assertIn(specification["marker"], joined)
+        for forbidden in (b"SEND_SMS", b"detailed_log", b"canary_logs", b"mfSmsLog"):
+            self.assertNotIn(forbidden.lower(), joined.lower())
+        for target, data in replacements.items():
+            with self.subTest(target=target):
+                source = specification["files"][target]
+                self.assertEqual(len(data), source["size"])
+                self.assertEqual(inspector.sha256(data), source["sha256"])
+
     def test_sms_profile_is_bound_to_every_exact_source(self):
         replacements = stage.load_profile_sources("0.0-sms-r1")
         specification = stage.STAGE_PROFILES["0.0-sms-r1"]
@@ -59,6 +73,32 @@ class WebuiStageBuilderTests(unittest.TestCase):
         )
         self.assertEqual(first_report["cafe"]["additions"], [])
         self.assertGreater(first_report["cafe"]["padding_after"], 40_000)
+
+    @unittest.skipUnless(
+        LOCAL_GOLDEN.is_file() and LOCAL_IDENTITY.is_file(),
+        "exact local golden and identity are optional in CI",
+    )
+    def test_private_community_r1_is_deterministic_and_exactly_scoped(self):
+        raw = LOCAL_GOLDEN.read_bytes()
+        identity = inspector.load_identity(LOCAL_IDENTITY)
+        first, first_report = stage.build_stage_image(raw, identity, "0.1-community-r1")
+        second, second_report = stage.build_stage_image(raw, identity, "0.1-community-r1")
+        self.assertEqual(first, second)
+        self.assertEqual(first_report, second_report)
+        self.assertEqual(len(first), 8_323_644)
+        self.assertEqual(
+            inspector.sha256(first),
+            "d42a912e31aafed4e57c6c98d94932444a0b2cf1fe0f8e223c95b3df22dae676",
+        )
+        self.assertEqual(
+            [item["path"] for item in first_report["cafe"]["changes"]],
+            [
+                "www\\html\\SMS\\SMS.html",
+                "www\\js\\panel\\SMS\\SMS.js",
+            ],
+        )
+        self.assertEqual(first_report["cafe"]["additions"], [])
+        self.assertEqual(first_report["cafe"]["padding_after"], 48_472)
 
 
 if __name__ == "__main__":

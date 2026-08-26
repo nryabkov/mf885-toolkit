@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build exact-golden, structural-only WebUI stage images.
+"""Build reviewed-golden, structural-only WebUI stage images.
 
 This builder replaces only reviewed CAFE records. It has no router transport,
 no FBF publisher and no flash action. Every source byte is pinned by profile,
@@ -22,6 +22,33 @@ import mf885_webi_builder as base
 
 ROOT = Path(__file__).resolve().parents[1]
 STAGE_PROFILES: dict[str, dict[str, Any]] = {
+    "0.1-community-r1": {
+        "kind": "webui-community",
+        "marker": b"MF885 Community R1 SMS read-delete 0.1-community-r1",
+        "artifact": "MF885_Community_0.1-community-r1-cafe-r2.bin",
+        "files": {
+            "www\\html\\SMS\\SMS.html": {
+                "source": "firmware/community-r1/SMS.html",
+                "size": 601,
+                "sha256": "64b5dc600ff4aff228439168b4cad5b1a429ca055a11622bb03b3f418ca834a9",
+            },
+            "www\\js\\panel\\SMS\\SMS.js": {
+                "source": "firmware/community-r1/SMS.js",
+                "size": 11822,
+                "sha256": "5102a7c29ff325d3d9481ceaa0069b273849986b9ef2c8fe9dcc6bff0a99b679",
+            },
+        },
+        "forbidden": (b"SEND_SMS", b"detailed_log", b"canary_logs", b"mfSmsLog"),
+        "safety": {
+            "routerRequestsOnPageLoad": [
+                "GET status1",
+                "semantic-read POST GET_RCV_SMS_LOCAL pages",
+            ],
+            "mutationContract": "one explicitly confirmed inbox DELETE_SMS POST followed by bounded status reads and complete inbox readback",
+            "mutationUnknownLocksPageSession": True,
+            "automaticMutationRetries": 0,
+        },
+    },
     "0.0-sms-r1": {
         "kind": "webui-sms",
         "marker": b"MF885 Community WebUI SMS 0.0-sms-r1",
@@ -76,6 +103,8 @@ def load_profile_sources(profile: str, root: Path = ROOT) -> dict[str, bytes]:
     forbidden = (b"RestoreFw", b"file=reset", b"file=poweroff", b"debugmodeon")
     if any(value.lower() in joined.lower() for value in forbidden):
         raise StageBuildError("stage source contains a forbidden firmware/power/debug route")
+    if any(value.lower() in joined.lower() for value in specification.get("forbidden", ())):
+        raise StageBuildError("stage source contains a forbidden profile capability")
     return replacements
 
 
@@ -178,8 +207,8 @@ def main(argv: list[str] | None = None) -> int:
             raise StageBuildError("output and report directories must already exist")
         if args.output.exists() or args.report.exists() or temporary.exists():
             raise StageBuildError("output, report, or verification temporary already exists")
-        golden_raw = base.require_exact_golden(args.golden)
         identity = inspector.load_identity(args.identity_xml)
+        golden_raw = base.require_reviewed_golden(args.golden, identity)
         golden = inspector.inspect_image(args.golden, identity, include_records=True)
         if golden.report["verification"]["status"] != "verified":
             raise StageBuildError("golden did not pass the full independent inspector")
@@ -213,11 +242,19 @@ def main(argv: list[str] | None = None) -> int:
             "container_revision": 2,
             "kind": specification["kind"],
             "marker": specification["marker"].decode("ascii"),
-            "source": {"size": len(golden_raw), "sha256": base.GOLDEN_SHA256},
+            "source": {
+                "size": len(golden_raw),
+                "sha256": inspector.sha256(golden_raw),
+                "raw_sha256": inspector.sha256(golden_raw),
+                "reference_raw_sha256": base.GOLDEN_SHA256,
+                "portable_plaintext_sha256": base.REVIEWED_PLAINTEXT_SHA256,
+            },
             "artifact": {
                 "file": args.output.name,
                 "size": len(candidate),
                 "sha256": inspector.sha256(candidate),
+                "raw_sha256": inspector.sha256(candidate),
+                "portable_plaintext_sha256": base.portable_plaintext_sha256(candidate, identity),
             },
             "identity_fingerprint_sha256": identity.fingerprint,
             "sources": [

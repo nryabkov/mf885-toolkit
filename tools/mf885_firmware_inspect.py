@@ -971,6 +971,14 @@ KNOWN_ARTIFACTS = {
         "restorable": False,
         "issue": "canonical CAFE container is structurally verified and unflashed; no delivery wrapper exists and rollback remains unproved",
     },
+    "d42a912e31aafed4e57c6c98d94932444a0b2cf1fe0f8e223c95b3df22dae676": {
+        "id": "mf885-community-0.1-community-r1-cafe2",
+        "size": 8_323_644,
+        "role": "webui-community",
+        "structural_status": "verified-not-flash-qualified",
+        "restorable": False,
+        "issue": "golden-derived read/delete SMS profile is reproducible and structurally verified, but it is unflashed and rollback remains unproved",
+    },
 }
 
 

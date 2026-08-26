@@ -83,16 +83,26 @@ python -m pip install -r requirements.txt
 mkdir -p out
 python tools/mf885_build_variant.py --list
 python tools/mf885_build_variant.py \
-  --variant logs-r1 \
+  --variant community-r1 \
   --acknowledge-brick-risk
 ```
 
 The wrapper performs no network or device I/O. It refuses to overwrite an
-existing output and delegates to the exact fail-closed builder and independent
-inspector. The currently supported golden image is exactly 8,323,644 bytes
-with SHA-256
-`2b5880fc26805918bb574d07341ea9b863f8261be34c3bf9766fac0929204531`.
-Any other input is rejected; do not bypass this check.
+existing output and delegates to the fail-closed builder and independent
+inspector. The supported backup is exactly 8,323,644 bytes and must match the
+reviewed 2.5.94 / Ver.D decrypted header, partition layout and every partition
+payload. Its portable plaintext SHA-256 is
+`2bf4151a6e209845fd8d30f576577f6a66fe4cdf6d770c8bb45f0204c3486850`.
+The raw backup hash is unit-specific because its header is encrypted; the
+reference-unit raw hash is documented only as a reproducibility example. Any
+semantic mismatch is rejected; do not bypass this check or use another unit's
+built binary.
+
+`community-r1` is the recommended product-oriented source profile. It reads
+and expands SMS messages and permits one explicitly confirmed inbox deletion,
+with complete readback verification and no automatic retry. Its replacement
+SMS page has no composer, `SEND_SMS` request or page log, and the build adds no
+custom Logs panel. The Logs variants remain research material.
 
 Inspector and builder reports can contain stable pseudonymous fingerprints of
 your unit and derived-key checks. Keep reports private and never attach raw

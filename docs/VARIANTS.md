@@ -1,13 +1,14 @@
 # Source variant registry
 
-All variants are source-only and built locally from the exact supported backup.
+All variants are source-only and built locally from a strictly verified compatible backup.
 None is distributed as a firmware binary.
 
 | Wrapper name | Logical ID | Source | Status |
 |---|---|---|---|
-| `logs-r1` | `0.0-logs-r1-auth-r4-cafe2` | `firmware/webui-canary-logs/` | Authenticated poll with pre-storage privacy masking; current source is offline structurally verified and unflashed |
-| `logs-r2` | `0.0-logs-r2-auth-r4-cafe2` | `firmware/webui-canary-logs-r2/` | Bounded authenticated observer with pre-storage privacy masking; offline structural verification only |
-| `sms-r1` | `0.0-sms-r1-cafe2` | `firmware/webui-sms-r1/` | Offline structural/UI tests only; includes explicit SMS mutation controls |
+| `community-r1` | `0.1-community-r1-cafe2` | `firmware/community-r1/` | Recommended product-oriented source: read/expand SMS and one confirmed inbox delete; SMS page has no composer, send request or page log; no custom Logs panel is added; reproducible and structurally verified, still unflashed |
+| `logs-r1` | `0.0-logs-r1-auth-r4-cafe2` | `firmware/webui-canary-logs/` | Research-only authenticated observer; not part of the product firmware |
+| `logs-r2` | `0.0-logs-r2-auth-r4-cafe2` | `firmware/webui-canary-logs-r2/` | Research-only bounded observer; not part of the product firmware |
+| `sms-r1` | `0.0-sms-r1-cafe2` | `firmware/webui-sms-r1/` | Historical feature prototype with send/delete controls; not the recommended build |
 | — | `0.0-ussd-r1` | `firmware/webui-ussd-r1/` | Audit-only scaffold; deliberately unbuildable because the native WebUI contract is unresolved |
 
 The `firmware/fbf-webui-noflash/` material is inspection/simulation research,
@@ -17,6 +18,8 @@ device merely because it reconstructs offline.
 Earlier Logs artifacts are retained in their manifests as quarantined history.
 Some omitted the stock Digest header; later revisions fixed authentication but
 did not mask every WAN username and IPv6 representation before Copy/Export.
+`community-r1` is built directly from golden rather than layered on a Logs
+artifact, so its stock index contains no Logs loader or panel.
 
 ## Adding a variant
 

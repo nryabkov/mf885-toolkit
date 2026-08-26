@@ -151,6 +151,12 @@ test("allows only golden while recognizing quarantined structural WebUI builds",
   assert.equal(stage0.WEBUI_SMS_R1.restorable,false);
   assert.match(sms.errors.join(" "),/canonical CAFE|unflashed|delivery wrapper/i);
   assert.equal(stage0.lookupImage({size:8323644,sha256:"c27b5f7989ac4e4ac6ff1ebdd603685f6f1fe777918458059b620b1c36ec73ce"}),stage0.WEBUI_SMS_R1);
+  const community=stage0.validateImage(imageEvidence(stage0.WEBUI_COMMUNITY_R1));
+  assert.equal(community.ok,false);
+  assert.equal(community.image,stage0.WEBUI_COMMUNITY_R1);
+  assert.equal(stage0.WEBUI_COMMUNITY_R1.restorable,false);
+  assert.match(community.errors.join(" "),/read\/delete SMS|unflashed|rollback/i);
+  assert.equal(stage0.lookupImage({size:8323644,sha256:"d42a912e31aafed4e57c6c98d94932444a0b2cf1fe0f8e223c95b3df22dae676"}),stage0.WEBUI_COMMUNITY_R1);
   assert.equal(stage0.lookupImage({size:8323644,sha256:"f1f5f7fc51dc4bd6a094071cd82958b141f9525ba401bbf92024864e28f271a6"}),stage0.WEBUI_SMS_R1_NONCANONICAL);
   assert.deepEqual(stage0.SAFE_IMAGES, [stage0.GOLDEN_IMAGE]);
   assert.equal(stage0.validateImage({ size: 8323644, sha256: "0".repeat(64) }).ok, false);

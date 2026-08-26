@@ -2,7 +2,7 @@
 
 ## What this workflow does
 
-It patches an exact operator-supplied MF885 BackupFw image, recalculates the
+It patches a strictly verified operator-supplied MF885 BackupFw image, recalculates the
 reviewed CAFE/ZIMI integrity fields, writes a new file, and independently
 inspects the result. It never contacts a router and never flashes anything.
 
@@ -20,12 +20,23 @@ input/mf885-base.xml
 out/
 ```
 
-`MF885_golden.bin` must be a lawful backup from hardware you own. The currently
-reviewed base is 8,323,644 bytes with SHA-256:
+`MF885_golden.bin` must be a lawful backup from hardware you own. The reviewed
+base is exactly 8,323,644 bytes. A reference-unit capture has raw SHA-256:
 
 ```text
 2b5880fc26805918bb574d07341ea9b863f8261be34c3bf9766fac0929204531
 ```
+
+The raw hash normally differs between units because the ZIMI header is encrypted
+with a unit-derived key. After decryption, the supported 2.5.94 / Ver.D base must
+have portable plaintext SHA-256:
+
+```text
+2bf4151a6e209845fd8d30f576577f6a66fe4cdf6d770c8bb45f0204c3486850
+```
+
+The builder also pins the decrypted header, complete partition layout, checksums
+and every partition payload hash. A version string alone is never accepted.
 
 `mf885-base.xml` is the local `GetInfo&Id=Base` response used to derive the
 device-bound header key. It can contain private unit identity and default
@@ -54,9 +65,9 @@ python tools/mf885_firmware_inspect.py \
   --json
 ```
 
-Continue only when the inspector reports `verification.status = verified` and
-the exact supported size/hash above. Never weaken a failed gate to make an
-unknown image fit.
+Continue only when the inspector reports `verification.status = verified`.
+The builder then checks the exact reviewed portable fingerprint and partition
+set. Never weaken a failed gate to make an unknown image fit.
 
 ## Build
 
@@ -64,14 +75,16 @@ unknown image fit.
 mkdir -p out
 python tools/mf885_build_variant.py --list
 python tools/mf885_build_variant.py \
-  --variant logs-r1 \
+  --variant community-r1 \
   --golden input/MF885_golden.bin \
   --identity-xml input/mf885-base.xml \
   --output-dir out \
   --acknowledge-brick-risk
 ```
 
-Choose `logs-r2` or `sms-r1` only after reading its source and manifest. The
+The Logs variants are research observers and `sms-r1` is a historical
+send/delete prototype. Choose them only after reading their source and
+manifest; `community-r1` is the product-oriented read/delete profile. The
 output and a JSON report are created exclusively; rerunning does not overwrite
 them. Delete or move an old local output deliberately before rebuilding.
 
@@ -81,13 +94,19 @@ them. Delete or move an old local output deliberately before rebuilding.
 python tools/mf885_firmware_inspect.py \
   input/MF885_golden.bin \
   --identity-xml input/mf885-base.xml \
-  --compare out/MF885_Community_0.0-logs-r1-auth-r4-cafe-r2.bin \
+  --compare out/MF885_Community_0.1-community-r1-cafe-r2.bin \
   --json
 ```
 
-For Logs variants, only `WEBI:www/index.html` and the appended reviewed script
-may differ logically; all non-WEBI partitions must remain byte-identical. The
-SMS variant has its own exact two-record allowlist.
+For `community-r1`, only the exact stock SMS HTML and JavaScript records may
+differ logically; all non-WEBI partitions must remain byte-identical. Because
+the build starts from golden, it also restores the stock index and contains no
+Logs loader. Logs variants have a separate index-plus-script allowlist.
+
+The output header remains bound to the supplied unit. Consequently its raw
+SHA-256 can differ from the reference manifest even when the portable plaintext
+fingerprint and all logical changes match. Never flash a binary built for a
+different unit.
 
 ## Deliberate omissions
 

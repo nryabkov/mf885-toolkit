@@ -892,12 +892,21 @@ test('Delete confirmation dispatches one command, reloads history, and removes t
   const dispatch=app.createWebViewDispatcher({deleteSms:async({id})=>{const result=await deleteSms(id);if(!result.ok)throw new Error(result.message);cards=result.history.messages;return result;}});
   // The first click only opens the client-side confirmation; no command is dispatched.
   assert.equal(cards.length,1);
+  const unconfirmed=await dispatch({id:'unconfirmed',action:'deleteSms',params:{id:'42'}});
+  assert.equal(unconfirmed.ok,false); assert.match(unconfirmed.error,/Explicit confirmation/); assert.equal(calls.length,0);
   const result=await dispatch({id:'confirmed',action:'deleteSms',params:{id:'42',confirmed:true}});
   assert.equal(result.ok,true); assert.equal(calls.length,1); assert.equal(cards.length,0);
   assert.equal(calls[0][4],false);
   assert.match(calls[0][3],/<message_flag>DELETE_SMS<\/message_flag><sms_cmd>6<\/sms_cmd>/);
   assert.match(calls[0][3],/<get_message><tags>12<\/tags><mem_store>1<\/mem_store><\/get_message>/);
   assert.match(calls[0][3],/<set_message><delete_message_id>42,<\/delete_message_id><\/set_message>/);
+});
+
+test('legacy SMS delete prompt never repeats the message body and sends explicit confirmation',()=>{
+  const js=app.clientScript(model());
+  assert.match(js,/Delete this SMS from MF885\? This cannot be undone\./);
+  assert.match(js,/bridge\('deleteSms',\{id:String\(item\.id\|\|''\),confirmed:true\}/);
+  assert.doesNotMatch(js,/Delete this SMS\? ['"]?\+String\(item\.content/);
 });
 
 for(const scenario of [
