@@ -993,7 +993,7 @@ KNOWN_ARTIFACTS = {
         "role": "webui-community",
         "structural_status": "verified-not-flash-qualified",
         "restorable": False,
-        "issue": "golden-derived Community R2.1 profile with bounded SMS send and safe read-only diagnostics is reproducible and structurally verified, but it is unflashed and rollback remains unproved",
+        "issue": "golden-derived Community R2.1 profile was installed once with its exact static assets observed after boot, but SMS mutations, cold boot, repeatability and rollback remain unproved and it is not flash-qualified",
     },
 }
 

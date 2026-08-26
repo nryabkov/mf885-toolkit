@@ -52,9 +52,15 @@ The encrypted header is unit-bound, so another compatible unit normally
 produces a different raw hash. Its decrypted portable fingerprint must be
 `9b7312ae365f3a381a060b4d28a0de719e64aaffe29893dcb2601987e9dfcd2a`.
 
-This image is deterministic and structurally verified, but unflashed. Neither
-SMS Send nor Delete has been tested live. It is not stable, flash-qualified or
-restore-allowlisted. Structural verification does not prove bootability,
-compatibility, rollback, cold-boot recovery or repeatability. Flashing can
-permanently brick the device. The public toolkit distributes no firmware
-binary or live flashing helper.
+This exact image was installed once on the reviewed MF885 / Ver.D unit in a
+separately fenced, zero-retry experiment. Postboot checks matched all 13
+reviewed assets, proved all 18 removed locale routes absent and proved the same
+unit returned. Installation is qualified from the observed postboot state, not
+from a transport-response claim. Neither SMS Send nor Delete has been tested
+live.
+
+The image remains an experimental live-qualified canary. It is not stable,
+flash-qualified or restore-allowlisted, and one successful installation does
+not prove rollback, cold-boot recovery, repeatability or general compatibility.
+Flashing can permanently brick the device. The public toolkit distributes no
+firmware binary or live flashing helper.

@@ -24,7 +24,7 @@ does not authorize cross-flashing or reuse of native offsets.
    data. Its copied snapshot omits unit IDs, addresses/APN, cell location,
    credentials, phone numbers and SMS bodies; there is no background polling,
    raw capture or native `detailed_log`.
-3. **Unified visual system** — after R2.1 is live-qualified, consolidate Home,
+3. **Unified visual system** — in the next separate revision, consolidate Home,
    Messages and Diagnostics around shared colors, typography, spacing, cards,
    buttons and loading/error/confirmation states. Keep this as a separate
    WEBI-only revision so visual changes do not obscure functional validation.

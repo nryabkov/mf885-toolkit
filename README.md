@@ -114,6 +114,13 @@ firmware size. Its reference-unit SHA-256 is
 another compatible unit normally has a different raw hash because the header
 is unit-bound.
 
+That exact reference build has been installed once on the reviewed hardware.
+Postboot checks matched every declared R2.1 asset and removed-locale route and
+proved the same unit returned, so its status is
+`experimental-live-qualified-canary`. SMS Send/Delete, cold-boot persistence,
+repeatability and rollback remain unqualified. It is still not stable,
+flash-qualified or restore-allowlisted.
+
 The inherited optional **Remember me in this tab** control stores Digest HA1 in
 `sessionStorage`, not the plaintext password. HA1 is nevertheless a
 password-equivalent credential readable by same-origin page scripts. Use it

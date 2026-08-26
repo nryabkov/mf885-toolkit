@@ -112,6 +112,11 @@ Its opt-in tab convenience stores
 Digest HA1, which is still a password-equivalent credential; read its manifest
 and on-device warning before enabling it.
 
+The exact reference R2.1 build has been installed once and its declared static
+asset set was observed after boot. This is a narrow live-canary result, not a
+general flash guarantee: SMS mutations, cold boot, repeatability and rollback
+remain unqualified, and the artifact is not stable or restore-allowlisted.
+
 The output header remains bound to the supplied unit. Consequently its raw
 SHA-256 can differ from the reference manifest even when the portable plaintext
 fingerprint and all logical changes match. Never flash a binary built for a

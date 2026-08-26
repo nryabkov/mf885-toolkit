@@ -22,7 +22,7 @@ test('Community R2.1 source manifest pins every custom source byte',()=>{
   }
 });
 
-test('Community R2.1 is immutable, English-only, unflashed and not allowlisted',()=>{
+test('Community R2.1 is immutable, English-only, live-static-qualified and not allowlisted',()=>{
   assert.equal(manifest.logical_id,'0.2.1-community-r2');
   assert.equal(manifest.artifact.file,'MF885_Community_0.2.1-community-r2-cafe-r2.bin');
   assert.deepEqual(manifest.logical_change_counts,{replaced:10,added:3,removed:18});
@@ -34,7 +34,13 @@ test('Community R2.1 is immutable, English-only, unflashed and not allowlisted',
   assert.deepEqual(manifest.capabilities.diagnostics_manual_reads,['status1','wan','Engineer_parameter']);
   assert.equal(manifest.capabilities.native_detailed_log,false);
   assert.equal(manifest.capabilities.background_diagnostics_polling,false);
-  for(const field of ['live_tested','sms_send_live_tested','inbox_delete_live_tested','flash_qualified','restore_allowlisted','stable'])
+  assert.equal(manifest.live_tested,true);
+  assert.equal(manifest.release_status,'experimental-live-qualified-canary');
+  assert.equal(manifest.capabilities.static_assets_live_verified,true);
+  assert.equal(manifest.capabilities.exact_served_assets_live_verified,13);
+  assert.equal(manifest.capabilities.removed_locale_routes_live_verified,18);
+  assert.equal(manifest.capabilities.same_unit_postboot_live_verified,true);
+  for(const field of ['sms_send_live_tested','inbox_delete_live_tested','flash_qualified','restore_allowlisted','stable'])
     assert.equal(manifest[field],false,field);
   assert.match(readme,/permanently brick/i);
   assert.match(readme,/password-equivalent/i);
