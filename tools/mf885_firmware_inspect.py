@@ -987,6 +987,14 @@ KNOWN_ARTIFACTS = {
         "restorable": False,
         "issue": "golden-derived English-only Community R2 profile is reproducible and structurally verified, but it is unflashed and rollback remains unproved",
     },
+    "51bd396c69e9c8db96249455092634b6b54552f64f5c4daee6f710b644759c95": {
+        "id": "mf885-community-0.2.1-community-r2-cafe2",
+        "size": 8_323_644,
+        "role": "webui-community",
+        "structural_status": "verified-not-flash-qualified",
+        "restorable": False,
+        "issue": "golden-derived Community R2.1 profile with bounded SMS send and safe read-only diagnostics is reproducible and structurally verified, but it is unflashed and rollback remains unproved",
+    },
 }
 
 

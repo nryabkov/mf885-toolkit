@@ -19,10 +19,34 @@ from typing import Any
 import mf885_firmware_inspect as inspector
 import mf885_webi_builder as base
 import mf885_community_r2 as community_r2
+import mf885_community_r21 as community_r21
 
 
 ROOT = Path(__file__).resolve().parents[1]
 STAGE_PROFILES: dict[str, dict[str, Any]] = {
+    "0.2.1-community-r2": {
+        "kind": "webui-community",
+        "marker": community_r21.MARKER,
+        "artifact": "MF885_Community_0.2.1-community-r2-cafe-r2.bin",
+        "patcher": "community-r2.1",
+        "files": {},
+        "safety": {
+            "routerRequestsOnPageLoad": [
+                "GET locale/status for stock login",
+                "at most one opt-in Digest resume attempt and one status1 proof",
+                "semantic-read POST GET_RCV_SMS_LOCAL pages after opening Messages",
+                "one each of status1, wan and Engineer_parameter after opening Diagnostics",
+            ],
+            "mutationContract": "one explicitly confirmed SMS send or inbox delete POST, no automatic retry, followed by bounded command status and complete folder readback",
+            "mutationUnknownLocksPageSession": True,
+            "automaticMutationRetries": 0,
+            "tabAuthStoresPlaintextPassword": False,
+            "tabAuthStoresPasswordEquivalentHA1": True,
+            "languages": ["en"],
+            "nativeDetailedLog": False,
+            "backgroundDiagnosticsPolling": False,
+        },
+    },
     "0.2-community-r2": {
         "kind": "webui-community",
         "marker": community_r2.MARKER,
@@ -94,6 +118,11 @@ STAGE_PROFILES: dict[str, dict[str, Any]] = {
     },
 }
 
+DERIVED_PATCHERS = {
+    "community-r2": (community_r2, community_r2.CommunityR2Error),
+    "community-r2.1": (community_r21, community_r21.CommunityR21Error),
+}
+
 
 class StageBuildError(Exception):
     pass
@@ -155,14 +184,19 @@ def build_stage_image(
     _, records, _ = base.parse_cafe_source(webi_payload)
     additions: dict[str, bytes] = {}
     removals: set[str] = set()
-    if specification.get("patcher") == "community-r2":
+    patcher_name = specification.get("patcher")
+    if patcher_name:
         if replacements is not None:
-            raise StageBuildError("derived Community R2 sources cannot be caller-supplied")
+            raise StageBuildError("derived Community sources cannot be caller-supplied")
         try:
-            replacements, additions, removals = community_r2.build_patch_set(
+            patcher, patcher_error = DERIVED_PATCHERS[patcher_name]
+        except KeyError as exc:
+            raise StageBuildError("derived Community patcher is not reviewed") from exc
+        try:
+            replacements, additions, removals = patcher.build_patch_set(
                 {record.path: record.logical_data for record in records}, ROOT
             )
-        except community_r2.CommunityR2Error as exc:
+        except patcher_error as exc:
             raise StageBuildError(str(exc)) from exc
     else:
         replacements = replacements or load_profile_sources(profile)
@@ -291,9 +325,10 @@ def main(argv: list[str] | None = None) -> int:
         ):
             raise StageBuildError("logical delta is not exactly the reviewed profile")
         source_records = []
-        if specification.get("patcher") == "community-r2":
-            for target in sorted(community_r2.CUSTOM_FILES):
-                source, size, digest = community_r2.CUSTOM_FILES[target]
+        if specification.get("patcher"):
+            patcher = DERIVED_PATCHERS[specification["patcher"]][0]
+            for target in sorted(patcher.CUSTOM_FILES):
+                source, size, digest = patcher.CUSTOM_FILES[target]
                 source_records.append(
                     {
                         "target": target,
@@ -302,9 +337,9 @@ def main(argv: list[str] | None = None) -> int:
                         "sha256": digest,
                     }
                 )
-            for target in sorted(community_r2.OUTPUT_RECORDS):
-                size, digest = community_r2.OUTPUT_RECORDS[target]
-                if target not in community_r2.CUSTOM_FILES:
+            for target in sorted(patcher.OUTPUT_RECORDS):
+                size, digest = patcher.OUTPUT_RECORDS[target]
+                if target not in patcher.CUSTOM_FILES:
                     source_records.append(
                         {
                             "target": target,

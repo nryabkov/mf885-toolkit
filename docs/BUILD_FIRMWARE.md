@@ -75,7 +75,7 @@ set. Never weaken a failed gate to make an unknown image fit.
 mkdir -p out
 python tools/mf885_build_variant.py --list
 python tools/mf885_build_variant.py \
-  --variant community-r2 \
+  --variant community-r2.1 \
   --golden input/MF885_golden.bin \
   --identity-xml input/mf885-base.xml \
   --output-dir out \
@@ -84,7 +84,7 @@ python tools/mf885_build_variant.py \
 
 The Logs variants are research observers and `sms-r1` is a historical
 send/delete prototype. Choose them only after reading their source and
-manifest; `community-r2` is the recommended product-oriented profile. The
+manifest; `community-r2.1` is the recommended product-oriented profile. The
 output and a JSON report are created exclusively; rerunning does not overwrite
 them. Delete or move an old local output deliberately before rebuilding.
 
@@ -94,18 +94,21 @@ them. Delete or move an old local output deliberately before rebuilding.
 python tools/mf885_firmware_inspect.py \
   input/MF885_golden.bin \
   --identity-xml input/mf885-base.xml \
-  --compare out/MF885_Community_0.2-community-r2-cafe-r2.bin \
+  --compare out/MF885_Community_0.2.1-community-r2-cafe-r2.bin \
   --json
 ```
 
-For `community-r2`, the report must show exactly 10 reviewed replacements, one
-added Community auth script and 18 removed locale records. Only WEBI may differ;
-all other partitions must remain byte-identical. The output keeps the fixed
-8,323,644-byte container and turns the removed locale space into WEBI padding.
-Because every build starts from golden, it contains no custom Logs loader.
-Logs variants have a separate index-plus-script allowlist.
+For `community-r2.1`, the report must show exactly 10 reviewed replacements,
+three additions (Community auth, Diagnostics HTML and Diagnostics JavaScript),
+and 18 removed locale records. Only WEBI may differ; all other partitions must
+remain byte-identical. The output keeps the fixed 8,323,644-byte container and
+turns the removed locale space into WEBI padding. Because every build starts
+from golden, it contains no custom Logs loader or native `detailed_log` panel.
+The predecessor `community-r2` remains immutable at 10 replacements, one
+addition and 18 removals.
 
-Community R2 stores no plaintext password. Its opt-in tab convenience stores
+Community R2.1 inherits R2's auth component and stores no plaintext password.
+Its opt-in tab convenience stores
 Digest HA1, which is still a password-equivalent credential; read its manifest
 and on-device warning before enabling it.
 

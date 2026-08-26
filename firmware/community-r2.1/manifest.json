@@ -1,15 +1,15 @@
 {
   "schema": "mf885-webui-stage-source/v2",
-  "id": "0.2-community-r2-cafe2",
-  "logical_id": "0.2-community-r2",
+  "id": "0.2.1-community-r2-cafe2",
+  "logical_id": "0.2.1-community-r2",
   "container_revision": 2,
   "kind": "webui-community",
   "artifact": {
-    "file": "MF885_Community_0.2-community-r2-cafe-r2.bin",
+    "file": "MF885_Community_0.2.1-community-r2-cafe-r2.bin",
     "size": 8323644,
-    "sha256": "aebc751d87d8a007fc50cfb6b0788a6168127ca8988d989176de902986a487ee",
+    "sha256": "51bd396c69e9c8db96249455092634b6b54552f64f5c4daee6f710b644759c95",
     "sha256_scope": "reference-unit build",
-    "portable_plaintext_sha256": "022b36407d6f9e38da6b45d21a86461501398bb3e142b9048df8414594413a9f"
+    "portable_plaintext_sha256": "9b7312ae365f3a381a060b4d28a0de719e64aaffe29893dcb2601987e9dfcd2a"
   },
   "base": {
     "file": "MF885_golden.bin",
@@ -18,25 +18,37 @@
     "sha256_scope": "reference-unit capture",
     "portable_plaintext_sha256": "2bf4151a6e209845fd8d30f576577f6a66fe4cdf6d770c8bb45f0204c3486850"
   },
-  "marker": "MF885 Community R2 English SMS 0.2-community-r2",
+  "marker": "MF885 Community R2.1 SMS Safe Diagnostics 0.2.1-community-r2",
   "sources": [
     {
       "target": "www\\html\\SMS\\SMS.html",
-      "file": "../community-r1/SMS.html",
-      "size": 601,
-      "sha256": "64b5dc600ff4aff228439168b4cad5b1a429ca055a11622bb03b3f418ca834a9"
+      "file": "SMS.html",
+      "size": 2272,
+      "sha256": "4f7b215ff00e0001bc83ddae9a9d4c4f15224a997a514a7e6d6bee8e92ca769e"
     },
     {
       "target": "www\\js\\panel\\SMS\\SMS.js",
-      "file": "../community-r1/SMS.js",
-      "size": 11822,
-      "sha256": "5102a7c29ff325d3d9481ceaa0069b273849986b9ef2c8fe9dcc6bff0a99b679"
+      "file": "SMS.js",
+      "size": 19450,
+      "sha256": "8ce3f06d2fd1620d74bd9efe2b19ca4143ab349941ec5637b90d7738723327cd"
     },
     {
       "target": "www\\js\\community_auth.js",
-      "file": "community_auth.js",
+      "file": "../community-r2/community_auth.js",
       "size": 8141,
       "sha256": "253bee3ceac1ab1b3e64982400653a25082278accb03324e8b0609ba4a416a65"
+    },
+    {
+      "target": "www\\html\\Diagnostics\\Diagnostics.html",
+      "file": "Diagnostics.html",
+      "size": 1066,
+      "sha256": "343ffc5d6e01235e273f4ae9d31aec2de956c8e54e7c2c5192e09944dd1d86bb"
+    },
+    {
+      "target": "www\\js\\community_diagnostics.js",
+      "file": "community_diagnostics.js",
+      "size": 16514,
+      "sha256": "fa208b9032afe623636d422f0e9affc7fae59c57b40ed5cd2edce7567780421a"
     }
   ],
   "derived_from_reviewed_golden": [
@@ -51,34 +63,37 @@
   ],
   "logical_change_counts": {
     "replaced": 10,
-    "added": 1,
+    "added": 3,
     "removed": 18
   },
-  "removed_locales": [
-    "cn",
-    "hk",
-    "jp"
-  ],
+  "removed_locales": ["cn", "hk", "jp"],
   "removed_archive_bytes": 263312,
-  "raw_diff_bytes": 1677356,
-  "webi_padding_bytes_remaining": 306308,
+  "raw_diff_bytes": 1676403,
+  "webi_padding_bytes_remaining": 278636,
   "non_webi_partitions_byte_identical": true,
   "structurally_verified": true,
   "reproducible": true,
   "live_tested": false,
+  "sms_send_live_tested": false,
+  "inbox_delete_live_tested": false,
   "fbf_wrapper_available": false,
   "flash_qualified": false,
   "restore_allowlisted": false,
-  "release_status": "superseded-unflashed",
+  "release_status": "experimental-unflashed",
   "stable": false,
   "capabilities": {
-    "languages": [
-      "en"
-    ],
+    "languages": ["en"],
     "messages_menu": true,
     "inbox_read": true,
     "single_inbox_delete": true,
-    "sms_send_request": false,
+    "sms_send_request": true,
+    "sms_send_max_ucs2_segments": 4,
+    "diagnostics_menu": true,
+    "diagnostics_manual_reads": ["status1", "wan", "Engineer_parameter"],
+    "native_detailed_log": false,
+    "background_diagnostics_polling": false,
+    "raw_http_bodies_stored": false,
+    "safe_snapshot_schema": "mf885-community-safe-diagnostics/v1",
     "dashboard_version_badge": true,
     "remember_tab_opt_in": true,
     "remember_tab_plaintext_password": false,

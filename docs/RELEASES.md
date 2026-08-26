@@ -23,6 +23,8 @@ filename; old hashes are never silently replaced.
 Every manifest must expose explicit booleans/status fields. Use these meanings:
 
 - `experimental-unflashed`: reproducible offline build only;
+- `superseded-unflashed`: reproducible offline build retained unchanged after
+  a newer source revision became the recommendation; it remains unflashed;
 - `experimental-live-qualified-canary`: observed on a named exact hardware and
   firmware profile, but not generally safe;
 - `quarantined-*`: known-invalid or misleading artifact retained only for

@@ -83,7 +83,7 @@ python -m pip install -r requirements.txt
 mkdir -p out
 python tools/mf885_build_variant.py --list
 python tools/mf885_build_variant.py \
-  --variant community-r2 \
+  --variant community-r2.1 \
   --acknowledge-brick-risk
 ```
 
@@ -98,14 +98,23 @@ reference-unit raw hash is documented only as a reproducibility example. Any
 semantic mismatch is rejected; do not bypass this check or use another unit's
 built binary.
 
-`community-r2` is the recommended product-oriented source profile. It retains
-the bounded Community R1 SMS reader and one explicitly confirmed inbox delete,
-adds a Messages menu and home-page build badge, fixes reviewed English copy,
-and forces the client UI to English. It removes 18 Chinese, Hong Kong and
-Japanese locale records, reclaiming 263,312 bytes inside WEBI without changing
-the fixed 8,323,644-byte firmware size.
+`community-r2.1` is the recommended product-oriented source profile. It keeps
+Community R2's Messages menu, home-page build badge, reviewed English copy and
+English-only UI. It adds a review-first, one-POST/no-replay SMS sender for one
+recipient and at most four UCS-2 segments, plus a separate **Diagnostics** tab
+that manually reads three fixed endpoints and creates a privacy-allowlisted
+safe snapshot. It never restores the old native `detailed_log` observer, raw
+request capture or background diagnostics polling. The immutable Community R2
+artifact remains available as a superseded, unflashed source revision.
 
-Its optional **Remember me in this tab** control stores Digest HA1 in
+R2.1 still removes 18 Chinese, Hong Kong and Japanese locale records,
+reclaiming 263,312 bytes inside WEBI without changing the fixed 8,323,644-byte
+firmware size. Its reference-unit SHA-256 is
+`51bd396c69e9c8db96249455092634b6b54552f64f5c4daee6f710b644759c95`;
+another compatible unit normally has a different raw hash because the header
+is unit-bound.
+
+The inherited optional **Remember me in this tab** control stores Digest HA1 in
 `sessionStorage`, not the plaintext password. HA1 is nevertheless a
 password-equivalent credential readable by same-origin page scripts. Use it
 only on a trusted device; sign-out, authentication failure, ten minutes without

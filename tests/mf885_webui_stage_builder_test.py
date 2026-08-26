@@ -10,6 +10,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 import mf885_firmware_inspect as inspector  # noqa: E402
 import mf885_community_r2 as community_r2  # noqa: E402
+import mf885_community_r21 as community_r21  # noqa: E402
 import mf885_webui_stage_builder as stage  # noqa: E402
 
 
@@ -42,6 +43,17 @@ class WebuiStageBuilderTests(unittest.TestCase):
         self.assertEqual(community_r2.REMOVED_ARCHIVE_BYTES, 263_312)
         with self.assertRaisesRegex(stage.StageBuildError, "reviewed golden"):
             stage.load_profile_sources("0.2-community-r2")
+
+    def test_community_r21_is_a_separate_derived_safe_diagnostics_profile(self):
+        specification = stage.STAGE_PROFILES["0.2.1-community-r2"]
+        self.assertEqual(specification["marker"], community_r21.MARKER)
+        self.assertEqual(specification["patcher"], "community-r2.1")
+        self.assertEqual(specification["safety"]["languages"], ["en"])
+        self.assertFalse(specification["safety"]["nativeDetailedLog"])
+        self.assertFalse(specification["safety"]["backgroundDiagnosticsPolling"])
+        self.assertEqual(len(community_r21.REMOVED_RECORDS), 18)
+        with self.assertRaisesRegex(stage.StageBuildError, "reviewed golden"):
+            stage.load_profile_sources("0.2.1-community-r2")
 
     def test_community_profile_is_bound_to_safe_exact_sources(self):
         replacements = stage.load_profile_sources("0.1-community-r1")
@@ -156,6 +168,60 @@ class WebuiStageBuilderTests(unittest.TestCase):
             community_r2.REMOVED_ARCHIVE_BYTES,
         )
         self.assertEqual(first_report["cafe"]["padding_after"], 306_308)
+
+    @unittest.skipUnless(
+        LOCAL_GOLDEN.is_file() and LOCAL_IDENTITY.is_file(),
+        "exact local golden and identity are optional in CI",
+    )
+    def test_private_community_r21_is_deterministic_and_exactly_scoped(self):
+        raw = LOCAL_GOLDEN.read_bytes()
+        identity = inspector.load_identity(LOCAL_IDENTITY)
+        first, first_report = stage.build_stage_image(raw, identity, "0.2.1-community-r2")
+        second, second_report = stage.build_stage_image(raw, identity, "0.2.1-community-r2")
+        self.assertEqual(first, second)
+        self.assertEqual(first_report, second_report)
+        self.assertEqual(len(first), 8_323_644)
+        self.assertEqual(
+            inspector.sha256(first),
+            "51bd396c69e9c8db96249455092634b6b54552f64f5c4daee6f710b644759c95",
+        )
+        self.assertEqual(
+            stage.base.portable_plaintext_sha256(first, identity),
+            "9b7312ae365f3a381a060b4d28a0de719e64aaffe29893dcb2601987e9dfcd2a",
+        )
+        delta = first_report["profile_delta"]
+        self.assertEqual(len(delta["replaced_paths"]), 10)
+        self.assertEqual(
+            delta["added_paths"],
+            sorted(
+                [
+                    community_r21.AUTH_PATH,
+                    community_r21.DIAGNOSTICS_HTML_PATH,
+                    community_r21.DIAGNOSTICS_JS_PATH,
+                ]
+            ),
+        )
+        self.assertEqual(delta["removed_paths"], sorted(community_r21.REMOVED_RECORDS))
+        self.assertEqual(first_report["cafe"]["padding_after"], 278_636)
+
+        header = inspector.decrypt_header(first, identity)
+        partitions, layout_errors = inspector.parse_partitions(header, len(first))
+        self.assertEqual(layout_errors, [])
+        webi = next(item for item in partitions if item.name == "WEBI")
+        _, records, _ = stage.base.parse_cafe_source(
+            first[webi.offset : webi.offset + webi.length]
+        )
+        logical = {record.path: record.logical_data for record in records}
+        menu = logical["www\\xml\\ui_mifi.xml"]
+        dashboard = logical["www\\html\\dashboard.html"]
+        index = logical["www\\index.html"]
+        self.assertEqual(menu.count(b"<Tab Name='tDiagnostics'"), 1)
+        self.assertEqual(menu.count(b"implFunction='objDiagnostics'"), 1)
+        self.assertLess(menu.index(b"<Tab Name='tSetting'"), menu.index(b"<Tab Name='tSms'"))
+        self.assertLess(menu.index(b"<Tab Name='tSms'"), menu.index(b"<Tab Name='tDiagnostics'"))
+        self.assertEqual(dashboard.count(b"dashboardOnClick(5,'mDeviceInbox')"), 1)
+        self.assertEqual(dashboard.count(b"dashboardOnClick(6,'mDiagnostics')"), 1)
+        self.assertEqual(index.count(b"js/community_diagnostics.js"), 1)
 
 
 if __name__ == "__main__":

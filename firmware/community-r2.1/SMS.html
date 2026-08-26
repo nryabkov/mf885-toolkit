@@ -1,0 +1,29 @@
+<div id="mfCommunityR21Sms" style="max-width:760px;margin:0 auto;padding:14px;color:#243447">
+  <h2 style="margin:0 0 6px">Messages</h2>
+  <p id="mfSmsFolder" style="margin:0 0 4px;color:#475467">Device inbox</p>
+  <p style="margin:0 0 12px;color:#667085">Open a message to read it. Sending and deletion always require confirmation.</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+    <button type="button" id="mfSmsRefresh">Refresh</button>
+    <button type="button" id="mfSmsNew">New message</button>
+  </div>
+  <section id="mfSmsComposer" hidden style="border:1px solid #cbd5e1;border-radius:10px;padding:12px;margin-bottom:12px">
+    <label for="mfSmsNumber" style="display:block;margin-bottom:4px">Phone number</label>
+    <input id="mfSmsNumber" type="tel" inputmode="tel" maxlength="16" placeholder="+79991234567" style="width:100%;box-sizing:border-box;margin-bottom:9px">
+    <label for="mfSmsBody" style="display:block;margin-bottom:4px">Message</label>
+    <textarea id="mfSmsBody" rows="5" maxlength="268" style="width:100%;box-sizing:border-box"></textarea>
+    <div id="mfSmsCount" style="margin:4px 0 9px;color:#667085">0 / 268 · 0 of 4 UCS-2 segments</div>
+    <button type="button" id="mfSmsReview">Review</button>
+    <button type="button" id="mfSmsCancel">Cancel</button>
+  </section>
+  <section id="mfSmsConfirm" hidden style="border:2px solid #b42318;border-radius:10px;padding:12px;margin-bottom:12px">
+    <strong>Send this SMS once?</strong>
+    <p style="margin:8px 0;color:#667085">The mobile operator may charge for every segment. Router acceptance does not prove delivery.</p>
+    <div><strong>To:</strong> <span id="mfSmsReviewNumber"></span></div>
+    <pre id="mfSmsReviewBody" style="white-space:pre-wrap;word-break:break-word;background:#f8fafc;padding:8px"></pre>
+    <div id="mfSmsReviewSegments" style="margin:6px 0"></div>
+    <button type="button" id="mfSmsSend" style="background:#b42318;border:1px solid #8f1d14;border-radius:4px;color:#fff;font-weight:700;padding:6px 12px">Send once</button>
+    <button type="button" id="mfSmsBack">Back</button>
+  </section>
+  <div id="mfSmsStatus" role="status" aria-live="polite" style="min-height:22px;margin-bottom:10px"></div>
+  <div id="mfSmsList"></div>
+</div>
