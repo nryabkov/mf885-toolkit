@@ -1,0 +1,81 @@
+{
+  "artifact": {
+    "bytes": 1843200,
+    "file": "MF885_Community_0.0-logs-r1-cafe2.NOFLASH.fbf",
+    "format": "Marvell FBF v11",
+    "sha256": "63e040d385b29d2732c06cabee81e3f85d6fd000e8661b22eb049627e91460a7"
+  },
+  "donor": {
+    "bytes": 7634944,
+    "download": "http://cdn.fds.api.xiaomi.com/ota/12/2fee68e6778884b4163afc2ecfc4ec88.bin",
+    "transport_security": "unauthenticated HTTP; exact size and SHA-256 verification mandatory",
+    "id": "official-mf96-router-c2-2.5.89",
+    "sha256": "6c94a3404e624b8c4318a991f5531c77e484d463c6917c51942b2d3827290e58",
+    "stock_webi_matches_target_2_5_94": true,
+    "stock_webi_sha256": "86fda63366438a166c7ef334042af410e55289e7591a0743c47797404c08bb56",
+    "version_field": "020589ABCD-2"
+  },
+  "fbf": {
+    "all_xor32_checksums_valid": true,
+    "image_types": {
+      "WEBI": 14
+    },
+    "reconstructed_webi_sha256": "1f4d86037ce54e95e87fd4aed5370199ca62c6dd34693f9deb827168c4c21cce",
+    "rsa_record_present": false,
+    "native_start_address_guard": {
+      "verified": true,
+      "kind": "generic-deny-ranges-not-partition-allowlist",
+      "checks_start_only": true,
+      "all_14_webi_starts_pass_reviewed_profiles": true,
+      "full_extent_end_check_identified": false
+    },
+    "strict_webi_only_profile_verified": true,
+    "structurally_verified": true,
+    "webi_flash_address": "0x00ac0000",
+    "webi_flash_bytes": 1835008,
+    "webi_record_bytes": 131072,
+    "write_plan_summary": {
+      "erase_bytes": 1835008,
+      "first_flash_address": "0x00c60000",
+      "last_flash_address": "0x00ac0000",
+      "records": 14,
+      "write_bytes": 1833320
+    }
+  },
+  "safety": {
+    "firmware_posts_attempted": 0,
+    "flash_qualified": false,
+    "live_tested": false,
+    "offline_only": true,
+    "remaining_blockers": [
+      "native start-address guard is not a positive partition allowlist and checks no full extent end",
+      "native writer has no identified readback verification",
+      "no independent rollback or A/B fallback path is proven",
+      "the target has not accepted a WEBI-only unsigned FBF",
+      "post-reset boot and recovery remain unproved"
+    ],
+    "router_requests_attempted": 0
+  },
+  "report_generated_by": "tools/mf885_fbf.py build-webi-noflash",
+  "schema": "mf885-webi-fbf-noflash-manifest/v2",
+  "source": {
+    "cafe_adler32_valid": true,
+    "cafe_padding_valid": true,
+    "cafe_stored_sizes_aligned_4": true,
+    "cafe_records": 321,
+    "id": "mf885-community-0.0-logs-r1-cafe2",
+    "webi_bytes": 1835008,
+    "webi_sha256": "1f4d86037ce54e95e87fd4aed5370199ca62c6dd34693f9deb827168c4c21cce",
+    "zimi_bytes": 8323644,
+    "zimi_sha256": "a9a284c5e5d2c8d0a18a55b0e324693b5a4a9f099eed814c3d20cd66a9cb642a"
+  },
+  "stable": false,
+  "release_status": "quarantined-detailed-log-auth-omission-noflash",
+  "historical_artifacts": [
+    {
+      "file": "MF885_Community_0.0-logs-r1.NOFLASH.fbf",
+      "sha256": "fd2984af80ad6a6c67ba3f56671ce5123457fd5106208d6bd7eb18ecb5ed82d3",
+      "status": "quarantined-invalid-source-cafe-padding"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "mf885-webui-ussd-contract/v2",
+  "id": "0.0-ussd-r1",
+  "status": "unresolved",
+  "build_enabled": false,
+  "router_requests_possible": false,
+  "native_evidence": {
+    "registered_command": "+CUSD",
+    "exact_oslo_static_presence": true,
+    "descriptor_offset": "0x008ef0f0",
+    "argument_count": 3,
+    "handler_address": "0x062d1b88",
+    "handler_thumb": true,
+    "set_and_query_handler_same": true,
+    "mode_argument_range": [0, 2],
+    "payload_argument_max_characters": 229,
+    "dcs_argument_range": [0, 17],
+    "dcs_missing_sentinel": -9,
+    "supplementary_service_api_bridge": "0x066e1484",
+    "supplementary_service_api_bridge_proven": true,
+    "hardcoded_special_branch_present": true,
+    "hardcoded_special_branch_safe_to_test": false,
+    "duster_dispatch_entry": null,
+    "ordinary_cusd_to_service_bridge_fully_decoded": true,
+    "modem_request_mapping_fully_decoded": false,
+    "webui_to_modem_bridge_proven": false
+  },
+  "transport": {
+    "method": null,
+    "file": null,
+    "xml_root": null,
+    "command_field": null,
+    "response_field": null,
+    "status_field": null,
+    "poll_contract": null
+  },
+  "blocked_guesses": [
+    "ussd",
+    "ussd_status",
+    "ussd_setting"
+  ],
+  "qualification": {
+    "artifact_built": false,
+    "live_tested": false,
+    "flash_qualified": false,
+    "restore_allowlisted": false
+  }
+}

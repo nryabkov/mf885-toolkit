@@ -1,0 +1,17 @@
+<div id="mfUssdR1" style="max-width:720px;margin:0 auto;padding:14px;color:#243447">
+  <h2 style="margin:0 0 6px">USSD lab</h2>
+  <p>This firmware contains <code>+CUSD</code> and its modem-service bridge, but its WebUI/Duster contract has not been recovered.</p>
+  <p style="color:#b42318"><strong>Dialing is locked.</strong> No guessed endpoint and no automatic POST are present in this build.</p>
+  <label for="mfUssdCode" style="display:block;margin:12px 0 4px">Code for a future confirmed contract</label>
+  <input id="mfUssdCode" value="*#21#" disabled style="width:100%;box-sizing:border-box">
+  <button type="button" id="mfUssdDial" disabled style="margin-top:8px">Dial (contract unavailable)</button>
+  <details style="margin-top:14px">
+    <summary>Offline evidence</summary>
+    <ul>
+      <li>Exact OSLO contains registered <code>+CUSD</code> and a supplementary-service API call.</li>
+      <li>Previously guessed Duster XML models were rejected and are not retried here.</li>
+      <li>Unlock requires one exact endpoint, XML schema, response model and a non-replay rule.</li>
+    </ul>
+  </details>
+  <p id="mfUssdStatus" role="status" aria-live="polite">Blocked before transport.</p>
+</div>

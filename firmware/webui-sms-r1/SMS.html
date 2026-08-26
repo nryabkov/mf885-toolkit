@@ -1,0 +1,23 @@
+<div id="mfSmsR1" style="max-width:760px;margin:0 auto;padding:14px;color:#243447">
+  <h2 style="margin:0 0 6px">Messages</h2>
+  <p style="margin:0 0 12px;color:#667085">Simple local inbox. Nothing is sent automatically.</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+    <button type="button" id="mfSmsRefresh">Refresh</button>
+    <button type="button" id="mfSmsNew">New message</button>
+  </div>
+  <div id="mfSmsStatus" role="status" aria-live="polite" style="min-height:22px;margin-bottom:10px"></div>
+  <section id="mfSmsComposer" hidden style="border:1px solid #cbd5e1;border-radius:10px;padding:12px;margin-bottom:12px">
+    <label for="mfSmsNumber" style="display:block;margin-bottom:4px">Phone number</label>
+    <input id="mfSmsNumber" type="tel" autocomplete="tel" maxlength="32" style="width:100%;box-sizing:border-box;margin-bottom:9px">
+    <label for="mfSmsBody" style="display:block;margin-bottom:4px">Message</label>
+    <textarea id="mfSmsBody" rows="5" maxlength="70" style="width:100%;box-sizing:border-box"></textarea>
+    <div id="mfSmsCount" style="margin:4px 0 9px;color:#667085">0 / 70</div>
+    <button type="button" id="mfSmsSend">Send once</button>
+    <button type="button" id="mfSmsCancel">Cancel</button>
+  </section>
+  <div id="mfSmsList"></div>
+  <details style="margin-top:14px">
+    <summary>Technical log (SMS text is never recorded)</summary>
+    <pre id="mfSmsLog" style="white-space:pre-wrap;max-height:220px;overflow:auto;background:#f8fafc;padding:8px"></pre>
+  </details>
+</div>

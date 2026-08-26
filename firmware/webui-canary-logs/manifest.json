@@ -1,0 +1,83 @@
+{
+  "schema": "mf885-webi-canary-source/v4",
+  "id": "0.0-logs-r1-auth-r4-cafe2",
+  "logical_id": "0.0-logs-r1",
+  "content_revision": 4,
+  "container_revision": 2,
+  "artifact": {
+    "file": "MF885_Community_0.0-logs-r1-auth-r4-cafe-r2.bin",
+    "size": 8323644,
+    "sha256": "a1d970c68bde7534519b942bd73a57c6805d321860dead6b437392b0319fe922"
+  },
+  "base": {
+    "file": "MF885_golden.bin",
+    "sha256": "2b5880fc26805918bb574d07341ea9b863f8261be34c3bf9766fac0929204531"
+  },
+  "marker": "MF885 Community Canary Logs 0.0-logs-r1",
+  "script": {
+    "path": "www\\js\\canary_logs.js",
+    "size": 12561,
+    "sha256": "60405789b8bab668f69e3152b8bca23245fa4df76052a2a6b3f203f9e9e7b28e"
+  },
+  "logical_changes": [
+    "WEBI:www/index.html (same-size 41-byte loader)",
+    "WEBI:www/js/canary_logs.js (new record)"
+  ],
+  "raw_diff_bytes": 13288,
+  "webi_padding_bytes_remaining": 856,
+  "cafe_record": {
+    "logical_size": 12561,
+    "stored_size": 12564,
+    "padding_bytes": 3,
+    "size_flags": "0x03003114"
+  },
+  "detailed_log_authentication": "stock getAuthHeader(GET) Digest header",
+  "sensitive_values_masked_before_event_storage": true,
+  "structurally_verified": true,
+  "reproducible": true,
+  "live_tested": false,
+  "flash_qualified": false,
+  "restore_allowlisted": false,
+  "release_status": "experimental-unflashed",
+  "stable": false,
+  "historical_artifacts": [
+    {
+      "file": "MF885_Community_0.0-logs-r1-auth-r3-cafe-r2.bin",
+      "sha256": "8d5e9731615180ce09035ee969505fe6afe28d667143cfbed40030c580c5cd5d",
+      "status": "quarantined-incomplete-ipv6-redaction",
+      "live_tested": false
+    },
+    {
+      "file": "MF885_Community_0.0-logs-r1-auth-r2-cafe-r2.bin",
+      "sha256": "c77b66eb9ad817018c597b77d87caef9ab59ee3c14d2e2a6f134b9412dca7431",
+      "status": "quarantined-incomplete-wan-username-ipv6-redaction-live-confirmed",
+      "live_tested": true,
+      "evidence_scope": "private-repository-only",
+      "live_outcome": "one exact device returned to FULL with the expected loader and script; an authenticated native detailed_log XML read worked, but the copied-log redactor did not cover every WAN username and IPv6 representation"
+    },
+    {
+      "file": "MF885_Community_0.0-logs-r1-auth-r2-prestorage-v1-cafe-r2.bin",
+      "sha256": "fde992e34885b0d21167f8333758e577fc1b692430505f35791f3f75de0ec6af",
+      "status": "quarantined-incomplete-alternate-representation-redaction",
+      "live_tested": false
+    },
+    {
+      "file": "MF885_Community_0.0-logs-r1-auth-r1-cafe-r2.bin",
+      "sha256": "de17be0290edb4d3192cf95d4dfca620550a0bf7a9adfbd3d22a15e5b14a518b",
+      "status": "quarantined-insufficient-diagnostic-redaction",
+      "live_tested": false
+    },
+    {
+      "file": "MF885_Community_0.0-logs-r1-cafe-r2.bin",
+      "sha256": "a9a284c5e5d2c8d0a18a55b0e324693b5a4a9f099eed814c3d20cd66a9cb642a",
+      "status": "quarantined-detailed-log-auth-omission-live-confirmed",
+      "live_outcome": "panel and polling loaded, but the canary XHR omitted the stock Digest header; HTTP 200 with an empty body did not verify native detailed_log content"
+    },
+    {
+      "file": "MF885_Community_0.0-logs-r1.bin",
+      "sha256": "65e5f5b507b9fcf49609a6fd1f010daa6f18111dc6a829d5655fa6bd30553517",
+      "status": "quarantined-invalid-cafe-padding-live-confirmed",
+      "live_outcome": "WEBI installed; canary script served without its final three bytes and did not initialize"
+    }
+  ]
+}

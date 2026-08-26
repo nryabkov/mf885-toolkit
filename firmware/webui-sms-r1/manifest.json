@@ -1,0 +1,55 @@
+{
+  "schema": "mf885-webui-stage-source/v2",
+  "id": "0.0-sms-r1-cafe2",
+  "logical_id": "0.0-sms-r1",
+  "container_revision": 2,
+  "kind": "webui-sms",
+  "artifact": {
+    "file": "MF885_Community_0.0-sms-r1-cafe-r2.bin",
+    "size": 8323644,
+    "sha256": "c27b5f7989ac4e4ac6ff1ebdd603685f6f1fe777918458059b620b1c36ec73ce"
+  },
+  "base": {
+    "file": "MF885_golden.bin",
+    "size": 8323644,
+    "sha256": "2b5880fc26805918bb574d07341ea9b863f8261be34c3bf9766fac0929204531"
+  },
+  "marker": "MF885 Community WebUI SMS 0.0-sms-r1",
+  "sources": [
+    {
+      "target": "www\\html\\SMS\\SMS.html",
+      "file": "SMS.html",
+      "size": 1549,
+      "sha256": "ae9c42ba80436addf5c5bbadbf87fa91199630f41110870278ac8e65aa16faa2"
+    },
+    {
+      "target": "www\\js\\panel\\SMS\\SMS.js",
+      "file": "SMS.js",
+      "size": 12746,
+      "sha256": "bb53c958e50805aede7152081f7d08b2325c9cfa2f7b30204e10bf39e0db84d0"
+    }
+  ],
+  "logical_changes": [
+    "WEBI:www/html/SMS/SMS.html",
+    "WEBI:www/js/panel/SMS/SMS.js"
+  ],
+  "raw_diff_bytes": 1441114,
+  "webi_padding_bytes_remaining": 46600,
+  "non_webi_partitions_byte_identical": true,
+  "structurally_verified": true,
+  "reproducible": true,
+  "live_tested": false,
+  "fbf_wrapper_available": false,
+  "flash_qualified": false,
+  "restore_allowlisted": false,
+  "release_status": "experimental-unflashed",
+  "stable": false,
+  "historical_artifacts": [
+    {
+      "file": "MF885_Community_0.0-sms-r1.bin",
+      "sha256": "f1f5f7fc51dc4bd6a094071cd82958b141f9525ba401bbf92024864e28f271a6",
+      "status": "quarantined-noncanonical-cafe-alignment",
+      "live_tested": false
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "schema": "mf885-webi-canary-source/v4",
+  "id": "0.0-logs-r2-auth-r4-cafe2",
+  "logical_id": "0.0-logs-r2",
+  "content_revision": 4,
+  "container_revision": 2,
+  "artifact": {
+    "file": "MF885_Community_0.0-logs-r2-auth-r4-cafe-r2.bin",
+    "size": 8323644,
+    "sha256": "aeaceb9cd193a44100bd33c3f14dc48ede6d2e163d7a214a87411d7875adf07f"
+  },
+  "base": {
+    "file": "MF885_golden.bin",
+    "sha256": "2b5880fc26805918bb574d07341ea9b863f8261be34c3bf9766fac0929204531"
+  },
+  "marker": "MF885 Community Canary Logs 0.0-logs-r2",
+  "script": {
+    "path": "www\\js\\canary_logs.js",
+    "size": 13402,
+    "sha256": "9d6016a1f7b8e779a70826dc9a4607cf72d7ecb37301f1f831501461fc4c3540"
+  },
+  "logical_changes": [
+    "WEBI:www/index.html (same-size 41-byte loader)",
+    "WEBI:www/js/canary_logs.js (new record)"
+  ],
+  "raw_diff_bytes": 14130,
+  "webi_padding_bytes_remaining": 16,
+  "cafe_record": {
+    "logical_size": 13402,
+    "stored_size": 13404,
+    "padding_bytes": 2,
+    "size_flags": "0x0200345c"
+  },
+  "detailed_log_authentication": "stock getAuthHeader(GET) Digest header",
+  "log_schema": 2,
+  "event_limit": 240,
+  "event_serialized_unit_limit": 96000,
+  "sms_body_redacted": true,
+  "credential_values_redacted_before_event_storage": true,
+  "identity_and_network_values_redacted_before_event_storage": true,
+  "structurally_verified": true,
+  "reproducible": true,
+  "live_tested": false,
+  "flash_qualified": false,
+  "restore_allowlisted": false,
+  "release_status": "experimental-unflashed",
+  "stable": false,
+  "historical_artifacts": [
+    {
+      "file": "MF885_Community_0.0-logs-r2-auth-r3-cafe-r2.bin",
+      "sha256": "ecb494b46875866dbe4274f5275cfef0a00607229291fdf96ebedcca56df6cf8",
+      "status": "quarantined-incomplete-ipv6-redaction",
+      "live_tested": false
+    },
+    {
+      "file": "MF885_Community_0.0-logs-r2-auth-r2-cafe-r2.bin",
+      "sha256": "1dc8f2e006b1ef32f0ffb99c358cc412e5e6b00fa676e024a81cf95a60b7bed1",
+      "status": "quarantined-incomplete-wan-username-ipv6-redaction",
+      "live_tested": false
+    },
+    {
+      "file": "MF885_Community_0.0-logs-r2-auth-r2-prestorage-v1-cafe-r2.bin",
+      "sha256": "5bfe13360711dc0204de8fdb690095fdcce4b0bb0b1160c58304d0d99f6d875c",
+      "status": "quarantined-incomplete-alternate-representation-redaction",
+      "live_tested": false
+    },
+    {
+      "file": "MF885_Community_0.0-logs-r2-auth-r1-cafe-r2.bin",
+      "sha256": "d18f87991caf7f8fe173da221d6317e47f9803c0e8b9c22fade4b8aa3ea6459f",
+      "status": "quarantined-insufficient-diagnostic-redaction",
+      "live_tested": false
+    },
+    {
+      "file": "MF885_Community_0.0-logs-r2-cafe-r2.bin",
+      "sha256": "444252fe98c231e2411c82656b1f03cd418e0ad0b4be3feafbc3ba2860270758",
+      "status": "quarantined-detailed-log-auth-omission",
+      "live_tested": false
+    },
+    {
+      "file": "MF885_Community_0.0-logs-r2.bin",
+      "sha256": "0cc9eb514d9a821a39b32d7c3f1b7b73f1358e3d79374bdd6b6c7340c308c1f1",
+      "status": "quarantined-invalid-cafe-padding",
+      "live_tested": false
+    }
+  ]
+}
