@@ -106,7 +106,17 @@
     "removed_locale_routes_live_verified": 18,
     "same_unit_postboot_live_verified": true,
     "semantic_ui_live_verified": false,
-    "diagnostics_ui_live_verified": false,
-    "remember_tab_live_verified": false
+    "messages_read_ui_live_verified": true,
+    "message_folders_live_read": 4,
+    "message_folders_live_observed_empty": 4,
+    "sms_composer_live_verified": false,
+    "sms_mutation_identity_gate_live_verified": false,
+    "diagnostics_read_ui_live_verified": true,
+    "diagnostics_fixed_endpoints_live_read": 3,
+    "safe_diagnostics_snapshot_live_verified": true,
+    "diagnostics_menu_label_live_verified": false,
+    "remember_tab_live_verified": true,
+    "remember_tab_reload_live_verified": true,
+    "remember_tab_logout_clear_live_verified": true
   }
 }

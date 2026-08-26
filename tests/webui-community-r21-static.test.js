@@ -40,6 +40,18 @@ test('Community R2.1 is immutable, English-only, live-static-qualified and not a
   assert.equal(manifest.capabilities.exact_served_assets_live_verified,13);
   assert.equal(manifest.capabilities.removed_locale_routes_live_verified,18);
   assert.equal(manifest.capabilities.same_unit_postboot_live_verified,true);
+  assert.equal(manifest.capabilities.messages_read_ui_live_verified,true);
+  assert.equal(manifest.capabilities.message_folders_live_read,4);
+  assert.equal(manifest.capabilities.message_folders_live_observed_empty,4);
+  assert.equal(manifest.capabilities.sms_composer_live_verified,false);
+  assert.equal(manifest.capabilities.sms_mutation_identity_gate_live_verified,false);
+  assert.equal(manifest.capabilities.diagnostics_read_ui_live_verified,true);
+  assert.equal(manifest.capabilities.diagnostics_fixed_endpoints_live_read,3);
+  assert.equal(manifest.capabilities.safe_diagnostics_snapshot_live_verified,true);
+  assert.equal(manifest.capabilities.diagnostics_menu_label_live_verified,false);
+  assert.equal(manifest.capabilities.remember_tab_live_verified,true);
+  assert.equal(manifest.capabilities.remember_tab_reload_live_verified,true);
+  assert.equal(manifest.capabilities.remember_tab_logout_clear_live_verified,true);
   for(const field of ['sms_send_live_tested','inbox_delete_live_tested','flash_qualified','restore_allowlisted','stable'])
     assert.equal(manifest[field],false,field);
   assert.match(readme,/permanently brick/i);

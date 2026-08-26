@@ -59,6 +59,13 @@ unit returned. Installation is qualified from the observed postboot state, not
 from a transport-response claim. Neither SMS Send nor Delete has been tested
 live.
 
+Read-only browser validation later proved the Remember reload/logout flow,
+reads of all four empty Messages folders, the three fixed Diagnostics reads and
+the safe copied snapshot. It also found two fail-closed defects: Diagnostics is
+labelled `undefined` in the menu, and the SMS mutation identity gate remains
+closed on the exact unit. The current artifact is therefore not semantic-UI
+qualified; a later immutable revision must fix both defects.
+
 The image remains an experimental live-qualified canary. It is not stable,
 flash-qualified or restore-allowlisted, and one successful installation does
 not prove rollback, cold-boot recovery, repeatability or general compatibility.

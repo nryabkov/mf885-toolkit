@@ -121,6 +121,13 @@ proved the same unit returned, so its status is
 repeatability and rollback remain unqualified. It is still not stable,
 flash-qualified or restore-allowlisted.
 
+Authenticated read-only validation also proved Remember reload/logout, reads
+of all four empty Messages folders, the three fixed Diagnostics reads and the
+safe copied snapshot. It found two fail-closed UI defects: the Diagnostics menu
+label renders as `undefined`, and the SMS mutation identity gate stays closed.
+The reference build is therefore not semantic-UI qualified; those fixes belong
+to a new immutable revision.
+
 The inherited optional **Remember me in this tab** control stores Digest HA1 in
 `sessionStorage`, not the plaintext password. HA1 is nevertheless a
 password-equivalent credential readable by same-origin page scripts. Use it
