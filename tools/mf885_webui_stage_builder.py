@@ -18,10 +18,31 @@ from typing import Any
 
 import mf885_firmware_inspect as inspector
 import mf885_webi_builder as base
+import mf885_community_r2 as community_r2
 
 
 ROOT = Path(__file__).resolve().parents[1]
 STAGE_PROFILES: dict[str, dict[str, Any]] = {
+    "0.2-community-r2": {
+        "kind": "webui-community",
+        "marker": community_r2.MARKER,
+        "artifact": "MF885_Community_0.2-community-r2-cafe-r2.bin",
+        "patcher": "community-r2",
+        "files": {},
+        "safety": {
+            "routerRequestsOnPageLoad": [
+                "GET locale/status for stock login",
+                "at most one opt-in Digest resume attempt and one status1 proof",
+                "semantic-read POST GET_RCV_SMS_LOCAL pages after opening Messages",
+            ],
+            "mutationContract": "one explicitly confirmed inbox DELETE_SMS POST followed by bounded status reads and complete inbox readback",
+            "mutationUnknownLocksPageSession": True,
+            "automaticMutationRetries": 0,
+            "tabAuthStoresPlaintextPassword": False,
+            "tabAuthStoresPasswordEquivalentHA1": True,
+            "languages": ["en"],
+        },
+    },
     "0.1-community-r1": {
         "kind": "webui-community",
         "marker": b"MF885 Community R1 SMS read-delete 0.1-community-r1",
@@ -89,6 +110,8 @@ def load_profile_sources(profile: str, root: Path = ROOT) -> dict[str, bytes]:
     specification = STAGE_PROFILES.get(profile)
     if specification is None:
         raise StageBuildError("unknown or intentionally unbuildable WebUI stage")
+    if specification.get("patcher"):
+        raise StageBuildError("derived profile sources require the reviewed golden image")
     replacements: dict[str, bytes] = {}
     for target, source_specification in specification["files"].items():
         try:
@@ -117,14 +140,6 @@ def build_stage_image(
     specification = STAGE_PROFILES.get(profile)
     if specification is None:
         raise StageBuildError("unknown or intentionally unbuildable WebUI stage")
-    replacements = replacements or load_profile_sources(profile)
-    for target, source_specification in specification["files"].items():
-        if target not in replacements:
-            raise StageBuildError("stage replacement set is incomplete")
-        validate_profile_source(replacements[target], source_specification)
-    if set(replacements) != set(specification["files"]):
-        raise StageBuildError("stage replacement set contains an unreviewed path")
-
     header = bytearray(inspector.decrypt_header(golden_raw, identity))
     partitions, layout_errors = inspector.parse_partitions(header, len(golden_raw))
     if layout_errors:
@@ -137,7 +152,32 @@ def build_stage_image(
         raise StageBuildError("golden image has no WEBI partition") from exc
 
     webi_payload = golden_raw[webi.offset : webi.offset + webi.length]
-    rebuilt_webi, cafe_report = base.rebuild_cafe(webi_payload, replacements)
+    _, records, _ = base.parse_cafe_source(webi_payload)
+    additions: dict[str, bytes] = {}
+    removals: set[str] = set()
+    if specification.get("patcher") == "community-r2":
+        if replacements is not None:
+            raise StageBuildError("derived Community R2 sources cannot be caller-supplied")
+        try:
+            replacements, additions, removals = community_r2.build_patch_set(
+                {record.path: record.logical_data for record in records}, ROOT
+            )
+        except community_r2.CommunityR2Error as exc:
+            raise StageBuildError(str(exc)) from exc
+    else:
+        replacements = replacements or load_profile_sources(profile)
+        for target, source_specification in specification["files"].items():
+            if target not in replacements:
+                raise StageBuildError("stage replacement set is incomplete")
+            validate_profile_source(replacements[target], source_specification)
+        if set(replacements) != set(specification["files"]):
+            raise StageBuildError("stage replacement set contains an unreviewed path")
+    joined = b"\n".join([*replacements.values(), *additions.values()])
+    if specification["marker"] not in joined:
+        raise StageBuildError("stage marker is absent from the derived sources")
+    rebuilt_webi, cafe_report = base.rebuild_cafe(
+        webi_payload, replacements, additions, removals
+    )
     candidate = bytearray(golden_raw)
     candidate[webi.offset : webi.offset + webi.length] = rebuilt_webi
 
@@ -158,6 +198,11 @@ def build_stage_image(
         raise StageBuildError("candidate image size changed")
     return bytes(candidate), {
         "cafe": cafe_report,
+        "profile_delta": {
+            "replaced_paths": sorted(replacements),
+            "added_paths": sorted(additions),
+            "removed_paths": sorted(removals),
+        },
         "checksums": {
             "webi_byte_sum": inspector.hex32(webi_sum),
             "global_byte_sum": inspector.hex32(global_sum),
@@ -170,7 +215,8 @@ def write_exclusive(path: Path, data: bytes) -> None:
     if path.exists() or temporary.exists():
         raise StageBuildError(f"refusing to overwrite {path.name}")
     try:
-        with temporary.open("xb") as stream:
+        descriptor = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+        with os.fdopen(descriptor, "wb") as stream:
             stream.write(data)
             stream.flush()
             os.fsync(stream.fileno())
@@ -212,7 +258,10 @@ def main(argv: list[str] | None = None) -> int:
         golden = inspector.inspect_image(args.golden, identity, include_records=True)
         if golden.report["verification"]["status"] != "verified":
             raise StageBuildError("golden did not pass the full independent inspector")
-        replacements = load_profile_sources(args.profile)
+        specification = STAGE_PROFILES[args.profile]
+        replacements = (
+            None if specification.get("patcher") else load_profile_sources(args.profile)
+        )
         candidate, build_report = build_stage_image(
             golden_raw, identity, args.profile, replacements
         )
@@ -231,10 +280,49 @@ def main(argv: list[str] | None = None) -> int:
             raise StageBuildError("a non-WEBI partition changed")
         cafe = comparison["cafe"].get("WEBI", {})
         changed = sorted(item.get("path") for item in cafe.get("changed_records", []))
-        expected = sorted(replacements)
-        if changed != expected or cafe.get("added_paths") or cafe.get("removed_paths"):
-            raise StageBuildError("logical delta is not exactly the reviewed replacements")
-        specification = STAGE_PROFILES[args.profile]
+        delta = build_report["profile_delta"]
+        expected = delta["replaced_paths"]
+        expected_added = delta["added_paths"]
+        expected_removed = delta["removed_paths"]
+        if (
+            changed != expected
+            or sorted(cafe.get("added_paths", [])) != expected_added
+            or sorted(cafe.get("removed_paths", [])) != expected_removed
+        ):
+            raise StageBuildError("logical delta is not exactly the reviewed profile")
+        source_records = []
+        if specification.get("patcher") == "community-r2":
+            for target in sorted(community_r2.CUSTOM_FILES):
+                source, size, digest = community_r2.CUSTOM_FILES[target]
+                source_records.append(
+                    {
+                        "target": target,
+                        "source": source,
+                        "size": size,
+                        "sha256": digest,
+                    }
+                )
+            for target in sorted(community_r2.OUTPUT_RECORDS):
+                size, digest = community_r2.OUTPUT_RECORDS[target]
+                if target not in community_r2.CUSTOM_FILES:
+                    source_records.append(
+                        {
+                            "target": target,
+                            "source": "derived from exact reviewed golden anchors",
+                            "size": size,
+                            "sha256": digest,
+                        }
+                    )
+        else:
+            source_records = [
+                {
+                    "target": target,
+                    "source": specification["files"][target]["source"],
+                    "size": len(replacements[target]),
+                    "sha256": inspector.sha256(replacements[target]),
+                }
+                for target in sorted(replacements)
+            ]
         report = {
             "schema": "mf885-webui-stage-build/v2",
             "id": f"{args.profile}-cafe2",
@@ -257,15 +345,7 @@ def main(argv: list[str] | None = None) -> int:
                 "portable_plaintext_sha256": base.portable_plaintext_sha256(candidate, identity),
             },
             "identity_fingerprint_sha256": identity.fingerprint,
-            "sources": [
-                {
-                    "target": target,
-                    "source": specification["files"][target]["source"],
-                    "size": len(replacements[target]),
-                    "sha256": inspector.sha256(replacements[target]),
-                }
-                for target in sorted(replacements)
-            ],
+            "sources": source_records,
             "build": build_report,
             "verification": {
                 "status": "verified",
@@ -273,7 +353,9 @@ def main(argv: list[str] | None = None) -> int:
                 "changed_partitions": [
                     name for name, value in partition_diffs.items() if value
                 ],
-                "logical_changes": [f"WEBI:{path}" for path in expected],
+                "logical_changes": [f"WEBI:replace:{path}" for path in expected]
+                + [f"WEBI:add:{path}" for path in expected_added]
+                + [f"WEBI:remove:{path}" for path in expected_removed],
                 "non_webi_partitions_byte_identical": True,
             },
             "runtime_safety": specification["safety"],

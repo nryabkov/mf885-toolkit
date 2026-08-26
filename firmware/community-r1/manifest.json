@@ -42,11 +42,11 @@
   "non_webi_partitions_byte_identical": true,
   "structurally_verified": true,
   "reproducible": true,
-  "live_tested": false,
+  "live_tested": true,
   "fbf_wrapper_available": false,
   "flash_qualified": false,
   "restore_allowlisted": false,
-  "release_status": "experimental-unflashed",
+  "release_status": "experimental-live-qualified-canary",
   "stable": false,
   "capabilities": {
     "inbox_read": true,
@@ -54,6 +54,9 @@
     "sms_send_request": false,
     "sms_page_log": false,
     "custom_logs_panel_added": false,
+    "static_assets_live_verified": true,
+    "empty_inbox_read_live_verified": true,
+    "single_inbox_delete_live_verified": false,
     "automatic_mutation_retries": 0
   }
 }

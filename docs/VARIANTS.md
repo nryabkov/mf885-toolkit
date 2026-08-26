@@ -5,7 +5,8 @@ None is distributed as a firmware binary.
 
 | Wrapper name | Logical ID | Source | Status |
 |---|---|---|---|
-| `community-r1` | `0.1-community-r1-cafe2` | `firmware/community-r1/` | Recommended product-oriented source: read/expand SMS and one confirmed inbox delete; SMS page has no composer, send request or page log; no custom Logs panel is added; reproducible and structurally verified, still unflashed |
+| `community-r2` | `0.2-community-r2-cafe2` | `firmware/community-r2/` plus exact derivation rules | Recommended source: Community R1 SMS safety, native Messages menu, home build badge/Inbox shortcut, reviewed English fixes, English-only locale set, and opt-in tab-scoped HA1 login; structurally verified and unflashed |
+| `community-r1` | `0.1-community-r1-cafe2` | `firmware/community-r1/` | Superseded minimal source: installed once with exact static assets and an authenticated empty inbox; deletion and rollback remain unqualified; no composer, send request, page log or custom Logs panel |
 | `logs-r1` | `0.0-logs-r1-auth-r4-cafe2` | `firmware/webui-canary-logs/` | Research-only authenticated observer; not part of the product firmware |
 | `logs-r2` | `0.0-logs-r2-auth-r4-cafe2` | `firmware/webui-canary-logs-r2/` | Research-only bounded observer; not part of the product firmware |
 | `sms-r1` | `0.0-sms-r1-cafe2` | `firmware/webui-sms-r1/` | Historical feature prototype with send/delete controls; not the recommended build |
@@ -18,8 +19,8 @@ device merely because it reconstructs offline.
 Earlier Logs artifacts are retained in their manifests as quarantined history.
 Some omitted the stock Digest header; later revisions fixed authentication but
 did not mask every WAN username and IPv6 representation before Copy/Export.
-`community-r1` is built directly from golden rather than layered on a Logs
-artifact, so its stock index contains no Logs loader or panel.
+`community-r1` and `community-r2` are built directly from golden rather than
+layered on a Logs artifact, so neither includes a custom Logs loader or panel.
 
 ## Adding a variant
 

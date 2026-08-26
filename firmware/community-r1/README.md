@@ -45,7 +45,9 @@ Two independent reference captures produced byte-identical output. The inspector
 verified that only the two declared WEBI records changed and every non-WEBI
 partition remained byte-identical.
 
-This is still an experimental, unflashed artifact. Structural verification is
-not proof that installation, rollback or recovery will work. Flashing may
-permanently brick the device; there is no warranty, no restore allowlist and no
-automatic upload helper in the public toolkit.
+This exact artifact was installed once on the reviewed target. FULL returned
+with the exact SMS HTML/JavaScript, and an authenticated inbox request returned
+a valid empty list. No disposable message existed, so live deletion remains
+unqualified. One installation is not general compatibility, rollback or
+recovery proof. The artifact remains experimental, non-stable and outside every
+restore allowlist; the public toolkit contains no automatic upload helper.

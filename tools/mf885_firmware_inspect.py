@@ -977,7 +977,15 @@ KNOWN_ARTIFACTS = {
         "role": "webui-community",
         "structural_status": "verified-not-flash-qualified",
         "restorable": False,
-        "issue": "golden-derived read/delete SMS profile is reproducible and structurally verified, but it is unflashed and rollback remains unproved",
+        "issue": "golden-derived read/delete SMS profile was installed once and its exact static assets plus an authenticated empty inbox were observed; deletion and rollback remain unproved",
+    },
+    "aebc751d87d8a007fc50cfb6b0788a6168127ca8988d989176de902986a487ee": {
+        "id": "mf885-community-0.2-community-r2-cafe2",
+        "size": 8_323_644,
+        "role": "webui-community",
+        "structural_status": "verified-not-flash-qualified",
+        "restorable": False,
+        "issue": "golden-derived English-only Community R2 profile is reproducible and structurally verified, but it is unflashed and rollback remains unproved",
     },
 }
 

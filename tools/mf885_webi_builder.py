@@ -184,19 +184,42 @@ def rebuild_cafe(
     payload: bytes,
     replacements: dict[str, bytes],
     additions: dict[str, bytes] | None = None,
+    removals: set[str] | None = None,
 ) -> tuple[bytes, dict[str, Any]]:
     cafe_header, records, old_sentinel = parse_cafe_source(payload)
     paths = {record.path for record in records}
     additions = additions or {}
+    removals = removals or set()
     missing = sorted(set(replacements) - paths)
     if missing:
         raise BuildError("replacement paths are absent from WEBI: " + ", ".join(missing))
+    missing_removals = sorted(removals - paths)
+    if missing_removals:
+        raise BuildError("removed paths are absent from WEBI: " + ", ".join(missing_removals))
+    conflicting_removals = sorted(removals & set(replacements))
+    if conflicting_removals:
+        raise BuildError(
+            "paths cannot be replaced and removed together: "
+            + ", ".join(conflicting_removals)
+        )
     duplicate_additions = sorted(set(additions) & paths)
     if duplicate_additions:
         raise BuildError("added paths already exist in WEBI: " + ", ".join(duplicate_additions))
     rebuilt = bytearray(cafe_header)
     changes = []
+    removed = []
     for record in records:
+        if record.path in removals:
+            removed.append(
+                {
+                    "path": record.path,
+                    "size": len(record.logical_data),
+                    "sha256": inspector.sha256(record.logical_data),
+                    "stored_size": len(record.stored_data),
+                    "padding": record.padding_bytes,
+                }
+            )
+            continue
         if record.path not in replacements:
             rebuilt.extend(record.header)
             rebuilt.extend(record.stored_data)
@@ -263,6 +286,7 @@ def rebuild_cafe(
     return bytes(rebuilt), {
         "changes": changes,
         "additions": added,
+        "removals": removed,
         "sentinel_before": f"0x{old_sentinel:x}",
         "sentinel_after": f"0x{sentinel:x}",
         "padding_before": len(payload) - old_sentinel - 4,

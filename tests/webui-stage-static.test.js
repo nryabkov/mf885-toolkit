@@ -63,7 +63,10 @@ test('community r1 is the exact read-delete product profile with logs and sendin
   assert.equal(communityManifest.capabilities.sms_send_request,false);
   assert.equal(communityManifest.capabilities.sms_page_log,false);
   assert.equal(communityManifest.capabilities.custom_logs_panel_added,false);
-  assert.equal(communityManifest.live_tested,false);
+  assert.equal(communityManifest.live_tested,true);
+  assert.equal(communityManifest.capabilities.static_assets_live_verified,true);
+  assert.equal(communityManifest.capabilities.empty_inbox_read_live_verified,true);
+  assert.equal(communityManifest.capabilities.single_inbox_delete_live_verified,false);
   assert.equal(communityManifest.stable,false);
 });
 

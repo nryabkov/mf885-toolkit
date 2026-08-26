@@ -83,7 +83,7 @@ python -m pip install -r requirements.txt
 mkdir -p out
 python tools/mf885_build_variant.py --list
 python tools/mf885_build_variant.py \
-  --variant community-r1 \
+  --variant community-r2 \
   --acknowledge-brick-risk
 ```
 
@@ -98,11 +98,20 @@ reference-unit raw hash is documented only as a reproducibility example. Any
 semantic mismatch is rejected; do not bypass this check or use another unit's
 built binary.
 
-`community-r1` is the recommended product-oriented source profile. It reads
-and expands SMS messages and permits one explicitly confirmed inbox deletion,
-with complete readback verification and no automatic retry. Its replacement
-SMS page has no composer, `SEND_SMS` request or page log, and the build adds no
-custom Logs panel. The Logs variants remain research material.
+`community-r2` is the recommended product-oriented source profile. It retains
+the bounded Community R1 SMS reader and one explicitly confirmed inbox delete,
+adds a Messages menu and home-page build badge, fixes reviewed English copy,
+and forces the client UI to English. It removes 18 Chinese, Hong Kong and
+Japanese locale records, reclaiming 263,312 bytes inside WEBI without changing
+the fixed 8,323,644-byte firmware size.
+
+Its optional **Remember me in this tab** control stores Digest HA1 in
+`sessionStorage`, not the plaintext password. HA1 is nevertheless a
+password-equivalent credential readable by same-origin page scripts. Use it
+only on a trusted device; sign-out, authentication failure, ten minutes without
+keyboard/touch/mouse activity, or normally closing the tab clears it. Reload
+uses one fresh challenge, one login and one protected exact-version read, with
+no automatic retry. The Logs variants remain research material.
 
 Inspector and builder reports can contain stable pseudonymous fingerprints of
 your unit and derived-key checks. Keep reports private and never attach raw

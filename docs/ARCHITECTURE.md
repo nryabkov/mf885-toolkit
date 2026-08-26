@@ -14,24 +14,29 @@ does not authorize cross-flashing or reuse of native offsets.
 
 ## Development order
 
-1. **SMS WebUI** — read and explicitly confirmed delete using the exact stock
-   `message` contract. This remains WEBI-only.
-2. **Narrow native control plane** — a version-bound, authenticated community
+1. **Community R2 WebUI** — English-only UI, native Messages navigation,
+   read/expand SMS, one explicitly confirmed inbox delete, build identity on
+   the home page, and opt-in tab-scoped login continuity. This remains WEBI-only.
+2. **Read-only diagnostics** — a privacy-safe page for SIM/registration,
+   operator/RAT/band/cell, signal quality, WAN state, traffic, battery and
+   unread-message counts using already reviewed read contracts. Copyable output
+   must omit unit IDs, SSID/APN, credentials, phone numbers and SMS bodies.
+3. **Narrow native control plane** — a version-bound, authenticated community
    model with bounded inputs/outputs and no generic command execution. A
    harmless version/echo endpoint comes before state-changing features.
-3. **USSD** — one in-flight operation, explicit result/cancel state, bounded
+4. **USSD** — one in-flight operation, explicit result/cancel state, bounded
    timeout and no automatic replay. Native request/result ownership is still
    unresolved.
-4. **AT reference and query allowlist** — static command documentation plus a
+5. **AT reference and query allowlist** — static command documentation plus a
    small reviewed set of read-only queries. Raw arbitrary AT is not a default
    WebUI capability; reset, flash and service-mode commands remain denied.
-5. **TTL** — first as disabled-by-default RAM state, only after a forwarded
+6. **TTL** — first as disabled-by-default RAM state, only after a forwarded
    IPv4 hook and checksum-safe enable/disable path are proved. Persistence and
    IPv6 are separate milestones.
-6. **IMEI laboratory workflow** — only after original-value backup, atomicity,
+7. **IMEI laboratory workflow** — only after original-value backup, atomicity,
    post-write readback and restoration are independently demonstrated. It is
    not bundled with the first TTL experiment.
-7. **Repeater/WISP research** — concurrent station plus access-point support is
+8. **Repeater/WISP research** — concurrent station plus access-point support is
    not established. Routed WISP is the first plausible target; transparent WDS
    is not promised.
 

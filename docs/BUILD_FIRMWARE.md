@@ -75,7 +75,7 @@ set. Never weaken a failed gate to make an unknown image fit.
 mkdir -p out
 python tools/mf885_build_variant.py --list
 python tools/mf885_build_variant.py \
-  --variant community-r1 \
+  --variant community-r2 \
   --golden input/MF885_golden.bin \
   --identity-xml input/mf885-base.xml \
   --output-dir out \
@@ -84,7 +84,7 @@ python tools/mf885_build_variant.py \
 
 The Logs variants are research observers and `sms-r1` is a historical
 send/delete prototype. Choose them only after reading their source and
-manifest; `community-r1` is the product-oriented read/delete profile. The
+manifest; `community-r2` is the recommended product-oriented profile. The
 output and a JSON report are created exclusively; rerunning does not overwrite
 them. Delete or move an old local output deliberately before rebuilding.
 
@@ -94,14 +94,20 @@ them. Delete or move an old local output deliberately before rebuilding.
 python tools/mf885_firmware_inspect.py \
   input/MF885_golden.bin \
   --identity-xml input/mf885-base.xml \
-  --compare out/MF885_Community_0.1-community-r1-cafe-r2.bin \
+  --compare out/MF885_Community_0.2-community-r2-cafe-r2.bin \
   --json
 ```
 
-For `community-r1`, only the exact stock SMS HTML and JavaScript records may
-differ logically; all non-WEBI partitions must remain byte-identical. Because
-the build starts from golden, it also restores the stock index and contains no
-Logs loader. Logs variants have a separate index-plus-script allowlist.
+For `community-r2`, the report must show exactly 10 reviewed replacements, one
+added Community auth script and 18 removed locale records. Only WEBI may differ;
+all other partitions must remain byte-identical. The output keeps the fixed
+8,323,644-byte container and turns the removed locale space into WEBI padding.
+Because every build starts from golden, it contains no custom Logs loader.
+Logs variants have a separate index-plus-script allowlist.
+
+Community R2 stores no plaintext password. Its opt-in tab convenience stores
+Digest HA1, which is still a password-equivalent credential; read its manifest
+and on-device warning before enabling it.
 
 The output header remains bound to the supplied unit. Consequently its raw
 SHA-256 can differ from the reference manifest even when the portable plaintext

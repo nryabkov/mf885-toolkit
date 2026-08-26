@@ -643,6 +643,7 @@ class WebiBuilderTests(unittest.TestCase):
             "aeaceb9cd193a44100bd33c3f14dc48ede6d2e163d7a214a87411d7875adf07f",
             "c27b5f7989ac4e4ac6ff1ebdd603685f6f1fe777918458059b620b1c36ec73ce",
             "d42a912e31aafed4e57c6c98d94932444a0b2cf1fe0f8e223c95b3df22dae676",
+            "aebc751d87d8a007fc50cfb6b0788a6168127ca8988d989176de902986a487ee",
         }
         for digest in corrected:
             item = inspector.KNOWN_ARTIFACTS[digest]
@@ -752,6 +753,40 @@ class WebiBuilderTests(unittest.TestCase):
         added = next(record for record in records if record.path == builder.SCRIPT_PATH)
         self.assertTrue(added.padding_valid)
         self.assertEqual(added.logical_sha256, inspector.sha256(script))
+
+    def test_rebuild_removes_only_explicit_existing_records(self):
+        first_path = builder.INDEX_PATH
+        second_path = "www\\properties\\Messages_cn.properties"
+        first_payload = cafe_payload(first_path, b"english")
+        _, first_records, first_sentinel = builder.parse_cafe_source(first_payload)
+        second_data, second_padding, second_flags = builder.encode_cafe_data(b"remove me")
+        record = bytearray(inspector.CAFE_RECORD_HEADER_SIZE)
+        struct.pack_into("<I", record, 0, 0xCAFE1000)
+        struct.pack_into("<I", record, 4, second_flags)
+        encoded_path = second_path.encode("ascii")
+        record[8 : 8 + len(encoded_path)] = encoded_path
+        payload = bytearray(first_payload)
+        replacement = bytes(record) + second_data + struct.pack("<I", 0xDADADADA)
+        payload[first_sentinel : first_sentinel + len(replacement)] = replacement
+        new_sentinel = first_sentinel + len(record) + len(second_data)
+        payload[new_sentinel + 4 :] = b"\xFF" * (len(payload) - new_sentinel - 4)
+        struct.pack_into("<I", payload, 4, zlib.adler32(payload[8:new_sentinel]) & 0xFFFFFFFF)
+
+        rebuilt, report = builder.rebuild_cafe(bytes(payload), {}, removals={second_path})
+        parsed, records = inspector.parse_cafe(rebuilt, include_records=True)
+        self.assertTrue(parsed["adler32_valid"])
+        self.assertEqual([item.path for item in records], [first_records[0].path])
+        self.assertEqual([item["path"] for item in report["removals"]], [second_path])
+        self.assertEqual(report["removals"][0]["padding"], second_padding)
+        self.assertGreater(report["padding_after"], report["padding_before"])
+        with self.assertRaises(builder.BuildError):
+            builder.rebuild_cafe(bytes(payload), {}, removals={"www\\missing"})
+        with self.assertRaises(builder.BuildError):
+            builder.rebuild_cafe(
+                bytes(payload),
+                {second_path: b"replacement"},
+                removals={second_path},
+            )
 
     @unittest.skipUnless(
         LOCAL_GOLDEN.is_file() and LOCAL_IDENTITY.is_file(),
