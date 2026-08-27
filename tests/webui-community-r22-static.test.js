@@ -17,7 +17,7 @@ const bootstrap=fs.readFileSync(path.join(directory,'community_bootstrap.js'),'u
 const css=fs.readFileSync(path.join(directory,'community_ui.css'),'utf8');
 const digest=value=>crypto.createHash('sha256').update(value).digest('hex');
 
-test('Community R2.2 manifest pins every source and remains unflashed',()=>{
+test('Community R2.2 manifest pins every source and records bounded live qualification',()=>{
   assert.deepEqual(fs.readdirSync(directory).sort(),[
     'Diagnostics.html','README.md','SMS.html','community_bootstrap.js','community_ui.css','manifest.json'
   ]);
@@ -33,11 +33,18 @@ test('Community R2.2 manifest pins every source and remains unflashed',()=>{
   assert.equal(manifest.artifact.portable_plaintext_sha256,'c712f4774d8d4dc05e1a70ddd34cb8f508e705705b9cb16e3174bbb991d612ec');
   assert.deepEqual(manifest.logical_change_counts,{replaced:10,added:11,removed:18});
   assert.equal(manifest.webi_padding_bytes_remaining,162428);
-  assert.equal(manifest.live_tested,false);
-  assert.equal(manifest.release_status,'experimental-unflashed');
+  assert.equal(manifest.live_tested,true);
+  assert.equal(manifest.release_status,'experimental-live-qualified-canary');
+  assert.equal(manifest.capabilities.static_assets_live_verified,true);
+  assert.equal(manifest.capabilities.exact_served_assets_live_verified,21);
+  assert.equal(manifest.capabilities.removed_locale_routes_live_verified,18);
+  assert.equal(manifest.capabilities.same_unit_postboot_live_verified,true);
+  assert.equal(manifest.capabilities.authenticated_ui_live_verified,false);
+  assert.equal(manifest.capabilities.semantic_ui_live_verified,false);
   for(const field of ['sms_send_live_tested','inbox_delete_live_tested','flash_qualified','restore_allowlisted','stable'])assert.equal(manifest[field],false,field);
   assert.match(readme,/permanently\s+brick/i);
-  assert.match(readme,/has\s+not been flashed/i);
+  assert.match(readme,/installed\s+once/i);
+  assert.match(readme,/rollback\s+remain(?:s)?\s+unproved/i);
 });
 
 test('Community R2.2 uses unique cache-safe assets and seeds labels before both menu builds',()=>{

@@ -114,14 +114,16 @@ and stores no plaintext password. Its opt-in tab convenience stores
 Digest HA1, which is still a password-equivalent credential; read its manifest
 and on-device warning before enabling it.
 
-The exact reference R2.2 build is offline-only. Its fixed size is 8,323,644
-bytes, reference-unit SHA-256 is
+The exact reference R2.2 build has fixed size 8,323,644 bytes and
+reference-unit SHA-256 is
 `80e94750bf820e1fdbf6f51b8b2462cad633e28d19571610ce744bac7e6e04d5`,
 and portable plaintext SHA-256 is
 `c712f4774d8d4dc05e1a70ddd34cb8f508e705705b9cb16e3174bbb991d612ec`.
-It is not stable or restore-allowlisted. R2.1 remains the installed narrow
-live canary; its SMS mutations, cold boot, repeatability and rollback are
-unqualified.
+The reference image was installed once through the reviewed Genesys-hub
+one-shot path; exact static assets, locale removals, same-unit USB/RNDIS return
+and cleanup were verified. It remains an experimental canary, not stable,
+flash-qualified or restore-allowlisted. Authenticated semantic UI, SMS
+mutations, cold boot, repeatability and rollback remain unqualified.
 
 The output header remains bound to the supplied unit. Consequently its raw
 SHA-256 can differ from the reference manifest even when the portable plaintext

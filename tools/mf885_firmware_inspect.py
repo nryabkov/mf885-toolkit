@@ -1001,7 +1001,7 @@ KNOWN_ARTIFACTS = {
         "role": "webui-community",
         "structural_status": "verified-not-flash-qualified",
         "restorable": False,
-        "issue": "golden-derived Community R2.2 profile is reproducible and structurally verified, but it is unflashed and live behavior, cold boot, repeatability and rollback remain unproved",
+        "issue": "golden-derived Community R2.2 profile was installed once with its exact static assets and same-unit USB recovery observed after boot, but authenticated semantic UI, SMS mutations, cold boot, repeatability and rollback remain unproved and it is not flash-qualified",
     },
 }
 

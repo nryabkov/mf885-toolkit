@@ -113,10 +113,14 @@ firmware size. Its reference-unit SHA-256 is
 another compatible unit normally has a different raw hash because the header
 is unit-bound.
 
-The exact R2.2 reference build is deterministic and structurally verified but
-has not been flashed. Its status is `experimental-unflashed`; SMS Send/Delete,
-cold-boot persistence, repeatability and rollback remain unqualified. It is
-not stable, flash-qualified or restore-allowlisted.
+The exact R2.2 reference build is deterministic, structurally verified and was
+installed once through the reviewed Genesys-hub one-shot path. All 21 exact
+R2.2 assets, 18 locale removals, same-unit USB/RNDIS recovery and cleanup were
+verified; the English login page and native-sized Remember control were also
+observed after reload. Its status is `experimental-live-qualified-canary`;
+authenticated semantic UI, SMS Send/Delete, cold-boot persistence,
+repeatability and rollback remain unqualified. It is not stable,
+flash-qualified or restore-allowlisted.
 
 Authenticated read-only validation of immutable R2.1 proved Remember reload/logout, reads
 of all four empty Messages folders, the three fixed Diagnostics reads and the

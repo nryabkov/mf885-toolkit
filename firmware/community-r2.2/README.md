@@ -50,8 +50,13 @@ The encrypted header is unit-bound, so another compatible unit normally
 produces a different raw hash. Its decrypted portable fingerprint must be
 `c712f4774d8d4dc05e1a70ddd34cb8f508e705705b9cb16e3174bbb991d612ec`.
 
-R2.2 has been built twice byte-identically and structurally verified. It has
-not been flashed or tested live. It is not stable, flash-qualified or
-restore-allowlisted, and rollback remains unproved. Flashing can permanently
-brick the device. The public toolkit distributes no firmware binary or live
-flashing helper.
+R2.2 has been built twice byte-identically, structurally verified and installed
+once on the reference unit through the reviewed Genesys-hub one-shot path. The
+exact 21-asset static footprint, 18 locale removals, same-unit USB/RNDIS return
+and cleanup were verified after boot. The English login page and native-sized
+Remember control were also observed after a browser reload; authenticated
+Home, Messages and Diagnostics remain pending because that browser tab had no
+saved password. It is not stable, flash-qualified or restore-allowlisted, and
+SMS mutations, cold boot, repeatability and rollback remain unproved. Flashing
+can permanently brick the device. The public toolkit distributes no firmware
+binary or live flashing helper.

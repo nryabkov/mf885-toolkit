@@ -108,13 +108,13 @@
   "non_webi_partitions_byte_identical": true,
   "structurally_verified": true,
   "reproducible": true,
-  "live_tested": false,
+  "live_tested": true,
   "sms_send_live_tested": false,
   "inbox_delete_live_tested": false,
   "fbf_wrapper_available": false,
   "flash_qualified": false,
   "restore_allowlisted": false,
-  "release_status": "experimental-unflashed",
+  "release_status": "experimental-live-qualified-canary",
   "stable": false,
   "capabilities": {
     "languages": ["en"],
@@ -141,6 +141,13 @@
     "exact_status1_sms_identity_gate": true,
     "exact_status1_auth_identity_gate": true,
     "legacy_safe_unified_visual_system": true,
+    "static_assets_live_verified": true,
+    "exact_served_assets_live_verified": 21,
+    "removed_locale_routes_live_verified": 18,
+    "same_unit_postboot_live_verified": true,
+    "english_login_ui_live_verified": true,
+    "remember_control_live_visible": true,
+    "authenticated_ui_live_verified": false,
     "semantic_ui_live_verified": false
   }
 }
