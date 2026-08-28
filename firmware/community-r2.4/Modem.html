@@ -1,0 +1,45 @@
+<div id="mfCommunityR24Modem" class="mfCommunityShell mfModemShell">
+  <div class="mfCommunityHeading">
+    <h2 class="mfCommunityTitle">Modem monitor</h2>
+    <span class="mfCommunityFolder">Read-only</span>
+  </div>
+  <div class="mfCommunityToolbar">
+    <button type="button" id="mfModemRefresh" class="mfCommunityButton mfCommunityButtonPrimary">Refresh</button>
+    <button type="button" id="mfModemCopy" class="mfCommunityButton" disabled>Copy safe trace</button>
+    <label class="mfModemWatchRow" for="mfModemWatch"><input type="checkbox" id="mfModemWatch" /> Watch every 30 seconds</label>
+  </div>
+  <div id="mfModemStatus" role="status" aria-live="polite" class="mfCommunityStatus">Reading modem status…</div>
+  <div id="mfModemSummary" class="mfModemSummary"></div>
+  <section class="mfModemPanel" aria-labelledby="mfSignalTitle">
+    <div class="mfModemPanelHead">
+      <h3 id="mfSignalTitle">Signal history</h3>
+      <span id="mfSignalNow" class="mfModemPanelMeta">No samples</span>
+    </div>
+    <svg id="mfSignalChart" class="mfSignalChart" viewBox="0 0 600 140" role="img" aria-label="RSRP history chart">
+      <line x1="0" y1="116" x2="600" y2="116" class="mfSignalGrid"></line>
+      <line x1="0" y1="68" x2="600" y2="68" class="mfSignalGrid"></line>
+      <line x1="0" y1="20" x2="600" y2="20" class="mfSignalGrid"></line>
+      <polyline id="mfSignalLine" points="" class="mfSignalLine"></polyline>
+    </svg>
+    <p id="mfSignalFallback" class="mfCommunityFinePrint">No valid RSRP samples yet.</p>
+  </section>
+  <section class="mfModemPanel" aria-labelledby="mfChangesTitle">
+    <div class="mfModemPanelHead">
+      <h3 id="mfChangesTitle">Recent changes</h3>
+      <span class="mfModemPanelMeta">This tab only</span>
+    </div>
+    <ol id="mfModemChanges" class="mfModemChanges"><li>No changes observed.</li></ol>
+  </section>
+  <section class="mfModemPanel" aria-labelledby="mfUplinkTitle">
+    <div class="mfModemPanelHead">
+      <h3 id="mfUplinkTitle">Wi-Fi uplink / repeater</h3>
+      <span class="mfModemPanelMeta">Status only</span>
+    </div>
+    <p id="mfUplinkState" class="mfModemUplink">Not returned</p>
+    <p class="mfCommunityFinePrint">The stock firmware contains a Wi-Fi-uplink path. Connection controls stay disabled until its exact write and recovery behavior is tested.</p>
+  </section>
+  <section id="mfModemCopyFallback" hidden class="mfCommunityCopyFallback">
+    <p class="mfCommunityFinePrint">Select and copy the safe trace.</p>
+    <textarea id="mfModemReport" rows="16" readonly></textarea>
+  </section>
+</div>

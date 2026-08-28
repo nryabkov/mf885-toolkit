@@ -75,7 +75,7 @@ set. Never weaken a failed gate to make an unknown image fit.
 mkdir -p out
 python tools/mf885_build_variant.py --list
 python tools/mf885_build_variant.py \
-  --variant community-r2.2 \
+  --variant community-r2.4 \
   --golden input/MF885_golden.bin \
   --identity-xml input/mf885-base.xml \
   --output-dir out \
@@ -84,7 +84,7 @@ python tools/mf885_build_variant.py \
 
 The Logs variants are research observers and `sms-r1` is a historical
 send/delete prototype. Choose them only after reading their source and
-manifest; `community-r2.2` is the recommended product-oriented profile. The
+manifest; `community-r2.4` is the recommended product-oriented profile. The
 output and a JSON report are created exclusively; rerunning does not overwrite
 them. Delete or move an old local output deliberately before rebuilding.
 
@@ -94,36 +94,44 @@ them. Delete or move an old local output deliberately before rebuilding.
 python tools/mf885_firmware_inspect.py \
   input/MF885_golden.bin \
   --identity-xml input/mf885-base.xml \
-  --compare out/MF885_Community_0.2.2-community-r2-cafe-r2.bin \
+  --compare out/MF885_Community_0.2.4-community-r2-cafe-r2.bin \
   --json
 ```
 
-For `community-r2.2`, the report must show exactly 10 reviewed replacements,
-11 additions (the inherited R2.1 assets plus unique cache-safe bootstrap,
-style, Home, SMS and Diagnostics routes), and 18 removed locale records. Only
+For `community-r2.4`, the report must show exactly six reviewed replacements,
+15 additions (the isolated cache-safe bootstrap, style, Home, SMS,
+Diagnostics, Modem monitor, private menu and `/r24.html` routes), and 18 removed locale
+records. The canonical vendor menu, Dashboard and SMS controller remain
+byte-identical to golden. Only
 WEBI may differ; all other partitions must
 remain byte-identical. The output keeps the fixed 8,323,644-byte container and
 turns the removed locale space into WEBI padding. Because every build starts
-from golden, it contains no custom Logs loader or native `detailed_log` panel.
+from golden, it contains no custom Logs loader. The vendor image retains its
+historical `detailed_log` route, but R2.4 neither exposes nor reads it.
 The predecessors remain immutable: `community-r2.1` stays at 10/3/18 and
 `community-r2` at 10/1/18.
 
-Community R2.2 derives R2's auth component into the unique cache-safe
-`r22auth.js` route, applies the same strict device identity proof used by SMS,
+Community R2.4 derives the R2.3 auth component into the unique cache-safe
+`r24auth.js` route, applies the same strict device identity proof used by SMS,
 and stores no plaintext password. Its opt-in tab convenience stores
 Digest HA1, which is still a password-equivalent credential; read its manifest
 and on-device warning before enabling it.
 
-The exact reference R2.2 build has fixed size 8,323,644 bytes and
+The R2.4 Modem monitor is read-only. It performs the fixed sequential GET set
+`status1`, `wan`, `Engineer_parameter`; optional watching is off by default and
+uses the same set no more often than every 30 seconds while the tab is active.
+It has no WISP scan/connect, USSD, TTL or IMEI route. The visible Wi-Fi-uplink
+section reports only fields already returned by `status1`.
+
+The exact reference R2.4 build has fixed size 8,323,644 bytes and
 reference-unit SHA-256 is
-`80e94750bf820e1fdbf6f51b8b2462cad633e28d19571610ce744bac7e6e04d5`,
+`5bc408710afa5e78836c49da91656a8f94d804ee4fe64c53f6ef7d53786fd7db`,
 and portable plaintext SHA-256 is
-`c712f4774d8d4dc05e1a70ddd34cb8f508e705705b9cb16e3174bbb991d612ec`.
-The reference image was installed once through the reviewed Genesys-hub
-one-shot path; exact static assets, locale removals, same-unit USB/RNDIS return
-and cleanup were verified. It remains an experimental canary, not stable,
-flash-qualified or restore-allowlisted. Authenticated semantic UI, SMS
-mutations, cold boot, repeatability and rollback remain unqualified.
+`e33038e8a80838db6d91d347c4fc0c06480e365f577627edbf7a3cdf95e0bdc1`.
+Two reference builds were byte-identical. The image remains unflashed, not stable,
+flash-qualified or restore-allowlisted. Live UI, SMS mutations, cold boot,
+repeatability and rollback remain unqualified. Installed R2.2 remains an
+immutable experimental live canary.
 
 The output header remains bound to the supplied unit. Consequently its raw
 SHA-256 can differ from the reference manifest even when the portable plaintext

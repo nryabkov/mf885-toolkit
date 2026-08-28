@@ -646,6 +646,8 @@ class WebiBuilderTests(unittest.TestCase):
             "aebc751d87d8a007fc50cfb6b0788a6168127ca8988d989176de902986a487ee",
             "51bd396c69e9c8db96249455092634b6b54552f64f5c4daee6f710b644759c95",
             "80e94750bf820e1fdbf6f51b8b2462cad633e28d19571610ce744bac7e6e04d5",
+            "06d79b9e51d54e87e4065ceabac63d70b4d34b72b21bfa096a1132d1b45af86b",
+            "5bc408710afa5e78836c49da91656a8f94d804ee4fe64c53f6ef7d53786fd7db",
         }
         for digest in corrected:
             item = inspector.KNOWN_ARTIFACTS[digest]

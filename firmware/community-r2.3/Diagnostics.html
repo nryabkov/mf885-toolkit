@@ -1,0 +1,16 @@
+<div id="mfCommunityR23Diagnostics" class="mfCommunityShell">
+  <div class="mfCommunityHeading">
+    <h2 class="mfCommunityTitle">Diagnostics</h2>
+    <span class="mfCommunityFolder">Read-only</span>
+  </div>
+  <div class="mfCommunityToolbar">
+    <button type="button" id="mfDiagRefresh" class="mfCommunityButton mfCommunityButtonPrimary">Refresh</button>
+    <button type="button" id="mfDiagCopy" class="mfCommunityButton" disabled>Copy safe snapshot</button>
+  </div>
+  <div id="mfDiagStatus" role="status" aria-live="polite" class="mfCommunityStatus">Reading three status sources once…</div>
+  <div id="mfDiagValues" class="mfCommunityValues"></div>
+  <section id="mfDiagCopyFallback" hidden class="mfCommunityCopyFallback">
+    <p class="mfCommunityFinePrint">Select and copy the safe snapshot.</p>
+    <textarea id="mfDiagReport" rows="16" readonly></textarea>
+  </section>
+</div>

@@ -83,7 +83,7 @@ python -m pip install -r requirements.txt
 mkdir -p out
 python tools/mf885_build_variant.py --list
 python tools/mf885_build_variant.py \
-  --variant community-r2.2 \
+  --variant community-r2.4 \
   --acknowledge-brick-risk
 ```
 
@@ -98,29 +98,41 @@ reference-unit raw hash is documented only as a reproducibility example. Any
 semantic mismatch is rejected; do not bypass this check or use another unit's
 built binary.
 
-`community-r2.2` is the recommended product-oriented source profile. It keeps
-R2.1's review-first, one-POST/no-replay SMS sender and manual **Diagnostics**
-tab, fixes the installed canary's stale-label cache path and exact live
-`status1` identity gate, and adds one compact legacy-safe visual system for
-login, Home, Messages and Diagnostics. It never restores the old native
-`detailed_log` observer, raw request capture or background polling. R2.1
-remains an immutable installed canary rather than being silently replaced.
+`community-r2.4` is the recommended product-oriented source profile. The
+canonical `/index.html` remains a small English vendor interface with one link
+to `/r24.html`; it loads no Community authentication, menu, Messages,
+Diagnostics or CSS. The isolated modern entry keeps R2.3's exact identity and
+authentication gates, one-POST/no-replay SMS mutations and manual
+**Diagnostics** reads. It shows message bodies immediately, sends only after
+one explicit **Send** click and displays ten messages per local page. Its
+opt-in watcher checks at most once a minute while the tab is open, persists no
+message data and uses only a generic in-page alert on the normal HTTP address.
+Revision-unique subordinate paths avoid silently reusing an older cached
+Community interface.
 
-R2.2 still removes 18 Chinese, Hong Kong and Japanese locale records,
+R2.4 adds a read-only **Modem monitor**. It reads only `status1`, `wan` and
+`Engineer_parameter`; a default-off checkbox repeats the same fixed sequence
+every 30 seconds while the tab is active. The copied trace strictly normalizes
+known states and numeric radio metrics and omits raw unknowns, identifiers,
+addresses, APN, SSID, cell location and SMS. Wi-Fi uplink/repeater state is
+display-only: scan/connect writes remain disabled. USSD, TTL and IMEI controls
+remain absent.
+
+R2.4 removes the same 18 Chinese, Hong Kong and Japanese locale records,
 reclaiming 263,312 bytes inside WEBI without changing the fixed 8,323,644-byte
 firmware size. Its reference-unit SHA-256 is
-`80e94750bf820e1fdbf6f51b8b2462cad633e28d19571610ce744bac7e6e04d5`;
-another compatible unit normally has a different raw hash because the header
+`5bc408710afa5e78836c49da91656a8f94d804ee4fe64c53f6ef7d53786fd7db`;
+portable plaintext SHA-256 is
+`e33038e8a80838db6d91d347c4fc0c06480e365f577627edbf7a3cdf95e0bdc1`.
+Another compatible unit normally has a different raw hash because the header
 is unit-bound.
 
-The exact R2.2 reference build is deterministic, structurally verified and was
-installed once through the reviewed Genesys-hub one-shot path. All 21 exact
-R2.2 assets, 18 locale removals, same-unit USB/RNDIS recovery and cleanup were
-verified; the English login page and native-sized Remember control were also
-observed after reload. Its status is `experimental-live-qualified-canary`;
-authenticated semantic UI, SMS Send/Delete, cold-boot persistence,
-repeatability and rollback remain unqualified. It is not stable,
-flash-qualified or restore-allowlisted.
+Two exact R2.4 builds were byte-identical, exactly six records were replaced,
+15 were added, 18 locale records were removed, and only WEBI changed. R2.4 remains
+`experimental-unflashed`; its live UI, SMS Send/Delete, cold boot,
+repeatability and rollback are unqualified. It is not stable, flash-qualified
+or restore-allowlisted. R2.3 remains an immutable unflashed predecessor and
+installed R2.2 remains an immutable experimental live canary.
 
 Authenticated read-only validation of immutable R2.1 proved Remember reload/logout, reads
 of all four empty Messages folders, the three fixed Diagnostics reads and the
@@ -135,7 +147,7 @@ password-equivalent credential readable by same-origin page scripts. Use it
 only on a trusted device; sign-out, authentication failure, ten minutes without
 keyboard/touch/mouse activity, or normally closing the tab clears it. Reload
 uses one fresh challenge, one login and one protected exact-version read, with
-no automatic retry. R2.2 loads a uniquely named auth script after its strict
+no automatic retry. R2.3 derives a uniquely named auth script after its strict
 model/hardware/full-version bootstrap and applies that same proof before HA1 is
 retained or renewed. The Logs variants remain research material.
 

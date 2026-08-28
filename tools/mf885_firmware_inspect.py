@@ -1003,6 +1003,22 @@ KNOWN_ARTIFACTS = {
         "restorable": False,
         "issue": "golden-derived Community R2.2 profile was installed once with its exact static assets and same-unit USB recovery observed after boot, but authenticated semantic UI, SMS mutations, cold boot, repeatability and rollback remain unproved and it is not flash-qualified",
     },
+    "06d79b9e51d54e87e4065ceabac63d70b4d34b72b21bfa096a1132d1b45af86b": {
+        "id": "mf885-community-0.2.3-community-r2-cafe2",
+        "size": 8_323_644,
+        "role": "webui-community",
+        "structural_status": "verified-not-flash-qualified",
+        "restorable": False,
+        "issue": "golden-derived Community R2.3 profile is reproducible and structurally verified with offline desktop and mobile render review, but it is unflashed; live UI, SMS mutations, cold boot, repeatability and rollback remain unproved",
+    },
+    "5bc408710afa5e78836c49da91656a8f94d804ee4fe64c53f6ef7d53786fd7db": {
+        "id": "mf885-community-0.2.4-community-r2-cafe2",
+        "size": 8_323_644,
+        "role": "webui-community",
+        "structural_status": "verified-not-flash-qualified",
+        "restorable": False,
+        "issue": "golden-derived Community R2.4 profile is reproducible and structurally verified with a read-only modem monitor; it is unflashed and live UI, modem polling, SMS mutations, cold boot, repeatability and rollback remain unproved",
+    },
 }
 
 

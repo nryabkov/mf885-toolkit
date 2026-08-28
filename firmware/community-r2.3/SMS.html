@@ -1,0 +1,34 @@
+<div id="mfCommunityR23Sms" class="mfCommunityShell">
+  <div class="mfCommunityHeading">
+    <h2 class="mfCommunityTitle">Messages</h2>
+    <span id="mfSmsFolder" class="mfCommunityFolder">Device inbox</span>
+  </div>
+  <div class="mfCommunityToolbar">
+    <button type="button" id="mfSmsRefresh" class="mfCommunityButton">Refresh</button>
+    <button type="button" id="mfSmsNew" class="mfCommunityButton mfCommunityButtonPrimary">New message</button>
+  </div>
+  <div id="mfSmsWatchPanel" class="mfSmsWatchPanel">
+    <label for="mfSmsAutoCheck" class="mfSmsWatchRow">
+      <input type="checkbox" id="mfSmsAutoCheck">
+      <span>Check for new messages while this tab is open</span>
+    </label>
+    <span id="mfSmsWatchHint" class="mfSmsWatchHint">Off</span>
+  </div>
+  <section id="mfSmsComposer" hidden class="mfCommunityPanel">
+    <label for="mfSmsNumber" class="mfCommunityLabel">Phone number</label>
+    <input id="mfSmsNumber" type="tel" inputmode="tel" maxlength="16" placeholder="+79991234567">
+    <label for="mfSmsBody" class="mfCommunityLabel">Message</label>
+    <textarea id="mfSmsBody" rows="5" maxlength="268"></textarea>
+    <div id="mfSmsCount" class="mfCommunityMeta">0 / 268 · 0 of 4 UCS-2 segments</div>
+    <p class="mfCommunityFinePrint">Your operator may charge per segment. Router acceptance does not prove delivery.</p>
+    <button type="button" id="mfSmsSend" class="mfCommunityButton mfCommunityButtonPrimary">Send</button>
+    <button type="button" id="mfSmsCancel" class="mfCommunityButton">Cancel</button>
+  </section>
+  <div id="mfSmsStatus" role="status" aria-live="polite" class="mfCommunityStatus"></div>
+  <div id="mfSmsList"></div>
+  <nav id="mfSmsPager" hidden class="mfCommunityPager" aria-label="Message pages">
+    <button type="button" id="mfSmsPrevious" class="mfCommunityButton">Previous</button>
+    <span id="mfSmsPage" class="mfCommunityPageLabel">Page 1 of 1</span>
+    <button type="button" id="mfSmsNext" class="mfCommunityButton">Next</button>
+  </nav>
+</div>

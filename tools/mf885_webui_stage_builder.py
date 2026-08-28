@@ -21,10 +21,94 @@ import mf885_webi_builder as base
 import mf885_community_r2 as community_r2
 import mf885_community_r21 as community_r21
 import mf885_community_r22 as community_r22
+import mf885_community_r23 as community_r23
+import mf885_community_r24 as community_r24
 
 
 ROOT = Path(__file__).resolve().parents[1]
 STAGE_PROFILES: dict[str, dict[str, Any]] = {
+    "0.2.4-community-r2": {
+        "kind": "webui-community",
+        "marker": community_r24.MARKER,
+        "artifact": "MF885_Community_0.2.4-community-r2-cafe-r2.bin",
+        "patcher": "community-r2.4",
+        "files": {},
+        "safety": {
+            "routerRequestsOnPageLoad": [
+                "stock locale/status reads on the canonical login page",
+                "after opening /r24.html: at most one opt-in Digest resume attempt and one status1 proof",
+                "semantic-read POST GET_RCV_SMS_LOCAL pages after opening modern Messages",
+                "one each of status1, wan and Engineer_parameter after opening modern Diagnostics",
+                "one each of status1, wan and Engineer_parameter after opening Modem monitor",
+                "when explicitly enabled: one sequential Modem monitor cycle each 30 seconds",
+                "when explicitly enabled: one inbox page each 60 seconds and a bounded full read only after its safe fingerprint changes",
+            ],
+            "mutationContract": "one explicit Send click or one separately confirmed inbox Delete POST, no automatic retry, followed by bounded command status and complete folder readback",
+            "mutationUnknownLocksPageSession": True,
+            "automaticMutationRetries": 0,
+            "modemMonitorReadOnly": True,
+            "modemMonitorEndpoints": ["status1", "wan", "Engineer_parameter"],
+            "modemMonitorPollingDefaultEnabled": False,
+            "modemMonitorPollingMinimumSeconds": 30,
+            "wispStatusOnly": True,
+            "wispScanOrConnectEnabled": False,
+            "ussdTransportProven": False,
+            "ttlMutationEnabled": False,
+            "imeiMutationEnabled": False,
+            "tabAuthStoresPlaintextPassword": False,
+            "tabAuthStoresPasswordEquivalentHA1": True,
+            "languages": ["en"],
+            "customDetailedLogPanel": False,
+            "inheritedStockDetailedLogRoutePresent": True,
+            "safeDiagnosticsBackgroundPolling": False,
+            "smsPollingDefaultEnabled": False,
+            "smsPollingMinimumSeconds": 60,
+            "smsPollingStoresMessageData": False,
+            "systemNotificationRequiresSecureContext": True,
+            "cacheSafeCommunityAssets": True,
+            "canonicalVendorUiLoadsCommunityCode": False,
+            "exactStatus1MutationGate": True,
+            "exactStatus1AuthGate": True,
+            "displayPaginationPageSize": 10,
+            "buildPinned": bool(community_r24.OUTPUT_RECORDS and community_r24.ADDITION_OUTPUT_RECORDS),
+        },
+    },
+    "0.2.3-community-r2": {
+        "kind": "webui-community",
+        "marker": community_r23.MARKER,
+        "artifact": "MF885_Community_0.2.3-community-r2-cafe-r2.bin",
+        "patcher": "community-r2.3",
+        "files": {},
+        "safety": {
+            "routerRequestsOnPageLoad": [
+                "stock locale/status reads on the canonical login page",
+                "after opening /r23.html: at most one opt-in Digest resume attempt and one status1 proof",
+                "semantic-read POST GET_RCV_SMS_LOCAL pages after opening modern Messages",
+                "one each of status1, wan and Engineer_parameter after opening modern Diagnostics",
+                "when explicitly enabled: one inbox page each 60 seconds and a bounded full read only after its safe fingerprint changes",
+            ],
+            "mutationContract": "one explicit Send click or one separately confirmed inbox Delete POST, no automatic retry, followed by bounded command status and complete folder readback",
+            "mutationUnknownLocksPageSession": True,
+            "automaticMutationRetries": 0,
+            "tabAuthStoresPlaintextPassword": False,
+            "tabAuthStoresPasswordEquivalentHA1": True,
+            "languages": ["en"],
+            "customDetailedLogPanel": False,
+            "inheritedStockDetailedLogRoutePresent": True,
+            "backgroundDiagnosticsPolling": False,
+            "smsPollingDefaultEnabled": False,
+            "smsPollingMinimumSeconds": 60,
+            "smsPollingStoresMessageData": False,
+            "systemNotificationRequiresSecureContext": True,
+            "cacheSafeCommunityAssets": True,
+            "canonicalVendorUiLoadsCommunityCode": False,
+            "exactStatus1MutationGate": True,
+            "exactStatus1AuthGate": True,
+            "displayPaginationPageSize": 10,
+            "ussdTransportProven": False,
+            "buildPinned": True,
+        },
+    },
     "0.2.2-community-r2": {
         "kind": "webui-community",
         "marker": community_r22.MARKER,
@@ -149,6 +233,8 @@ DERIVED_PATCHERS = {
     "community-r2": (community_r2, community_r2.CommunityR2Error),
     "community-r2.1": (community_r21, community_r21.CommunityR21Error),
     "community-r2.2": (community_r22, community_r22.CommunityR22Error),
+    "community-r2.3": (community_r23, community_r23.CommunityR23Error),
+    "community-r2.4": (community_r24, community_r24.CommunityR24Error),
 }
 
 
