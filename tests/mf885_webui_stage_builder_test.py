@@ -15,6 +15,7 @@ import mf885_community_r21 as community_r21  # noqa: E402
 import mf885_community_r22 as community_r22  # noqa: E402
 import mf885_community_r23 as community_r23  # noqa: E402
 import mf885_community_r24 as community_r24  # noqa: E402
+import mf885_community_r25 as community_r25  # noqa: E402
 import mf885_webui_stage_builder as stage  # noqa: E402
 
 
@@ -190,6 +191,61 @@ class WebuiStageBuilderTests(unittest.TestCase):
         self.assertEqual(manifest["webi_padding_bytes_remaining"], 49_680)
         with self.assertRaisesRegex(stage.StageBuildError, "reviewed golden"):
             stage.load_profile_sources("0.2.4-community-r2")
+
+    def test_community_r25_is_registered_default_on_read_only_and_fully_pinned(self):
+        specification = stage.STAGE_PROFILES["0.2.5-community-r2"]
+        safety = specification["safety"]
+        self.assertEqual(specification["marker"], community_r25.MARKER)
+        self.assertEqual(specification["patcher"], "community-r2.5")
+        self.assertEqual(safety["modemMonitorEndpoints"], ["status1", "wan", "Engineer_parameter"])
+        self.assertTrue(safety["modemMonitorReadOnly"])
+        self.assertTrue(safety["modemMonitorPollingDefaultEnabled"])
+        self.assertEqual(safety["modemMonitorPollingMinimumSeconds"], 30)
+        self.assertTrue(safety["smsPollingDefaultEnabled"])
+        self.assertEqual(safety["smsPollingMinimumSeconds"], 60)
+        self.assertFalse(safety["engineeringModeMutationEnabled"])
+        self.assertTrue(safety["engineeringModeStateVisible"])
+        self.assertFalse(safety["engineeringModeRequiredForObservedDetailedReads"])
+        self.assertFalse(safety["engineeringModeResourceCostProven"])
+        self.assertTrue(safety["stockSignalQualityFallback"])
+        self.assertTrue(safety["radioTermsHelpCollapsedByDefault"])
+        self.assertEqual(safety["rsrpReportIndexMapping"], "3GPP/ETSI 0..97")
+        self.assertEqual(safety["rsrqReportIndexMapping"], "3GPP/ETSI 0..34")
+        self.assertEqual(safety["sinrRssiDisplay"], "raw-unconverted")
+        self.assertTrue(safety["canonicalHeaderLinksCommunityUi"])
+        self.assertFalse(safety["canonicalVendorUiLoadsCommunityCode"])
+        self.assertFalse(safety["ussdTransportProven"])
+        self.assertFalse(safety["wispScanOrConnectEnabled"])
+        self.assertFalse(safety["ttlMutationEnabled"])
+        self.assertFalse(safety["imeiMutationEnabled"])
+        pinned = bool(community_r25.OUTPUT_RECORDS and community_r25.ADDITION_OUTPUT_RECORDS)
+        self.assertTrue(pinned)
+        self.assertEqual(safety["buildPinned"], pinned)
+        provenance = stage.derived_source_records(community_r25)
+        self.assertEqual(
+            {item["target"] for item in provenance},
+            set(community_r25.OUTPUT_RECORDS)
+            | set(community_r25.CUSTOM_FILES)
+            | set(community_r25.ADDITION_OUTPUT_RECORDS),
+        )
+        self.assertEqual(len(provenance), 21)
+        manifest = json.loads((ROOT / "firmware/community-r2.5/manifest.json").read_text())
+        self.assertEqual(manifest["sources"], [])
+        self.assertEqual(
+            {item["target"]: (item["size"], item["sha256"]) for item in manifest["derived_outputs"]},
+            {
+                target: (size, digest)
+                for target, (size, digest, _source) in community_r25.ADDITION_OUTPUT_RECORDS.items()
+            },
+        )
+        self.assertEqual(manifest["logical_change_counts"], {"replaced": 6, "added": 15, "removed": 18})
+        self.assertEqual(manifest["artifact"]["sha256"], "231e98622e19883d704edc490eed76d249e78f4303af86007b8cfaa12171a84d")
+        self.assertEqual(manifest["artifact"]["portable_plaintext_sha256"], "d9d75cfed7526c108d22e7833adec0085a1637e8635807324d5dfef228c89d70")
+        self.assertEqual(manifest["webi_padding_bytes_remaining"], 34_528)
+        self.assertTrue(manifest["design_review_gate"]["desktop_reviewed"])
+        self.assertFalse(manifest["design_review_gate"]["live_device_reviewed"])
+        with self.assertRaisesRegex(stage.StageBuildError, "reviewed golden"):
+            stage.load_profile_sources("0.2.5-community-r2")
 
     def test_community_profile_is_bound_to_safe_exact_sources(self):
         replacements = stage.load_profile_sources("0.1-community-r1")
@@ -530,6 +586,84 @@ class WebuiStageBuilderTests(unittest.TestCase):
         self.assertNotIn(b"PostXML", modem)
         self.assertNotIn(b"method=set", modem)
         self.assertNotIn(b"wlan_cli_scan", modem)
+
+    @unittest.skipUnless(
+        LOCAL_GOLDEN.is_file() and LOCAL_IDENTITY.is_file(),
+        "exact local golden and identity are optional in CI",
+    )
+    def test_private_community_r25_is_deterministic_header_linked_and_exactly_scoped(self):
+        raw = LOCAL_GOLDEN.read_bytes()
+        identity = inspector.load_identity(LOCAL_IDENTITY)
+        first, first_report = stage.build_stage_image(raw, identity, "0.2.5-community-r2")
+        second, second_report = stage.build_stage_image(raw, identity, "0.2.5-community-r2")
+        self.assertEqual(first, second)
+        self.assertEqual(first_report, second_report)
+        self.assertEqual(len(first), 8_323_644)
+        self.assertEqual(inspector.sha256(first), "231e98622e19883d704edc490eed76d249e78f4303af86007b8cfaa12171a84d")
+        self.assertEqual(stage.base.portable_plaintext_sha256(first, identity), "d9d75cfed7526c108d22e7833adec0085a1637e8635807324d5dfef228c89d70")
+        delta = first_report["profile_delta"]
+        self.assertEqual(len(delta["replaced_paths"]), 6)
+        self.assertEqual(len(delta["added_paths"]), 15)
+        self.assertEqual(delta["removed_paths"], sorted(community_r25.REMOVED_RECORDS))
+        self.assertEqual(first_report["cafe"]["padding_after"], 34_528)
+
+        header = inspector.decrypt_header(first, identity)
+        partitions, layout_errors = inspector.parse_partitions(header, len(first))
+        self.assertEqual(layout_errors, [])
+        for partition in partitions:
+            if partition.name != "WEBI":
+                start, end = partition.offset, partition.offset + partition.length
+                self.assertEqual(first[start:end], raw[start:end], partition.name)
+        webi = next(item for item in partitions if item.name == "WEBI")
+        _, records, _ = stage.base.parse_cafe_source(first[webi.offset : webi.offset + webi.length])
+        logical = {record.path: record.logical_data for record in records}
+        legacy_index = logical["www\\index.html"]
+        modern_index = logical[community_r25.ENTRY_PATH]
+        shared_header = logical["www\\html\\adminApp.html"]
+        self.assertEqual(legacy_index.count(b'href="/r25.html"'), 1)
+        self.assertNotIn(b'r24.html', legacy_index)
+        self.assertEqual(shared_header.count(b'id="mfCommunityHeaderLink"'), 1)
+        self.assertEqual(shared_header.count(b'href="/r25.html"'), 1)
+        self.assertEqual(shared_header.count(b"0.2.5-community-r2"), 1)
+        for route in (b"r25boot.js", b"r25auth.js", b"r25diag.js", b"r25modem.js", b"r25sms.js", b"r25dash.js", b"r25ui.css", b"r25utils.js", b"r25layout.js"):
+            self.assertNotIn(route, legacy_index)
+            self.assertEqual(modern_index.count(route), 1)
+        sms = logical[community_r25.SMS_JS_PATH]
+        diagnostics = logical[community_r25.DIAGNOSTICS_JS_PATH]
+        diagnostics_html = logical[community_r25.DIAGNOSTICS_HTML_PATH]
+        modem = logical[community_r25.MODEM_JS_PATH]
+        modem_html = logical[community_r25.MODEM_HTML_PATH]
+        css = logical[community_r25.CSS_PATH]
+        joined = b"\n".join((legacy_index, modern_index, shared_header, sms, diagnostics, modem))
+        self.assertIn(b"preference===null||preference==='1'", sms)
+        self.assertIn(b"preference===null||preference==='1'", modem)
+        self.assertIn(b"Engineering mode", diagnostics)
+        self.assertIn(b"Signal quality (vendor scale)", diagnostics)
+        self.assertEqual(diagnostics_html.count(b">Radio terms</button>"), 1)
+        self.assertEqual(modem_html.count(b">Radio terms</button>"), 1)
+        self.assertEqual(diagnostics_html.count(b'class="mfRadioTerms" hidden'), 1)
+        self.assertEqual(modem_html.count(b'class="mfRadioTerms" hidden'), 1)
+        self.assertIn(b"Subscriber Identity Module", diagnostics_html)
+        self.assertIn(b"Reference Signal Received Power", modem_html)
+        self.assertIn(b"aria-expanded=\"false\"", diagnostics_html)
+        self.assertIn(b"aria-expanded=\"false\"", modem_html)
+        self.assertIn(b".mfRadioTerms[hidden] { display:none !important; }", css)
+        self.assertIn(b".mfCommunityValues {\n  display:grid;", css)
+        self.assertIn(b".mfCommunityValue { float:none; width:auto; margin:0; }", css)
+        self.assertIn(b".mfHasTerm { display:inline-block; width:auto;", css)
+        self.assertIn(b"setAttribute('title',term)", diagnostics)
+        self.assertIn(b"setAttribute('title',term)", modem)
+        self.assertIn(b"value-140", diagnostics)
+        self.assertIn(b"-19.5+(value*.5)", modem)
+        self.assertIn(b"raw '+decimal(numeric)", diagnostics)
+        self.assertIn(b"raw '+decimal(numeric)", modem)
+        self.assertNotIn(b"method=set", modem)
+        self.assertNotIn(b"PostXML", modem)
+        self.assertNotIn(b"method=set", diagnostics)
+        self.assertNotIn(b"PostXML", diagnostics)
+        self.assertNotIn(b"Engineering_mode>1", joined)
+        self.assertNotIn(b"SEND_USSD", joined)
+        self.assertNotIn(b"wlan_cli_scan", joined)
 
 
 if __name__ == "__main__":

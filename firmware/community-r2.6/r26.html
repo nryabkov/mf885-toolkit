@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MF885 Community</title>
+  <link rel="stylesheet" href="css/r26ui.css">
+  <script src="js/library/md5.js"></script>
+  <script defer src="js/r26app.js"></script>
+</head>
+<body>
+  <div id="boot" class="boot" role="status">Loading interface…</div>
+
+  <main id="login" class="login" hidden>
+    <form id="loginForm" class="login-card">
+      <p class="eyebrow">MF885</p>
+      <h1>Community</h1>
+      <p class="muted">Responsive interface · 0.2.6-community-r2</p>
+      <label for="password">Router password</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required>
+      <button id="signIn" type="submit">Sign in</button>
+      <p id="loginStatus" class="status" role="status" aria-live="polite">No router request has been sent.</p>
+      <a href="/index.html" class="legacy">Open vendor interface</a>
+    </form>
+  </main>
+
+  <div id="app" class="app" hidden>
+    <header>
+      <a href="#dashboard" class="brand" data-page="dashboard">MF885 <span>Community 0.2.6</span></a>
+      <nav aria-label="Primary">
+        <button type="button" data-page="dashboard">Dashboard</button>
+        <button type="button" data-page="messages">Messages</button>
+        <button type="button" data-page="diagnostics">Diagnostics</button>
+        <button type="button" data-page="modem">Modem</button>
+      </nav>
+      <button id="logout" type="button" class="quiet">Sign out</button>
+    </header>
+
+    <main class="content">
+      <section id="page-dashboard" class="page">
+        <p class="eyebrow">Overview</p>
+        <h1>MF885 Community</h1>
+        <p>The interface is ready. Router reads happen only when you request them.</p>
+        <div class="cards">
+          <article><strong>0.2.6</strong><span>Community build</span></article>
+          <article><strong>2.5.94</strong><span>Required base</span></article>
+          <article><strong>Manual</strong><span>Background polling</span></article>
+        </div>
+        <div class="actions">
+          <button type="button" data-page="messages">Open Messages</button>
+          <button type="button" data-page="diagnostics" class="secondary">Run Diagnostics</button>
+        </div>
+      </section>
+
+      <section id="page-messages" class="page" hidden>
+        <div class="page-head">
+          <div><p class="eyebrow">Messages</p><h1 id="folderTitle">Device inbox</h1></div>
+          <select id="folder" aria-label="Message folder">
+            <option value="inbox">Device inbox</option>
+            <option value="sent">Sent messages</option>
+            <option value="sim">SIM messages</option>
+            <option value="drafts">Drafts</option>
+          </select>
+        </div>
+        <div class="actions"><button id="messagesRefresh" type="button">Load messages</button><button id="messagesNew" type="button" class="secondary">New message</button><button id="messagesCancel" type="button" class="secondary" disabled>Cancel</button></div>
+        <p id="messagesStatus" class="status" role="status" aria-live="polite">Nothing loaded. Background polling is off.</p>
+        <form id="messageComposer" class="composer" hidden>
+          <h2>New message</h2>
+          <label for="messageNumber">Phone number</label>
+          <input id="messageNumber" type="tel" inputmode="tel" autocomplete="tel" placeholder="+1234567890">
+          <label for="messageBody">Message</label>
+          <textarea id="messageBody" rows="5" maxlength="268"></textarea>
+          <p id="messageCount" class="muted">0 / 268 · 0 of 4 UCS-2 segments</p>
+          <p class="muted">One explicit send. Carrier charges may apply; a Sent record does not prove delivery.</p>
+          <div class="actions"><button id="messageSend" type="submit">Send once</button><button id="messageDiscard" type="button" class="secondary">Discard</button></div>
+        </form>
+        <div id="messagesList" class="message-list"><p class="empty">Choose Load messages.</p></div>
+        <div id="messagesPager" class="pager" hidden><button id="messagesPrevious" type="button" class="secondary">Previous</button><span id="messagesPage"></span><button id="messagesNext" type="button" class="secondary">Next</button></div>
+      </section>
+
+      <section id="page-diagnostics" class="page" hidden>
+        <div class="page-head"><div><p class="eyebrow">Read only</p><h1>Diagnostics</h1></div><button id="diagnosticsRefresh" type="button">Refresh</button></div>
+        <p id="diagnosticsStatus" class="status" role="status" aria-live="polite">Not read yet.</p>
+        <div id="diagnosticsValues" class="values"></div>
+      </section>
+
+      <section id="page-modem" class="page" hidden>
+        <div class="page-head"><div><p class="eyebrow">Read only</p><h1>Modem</h1></div><button id="modemRefresh" type="button">Refresh</button></div>
+        <p id="modemStatus" class="status" role="status" aria-live="polite">Not read yet. Automatic watch is off.</p>
+        <div id="modemValues" class="values"></div>
+      </section>
+    </main>
+
+    <footer><span>MF885 Community 0.2.6</span><a href="/index.html">Vendor settings</a></footer>
+  </div>
+</body>
+</html>

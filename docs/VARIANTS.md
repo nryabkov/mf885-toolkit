@@ -5,7 +5,9 @@ None is distributed as a firmware binary.
 
 | Wrapper name | Logical ID | Source | Status |
 |---|---|---|---|
-| `community-r2.4` | `0.2.4-community-r2-cafe2` | `firmware/community-r2.4/` plus exact golden/R2.3 derivation rules | Recommended source: R2.3 UI/SMS plus read-only three-GET Modem monitor, bounded opt-in 30-second RAM history and display-only Wi-Fi-uplink status; reproducible WEBI-only build, unflashed and not allowlisted |
+| `community-r2.6` | `0.2.6-community-r2-cafe2` | `firmware/community-r2.6/` plus exact golden derivation rules | Recommended source: standalone non-blocking UI, zero startup I/O, explicit async login/reads, no background watcher, bounded progressive Messages and one-POST/no-replay Send/Delete; WEBI-only, unflashed and not allowlisted |
+| `community-r2.5` | `0.2.5-community-r2-cafe2` | `firmware/community-r2.5/` plus exact golden/R2.4 derivation rules | Installed immutable experimental predecessor: exact post-POST asset surface verified; compact authenticated header/version, default-on tab-local watchers, read-only Engineering state and standards-mapped RSRP/RSRQ indices; not stable or restore-allowlisted, and live SMS mutations/cold boot/repeatability/rollback remain unqualified |
+| `community-r2.4` | `0.2.4-community-r2-cafe2` | `firmware/community-r2.4/` plus exact golden/R2.3 derivation rules | Older installed experimental predecessor: exact assets, authenticated navigation, Diagnostics and bounded 30-second modem polling were observed; SMS mutations, cold boot, repeatability and rollback unqualified |
 | `community-r2.3` | `0.2.3-community-r2-cafe2` | `firmware/community-r2.3/` plus exact golden/R2.2 derivation rules | Immutable unflashed predecessor: minimal canonical vendor entry plus isolated modern `/r23.html`, SMS, opt-in inbox checks and Safe Diagnostics; reproducible WEBI-only build and not allowlisted |
 | `community-r2.2` | `0.2.2-community-r2-cafe2` | `firmware/community-r2.2/` plus exact R2.1 derivation rules | Installed immutable experimental canary: exact static assets, locale removals and same-unit USB/RNDIS recovery verified; English login/Remember visible; authenticated UI, SMS mutations, cold boot and rollback unqualified |
 | `community-r2.1` | `0.2.1-community-r2-cafe2` | `firmware/community-r2.1/` plus exact R2 derivation rules | Installed live canary: exact static state, Remember and read-only Diagnostics/Messages observed; Diagnostics menu label and SMS mutation identity gate have fail-closed live defects; mutations, cold boot and rollback unqualified |
@@ -24,7 +26,7 @@ Earlier Logs artifacts are retained in their manifests as quarantined history.
 Some omitted the stock Digest header; later revisions fixed authentication but
 did not mask every WAN username and IPv6 representation before Copy/Export.
 `community-r1`, `community-r2`, `community-r2.1`, `community-r2.2`,
-`community-r2.3` and `community-r2.4` are built directly from golden rather than layered on a Logs
+`community-r2.3`, `community-r2.4`, `community-r2.5` and `community-r2.6` are built directly from golden rather than layered on a Logs
 artifact. R2.1 and later add Safe Diagnostics, not the native `detailed_log`
 canary or a raw request/console observer.
 

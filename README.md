@@ -83,7 +83,7 @@ python -m pip install -r requirements.txt
 mkdir -p out
 python tools/mf885_build_variant.py --list
 python tools/mf885_build_variant.py \
-  --variant community-r2.4 \
+  --variant community-r2.6 \
   --acknowledge-brick-risk
 ```
 
@@ -98,41 +98,69 @@ reference-unit raw hash is documented only as a reproducibility example. Any
 semantic mismatch is rejected; do not bypass this check or use another unit's
 built binary.
 
-`community-r2.4` is the recommended product-oriented source profile. The
+`community-r2.6` is the recommended product-oriented source profile. Its
+standalone `/r26.html` paints before network I/O and replaces the legacy
+synchronous startup, login, SMS-page loop and default background watchers with
+explicit asynchronous requests that each have a ten-second timeout. It stores
+neither the password nor Digest HA1. Messages keeps the one-POST/no-replay
+Send/Delete contract, complete readback and locked unknown outcome; it renders
+bounded pages progressively and paginates locally. Diagnostics and Modem stay
+manual, read-only three-endpoint views. Exact candidate hashes are in
+`firmware/community-r2.6/manifest.json`.
+
+`community-r2.5` is the installed predecessor. The
 canonical `/index.html` remains a small English vendor interface with one link
-to `/r24.html`; it loads no Community authentication, menu, Messages,
+to `/r25.html`; it loads no Community authentication, menu, Messages,
 Diagnostics or CSS. The isolated modern entry keeps R2.3's exact identity and
 authentication gates, one-POST/no-replay SMS mutations and manual
 **Diagnostics** reads. It shows message bodies immediately, sends only after
-one explicit **Send** click and displays ten messages per local page. Its
-opt-in watcher checks at most once a minute while the tab is open, persists no
-message data and uses only a generic in-page alert on the normal HTTP address.
-Revision-unique subordinate paths avoid silently reusing an older cached
-Community interface.
+one explicit **Send** click and displays ten messages per local page. A compact
+authenticated-header pill links back to `Community 0.2.5`. Revision-unique
+subordinate paths avoid silently reusing an older cached Community interface.
 
-R2.4 adds a read-only **Modem monitor**. It reads only `status1`, `wan` and
-`Engineer_parameter`; a default-off checkbox repeats the same fixed sequence
-every 30 seconds while the tab is active. The copied trace strictly normalizes
-known states and numeric radio metrics and omits raw unknowns, identifiers,
-addresses, APN, SSID, cell location and SMS. Wi-Fi uplink/repeater state is
-display-only: scan/connect writes remain disabled. USSD, TTL and IMEI controls
-remain absent.
+R2.5 keeps the read-only **Modem monitor** and fixed `status1`, `wan`,
+`Engineer_parameter` sequence. Messages checking is default-on at no more than
+once a minute after opening Messages; Modem monitoring is default-on at no
+more than once every 30 seconds after opening Modem monitor. Each checkbox has
+an explicit tab-scoped opt-out, stores no message or modem payload, and fails
+closed if session storage is unavailable. Plain HTTP uses an in-page alert;
+system notifications need a trusted HTTPS origin.
 
-R2.4 removes the same 18 Chinese, Hong Kong and Japanese locale records,
+Diagnostics shows the stock Engineering-mode state and the unitless
+`status1/rssi` vendor scale without mislabelling it as dBm. Detailed radio
+rows are shown only when returned; otherwise one concise `Not returned` row
+preserves the evidence without deleting any parser or field. Returned
+RSRP/RSRQ report indices are mapped through the primary 3GPP/ETSI reporting
+tables while retaining the index; SINR and RSSI remain explicitly raw. Metric
+labels expose full English names, with the same explanations in a collapsed
+**Radio terms** panel that performs no router request.
+
+A controlled single enable/read/rollback cycle on the predecessor confirmed
+that the mode changes but its immediate `Engineer_parameter` read was empty.
+Two later GET-only reads while the state was confirmed Disabled returned the
+full 107-tag engineering schema and detailed LTE values. Enabled is not
+required for the observed reads; data freshness/cache behavior and resource
+cost remain unproved, so R2.5 keeps the selector read-only. The copied
+snapshots still omit raw XML, identifiers, addresses, APN, SSID, cell location
+and SMS. Wi-Fi repeater scan/connect, USSD, TTL, IMEI and Engineering-mode
+writes remain absent from R2.5.
+
+R2.5 removes the same 18 Chinese, Hong Kong and Japanese locale records,
 reclaiming 263,312 bytes inside WEBI without changing the fixed 8,323,644-byte
-firmware size. Its reference-unit SHA-256 is
-`5bc408710afa5e78836c49da91656a8f94d804ee4fe64c53f6ef7d53786fd7db`;
+firmware size. Two cumulative reference builds are byte-identical. Their raw
+SHA-256 is
+`231e98622e19883d704edc490eed76d249e78f4303af86007b8cfaa12171a84d`;
 portable plaintext SHA-256 is
-`e33038e8a80838db6d91d347c4fc0c06480e365f577627edbf7a3cdf95e0bdc1`.
-Another compatible unit normally has a different raw hash because the header
-is unit-bound.
-
-Two exact R2.4 builds were byte-identical, exactly six records were replaced,
-15 were added, 18 locale records were removed, and only WEBI changed. R2.4 remains
-`experimental-unflashed`; its live UI, SMS Send/Delete, cold boot,
-repeatability and rollback are unqualified. It is not stable, flash-qualified
-or restore-allowlisted. R2.3 remains an immutable unflashed predecessor and
-installed R2.2 remains an immutable experimental live canary.
+`d9d75cfed7526c108d22e7833adec0085a1637e8635807324d5dfef228c89d70`.
+Only WEBI changes and 34,528 padding bytes remain. Desktop review aligned the
+Diagnostics columns and narrowed abbreviation hints to their labels. The prior
+`186ca73a…ff7` and `ef7a077d…f544` candidates remain retained privately as
+`superseded-unflashed`, not silently overwritten. R2.5 is installed and its
+asset surface is byte-verified; SMS Send/Delete, cold boot, repeatability and
+firmware rollback remain unqualified. It is not stable, generally
+flash-qualified or restore-allowlisted. R2.4 is an immutable older
+experimental live predecessor;
+one successful installation does not qualify repeatability or rollback.
 
 Authenticated read-only validation of immutable R2.1 proved Remember reload/logout, reads
 of all four empty Messages folders, the three fixed Diagnostics reads and the

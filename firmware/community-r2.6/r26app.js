@@ -1,0 +1,128 @@
+/* MF885 Community R2.6 non-blocking shell 0.2.6-community-r2 */
+(function(w){
+  'use strict';
+  var VERSION='0.2.6-community-r2',REQUEST_TIMEOUT_MS=10000,MAX_MESSAGE_PAGES=20,DISPLAY_PAGE_SIZE=10,STATUS_POLLS=10,MAX_SMS_UNITS=268;
+  var ENDPOINTS=['status1','wan','Engineer_parameter'];
+  var FOLDERS={inbox:{flag:'GET_RCV_SMS_LOCAL',label:'Device inbox',tags:'12',store:'1',deletable:true},sent:{flag:'GET_SENT_SMS_LOCAL',label:'Sent messages',tags:'2',store:'1'},sim:{flag:'GET_SIM_SMS',label:'SIM messages',tags:'',store:'0'},drafts:{flag:'GET_DRAFT_SMS',label:'Drafts',tags:'2',store:'2'}};
+  var session=null,currentRequest=null,messages=[],messagePage=1,messagesComplete=false,mutationBusy=false,mutationLocked=false;
+
+  function node(id){return w.document.getElementById(id)}
+  function status(id,text,error){var target=node(id);target.textContent=text;target.className='status'+(error?' error':'')}
+  function escapeXml(value){return String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;')}
+  function children(root,name){var result=[],wanted=String(name).toLowerCase(),items=root&&root.childNodes?root.childNodes:[];for(var i=0;i<items.length;i++)if(items[i].nodeType===1&&String(items[i].nodeName||'').toLowerCase()===wanted)result.push(items[i]);return result}
+  function one(root,name){var items=children(root,name);return items.length===1?String(items[0].textContent||'').trim():null}
+  function parseXml(value){var doc=new w.DOMParser().parseFromString(String(value||''),'text/xml');if(!doc.documentElement||doc.getElementsByTagName('parsererror').length||String(doc.documentElement.nodeName).toUpperCase()!=='RGW')throw new Error('The router returned invalid XML.');var login=text(doc,'login_status');if(/^(?:KICKOFF|TIMEOUT|UNAUTHORIZED)$/i.test(login))throw new Error('The router session expired. Sign in again.');return doc}
+  function text(root,name){var list=root&&root.getElementsByTagName?root.getElementsByTagName(name):[];return list.length?String(list[0].textContent||'').trim():''}
+  function exactIdentity(doc){var root=doc&&doc.documentElement;if(!root||String(root.nodeName||'').toUpperCase()!=='RGW'||doc.getElementsByTagName('login_status').length)return false;var statusRoots=children(root,'status'),sysinfo=children(root,'sysinfo');if(statusRoots.length||sysinfo.length!==1)return false;var model=one(sysinfo[0],'model_name'),hardware=one(sysinfo[0],'hardware_version'),version=one(sysinfo[0],'version_num');return /^(?:LV01|MF885)$/i.test(model||'')&&hardware==='MF96 Ver.D'&&version==='2.5.94_release_MF855_NZ_CP_2.129.003'}
+  function randomHex(){var bytes=new Uint8Array(8);if(w.crypto&&w.crypto.getRandomValues)w.crypto.getRandomValues(bytes);else for(var i=0;i<bytes.length;i++)bytes[i]=Math.floor(Math.random()*256);var out='';for(var j=0;j<bytes.length;j++)out+=('0'+bytes[j].toString(16)).slice(-2);return out}
+  function parseChallenge(header){var source=String(header||'').replace(/^\s*Digest\s+/i,''),result={},match,pattern=/([!#$%&'*+.^_`|~0-9A-Za-z-]+)\s*=\s*(?:"((?:\\.|[^"])*)"|([^,\s]+))/g;while((match=pattern.exec(source)))result[String(match[1]).toLowerCase()]=(match[2]!==undefined?match[2].replace(/\\(.)/g,'$1'):match[3]);var qops=String(result.qop||'').toLowerCase().split(',').map(function(value){return value.trim()});if(!result.realm||!result.nonce||qops.indexOf('auth')<0)throw new Error('The router returned an unsupported login challenge.');return {realm:result.realm,nonce:result.nonce,qop:'auth',opaque:result.opaque||''}}
+  function proof(auth,ha1,method,uri,nc){var count=('00000000'+Number(nc).toString(16)).slice(-8),cnonce=randomHex(),response=w.hex_md5(ha1+':'+auth.nonce+':'+count+':'+cnonce+':'+auth.qop+':'+w.hex_md5(method+':'+uri));return {method:method,uri:uri,nc:count,cnonce:cnonce,response:response}}
+  function digestHeader(auth,ha1,method,nc){var item=proof(auth,ha1,method,'/cgi/xml_action.cgi',nc),opaque=auth.opaque?', opaque="'+auth.opaque+'"':'';return 'Digest username="admin", realm="'+auth.realm+'", nonce="'+auth.nonce+'", uri="'+item.uri+'", response="'+item.response+'", qop='+auth.qop+', nc='+item.nc+', cnonce="'+item.cnonce+'"'+opaque}
+  function nextHeader(method){if(!session)throw new Error('Sign in first.');var value=digestHeader(session.challenge,session.ha1,method,session.nc);session.nc++;return value}
+
+  function request(options){
+    return new Promise(function(resolve,reject){
+      var xhr=new w.XMLHttpRequest(),settled=false;
+      currentRequest=xhr;
+      function finish(error){if(settled)return;settled=true;if(currentRequest===xhr)currentRequest=null;if(error)reject(error);else resolve({status:xhr.status,body:xhr.responseText||'',auth:xhr.getResponseHeader('WWW-Authenticate')||''})}
+      try{xhr.open(options.method||'GET',options.url,true);xhr.timeout=options.timeoutMs||REQUEST_TIMEOUT_MS;xhr.setRequestHeader('Cache-Control','no-store, no-cache, must-revalidate');xhr.setRequestHeader('Pragma','no-cache');if(options.authorization)xhr.setRequestHeader('Authorization',options.authorization);if(options.body)xhr.setRequestHeader('Content-Type','text/xml;charset=UTF-8');xhr.onload=function(){if(xhr.status===200)finish();else finish(new Error('Router HTTP '+xhr.status+'.'))};xhr.onerror=function(){finish(new Error('The router connection failed.'))};xhr.ontimeout=function(){finish(new Error('The router did not answer within '+Math.round(xhr.timeout/1000)+' seconds.'))};xhr.onabort=function(){finish(new Error('Request cancelled.'))};xhr.send(options.body||null)}catch(error){finish(error)}
+    });
+  }
+  function cancelCurrent(){if(currentRequest)try{currentRequest.abort()}catch(_){}}
+  function modelUrl(name){if(ENDPOINTS.indexOf(name)<0)throw new Error('Unsupported router model.');return '/xml_action.cgi?method=get&module=duster&file='+encodeURIComponent(name)}
+  function modelGet(name){return request({method:'GET',url:modelUrl(name),authorization:nextHeader('GET')}).then(function(reply){return parseXml(reply.body)})}
+
+  function login(password){
+    status('loginStatus','Request 1 of 3: asking for a login challenge…');node('signIn').disabled=true;
+    return request({method:'GET',url:'/login.cgi'}).then(function(challengeReply){
+      if(challengeReply.body.trim())throw new Error('The login challenge body was not empty.');
+      var challenge=parseChallenge(challengeReply.auth),ha1=w.hex_md5('admin:'+challenge.realm+':'+password),queryProof=proof(challenge,ha1,'GET','/cgi/protected.cgi',1),header=digestHeader(challenge,ha1,'GET',1);
+      var query='realm='+encodeURIComponent(challenge.realm)+'&nonce='+encodeURIComponent(challenge.nonce)+'&response='+queryProof.response+'&qop=auth&cnonce='+queryProof.cnonce+'&Action=Digest&username=admin&temp=marvell';
+      status('loginStatus','Request 2 of 3: signing in…');
+      return request({method:'GET',url:'/login.cgi?'+query,authorization:header}).then(function(loginReply){
+        if(/unauthorized|<login_status>\s*(?:UNAUTHORIZED|TIMEOUT|KICKOFF)/i.test(loginReply.body))throw new Error('The router rejected the password.');
+        session={challenge:challenge,ha1:ha1,nc:2};
+        status('loginStatus','Request 3 of 3: verifying this MF885…');return modelGet('status1');
+      });
+    }).then(function(identity){
+      if(!exactIdentity(identity))throw new Error('The exact MF885 / Ver.D / 2.5.94 identity was not proven.');
+      password='';node('login').hidden=true;node('app').hidden=false;showPage('dashboard');
+    }).catch(function(error){session=null;status('loginStatus',error.message||'Sign in failed.',true);throw error}).finally(function(){node('signIn').disabled=false});
+  }
+
+  function showPage(name){var pages=w.document.querySelectorAll('.page');for(var i=0;i<pages.length;i++)pages[i].hidden=pages[i].id!=='page-'+name;var buttons=w.document.querySelectorAll('[data-page]');for(var j=0;j<buttons.length;j++)buttons[j].classList.toggle('active',buttons[j].getAttribute('data-page')===name);w.location.hash=name}
+  function renderValues(id,rows){var root=node(id);root.textContent='';for(var i=0;i<rows.length;i++){var box=w.document.createElement('div'),label=w.document.createElement('span'),value=w.document.createElement('strong');box.className='value';label.textContent=rows[i][0];value.textContent=rows[i][1]||'Not returned';box.appendChild(label);box.appendChild(value);root.appendChild(box)}}
+  function first(models,name){for(var i=0;i<ENDPOINTS.length;i++){var doc=models[ENDPOINTS[i]];if(doc){var value=text(doc,name);if(value)return value}}return ''}
+  function mapped(raw,map){return Object.prototype.hasOwnProperty.call(map,raw)?map[raw]:raw||'Not returned'}
+  function readThree(prefix,valuesId){
+    var models={},index=0,failures=[];node(prefix+'Refresh').disabled=true;
+    function next(){if(index>=ENDPOINTS.length)return Promise.resolve();var name=ENDPOINTS[index++];status(prefix+'Status','Reading '+name+' ('+index+' of 3)…');return modelGet(name).then(function(doc){models[name]=doc},function(error){failures.push(name+': '+error.message)}).then(next)}
+    return next().then(function(){
+      if(!Object.keys(models).length)throw new Error(failures.join(' · ')||'No diagnostics source answered.');
+      var identity=models.status1&&exactIdentity(models.status1);
+      var rows=[['Identity',identity?'MF885 · Ver.D · 2.5.94':'Not proven'],['SIM',mapped(first(models,'sim_status'),{'0':'Ready','1':'Absent'})],['Registration',mapped(first(models,'NW_register_status'),{'0':'Not registered','1':'Registered · home','2':'Searching','5':'Registered · roaming'})],['Radio',mapped(first(models,'sys_mode'),{'0':'No service','3':'2G','4':'3G','5':'3G','6':'4G · LTE','17':'4G · LTE'})],['Operator',first(models,'network_name')||first(models,'ISP_name')],['Battery',first(models,'Battery_percent')?first(models,'Battery_percent')+'%':''],['Engineering mode',mapped(first(models,'Engineering_mode'),{'0':'Disabled','1':'Enabled'})],['RSRP',first(models,'RSRP')||first(models,'rsrp')],['RSRQ',first(models,'RSRQ')||first(models,'rsrq')],['Band',first(models,'LTE_band')||first(models,'band')]];
+      renderValues(valuesId,rows);status(prefix+'Status',failures.length?'Partial read. '+failures.join(' · '):'Read complete from three fixed endpoints.',!!failures.length);
+    }).catch(function(error){status(prefix+'Status',error.message,true)}).finally(function(){node(prefix+'Refresh').disabled=false});
+  }
+
+  function smsRequestXml(folder,page){return '<RGW><message><flag><message_flag>'+escapeXml(folder.flag)+'</message_flag></flag><get_message><page_number>'+page+'</page_number></get_message></message></RGW>'}
+  function decodeUcs2(value){var source=String(value||'').trim();if(!/^(?:[0-9a-fA-F]{4})+$/.test(source))return source;var output='';for(var i=0;i<source.length;i+=4)output+=String.fromCharCode(parseInt(source.slice(i,i+4),16));return output}
+  function parseSmsPage(doc){var containers=doc.getElementsByTagName('get_message');if(containers.length!==1||containers[0].getElementsByTagName('message_list').length!==1)throw new Error('Unexpected Messages response.');var items=containers[0].getElementsByTagName('Item'),result=[];for(var i=0;i<items.length;i++){var from=decodeUcs2(text(items[i],'from')).replace(/^;/,'').replace(/;.*$/,''),recipient=decodeUcs2(text(items[i],'contacts')||text(items[i],'to')||text(items[i],'from')).replace(/^;/,'').replace(/;.*$/,'');result.push({id:text(items[i],'index'),from:from,recipient:recipient,body:decodeUcs2(text(items[i],'subject')||text(items[i],'content')),date:text(items[i],'received')})}var total=parseInt(text(containers[0],'total_number'),10);return {items:result,pages:Number.isFinite(total)&&total>0?total:null}}
+  function smsPage(folder,page){var body=smsRequestXml(folder,page);return request({method:'POST',url:'/xml_action.cgi?method=set&module=duster&file=message',authorization:nextHeader('POST'),body:body}).then(function(){return request({method:'GET',url:'/xml_action.cgi?method=get&module=duster&file=message',authorization:nextHeader('GET')})}).then(function(reply){return parseSmsPage(parseXml(reply.body))})}
+  function readFolderData(folderKey,onProgress){
+    var folder=FOLDERS[folderKey],all=[],reportedPages=null,page=1,seen={},ids={};
+    function next(){
+      if(page>MAX_MESSAGE_PAGES)throw new Error('Stopped at the 20-page safety limit.');
+      var currentPage=page;return smsPage(folder,currentPage).then(function(result){
+        if(currentPage===1)reportedPages=result.pages;else if(result.pages!==null&&result.pages!==reportedPages)throw new Error('The router changed the page count during the read.');
+        var fingerprint=result.items.map(function(item){return [item.id,item.from,item.date,item.body].join('\u001f')}).join('\u001e');if(fingerprint&&seen[fingerprint])throw new Error('The router repeated a page.');if(fingerprint)seen[fingerprint]=true;
+        for(var i=0;i<result.items.length;i++){var id=String(result.items[i].id||'');if(!/^[A-Za-z0-9_-]{1,64}$/.test(id)||ids[id])throw new Error('The router returned an unsafe or repeated message ID.');ids[id]=true}
+        all=all.concat(result.items);if(onProgress)onProgress(all.slice(),currentPage);
+        if((reportedPages!==null&&currentPage>=reportedPages)||(reportedPages===null&&result.items.length<10)||!result.items.length)return;
+        page++;return new Promise(function(resolve){w.setTimeout(resolve,0)}).then(next);
+      })
+    }
+    return next().then(function(){return {items:all,complete:true}});
+  }
+  function setMessageControls(busy){node('messagesRefresh').disabled=busy;node('messagesNew').disabled=busy||mutationLocked;node('messagesCancel').disabled=!busy||mutationBusy;node('folder').disabled=busy;node('messageSend').disabled=busy||mutationLocked;node('messageDiscard').disabled=busy}
+  function loadMessages(){
+    if(mutationBusy||mutationLocked)return Promise.resolve();
+    var folderKey=node('folder').value;messagesComplete=false;setMessageControls(true);status('messagesStatus','Reading page 1…');
+    return readFolderData(folderKey,function(all,page){messages=all;messagePage=1;renderMessages();status('messagesStatus','Loaded '+all.length+' messages; completed page '+page+'…')}).then(function(result){messages=result.items;messagesComplete=true;messagePage=1;renderMessages();status('messagesStatus',messages.length+' message'+(messages.length===1?'':'s')+'. Complete bounded read. Background polling remains off.')}).catch(function(error){messagesComplete=false;status('messagesStatus',error.message||'Messages unavailable.',true)}).finally(function(){setMessageControls(false)});
+  }
+  function renderMessages(){var root=node('messagesList');root.textContent='';var pages=Math.max(1,Math.ceil(messages.length/DISPLAY_PAGE_SIZE)),folder=FOLDERS[node('folder').value];messagePage=Math.max(1,Math.min(messagePage,pages));if(!messages.length){var empty=w.document.createElement('p');empty.className='empty';empty.textContent='No messages.';root.appendChild(empty)}else{var start=(messagePage-1)*DISPLAY_PAGE_SIZE,end=Math.min(messages.length,start+DISPLAY_PAGE_SIZE);for(var i=start;i<end;i++){var article=w.document.createElement('article'),head=w.document.createElement('div'),sender=w.document.createElement('strong'),date=w.document.createElement('time'),body=w.document.createElement('div');article.className='message';head.className='message-head';sender.textContent=messages[i].from||'Unknown sender';date.textContent=messages[i].date||'Date not returned';body.className='message-body';body.textContent=messages[i].body;head.appendChild(sender);head.appendChild(date);article.appendChild(head);article.appendChild(body);if(folder.deletable&&messagesComplete){var button=w.document.createElement('button');button.type='button';button.className='danger';button.textContent='Delete';button.setAttribute('data-delete-id',messages[i].id);button.disabled=mutationBusy||mutationLocked;button.addEventListener('click',function(){deleteMessage(this.getAttribute('data-delete-id'))});article.appendChild(button)}root.appendChild(article)}}node('messagesPager').hidden=messages.length<=DISPLAY_PAGE_SIZE;node('messagesPage').textContent='Page '+messagePage+' of '+pages;node('messagesPrevious').disabled=messagePage<=1;node('messagesNext').disabled=messagePage>=pages}
+
+  function encodeUcs2(value){var output='';for(var i=0;i<value.length;i++)output+=('0000'+value.charCodeAt(i).toString(16)).slice(-4);return output.toUpperCase()}
+  function validPhone(value){return /^\+?[0-9]{3,15}$/.test(String(value||''))}
+  function validBody(value){value=String(value||'');if(!value.length||value.length>MAX_SMS_UNITS)return false;for(var i=0;i<value.length;i++){var code=value.charCodeAt(i);if((code>=0xd800&&code<=0xdfff)||code===0||(code>=0x7f&&code<=0x9f)||(code<0x20&&code!==10&&code!==13))return false}return true}
+  function segments(value){var length=String(value||'').length;return length?length<=70?1:Math.ceil(length/67):0}
+  function smsTime(date){date=date||new Date();var year=String(date.getFullYear()).slice(2),zone=0-date.getTimezoneOffset()/60,zoneText=zone>0?'%2B'+zone:'-'+zone;return [year,date.getMonth()+1,date.getDate(),date.getHours(),date.getMinutes(),date.getSeconds(),zoneText].join(',')}
+  function commandState(doc){var command=text(doc,'sms_cmd'),result=text(doc,'sms_cmd_status_result');return {command:command,result:result,complete:result==='3',pending:result===''||result==='0'||result==='1'}}
+  function pollCommand(command,attempt){return request({method:'GET',url:'/xml_action.cgi?method=get&module=duster&file=message',authorization:nextHeader('GET')}).then(function(reply){var value=commandState(parseXml(reply.body));if(value.command===String(command)&&value.complete)return;if(value.command===String(command)&&!value.pending)throw new Error('Router rejected command '+command+' with status '+value.result+'.');if(attempt>=STATUS_POLLS-1)throw new Error('Command completion was not proven.');return new Promise(function(resolve){w.setTimeout(resolve,1000)}).then(function(){return pollCommand(command,attempt+1)})})}
+  function postMutation(body,command){return request({method:'POST',url:'/xml_action.cgi?method=set&module=duster&file=message',authorization:nextHeader('POST'),body:body}).then(function(){return pollCommand(command,0)})}
+  function lockUnknown(message){mutationLocked=true;mutationBusy=false;setMessageControls(false);renderMessages();status('messagesStatus',message+' Outcome unknown; reload the page before another write.',true)}
+  function sendXml(number,body,date){return '<RGW><message><flag><message_flag>SEND_SMS</message_flag><sms_cmd>4</sms_cmd></flag><send_save_message><contacts>'+escapeXml(number)+'</contacts><content>'+encodeUcs2(body)+'</content><encode_type>UNICODE</encode_type><sms_time>'+smsTime(date)+'</sms_time></send_save_message></message></RGW>'}
+  function deleteXml(id){var folder=FOLDERS.inbox;return '<RGW><message><flag><message_flag>DELETE_SMS</message_flag><sms_cmd>6</sms_cmd></flag><get_message><tags>'+folder.tags+'</tags><mem_store>'+folder.store+'</mem_store></get_message><set_message><delete_message_id>'+escapeXml(id)+',</delete_message_id></set_message></message></RGW>'}
+  function sendMessage(event){
+    event.preventDefault();if(mutationBusy||mutationLocked)return;var target=String(node('messageNumber').value||'').trim(),body=String(node('messageBody').value||'');if(!validPhone(target)){status('messagesStatus','Use 3–15 digits and an optional leading +. Nothing sent.',true);return}if(!validBody(body)){status('messagesStatus','Use 1–268 BMP characters without emoji or control characters. Nothing sent.',true);return}
+    mutationBusy=true;setMessageControls(true);status('messagesStatus','Reading the complete Sent baseline before submission…');var beforeIds={},submitted=false;
+    readFolderData('sent').then(function(before){for(var i=0;i<before.items.length;i++)beforeIds[before.items[i].id]=true;status('messagesStatus','Submitting exactly one Send request…');submitted=true;return postMutation(sendXml(target,body),4)}).then(function(){status('messagesStatus','Send accepted; verifying the complete Sent folder…');return readFolderData('sent')}).then(function(after){var matched=false;for(var i=0;i<after.items.length;i++){var item=after.items[i];if(!beforeIds[item.id]&&item.recipient===target&&item.body===body){matched=true;break}}if(!matched){lockUnknown('No matching new Sent record was found.');return}mutationBusy=false;setMessageControls(false);node('messageComposer').hidden=true;node('messageNumber').value='';node('messageBody').value='';node('messageCount').textContent='0 / '+MAX_SMS_UNITS+' · 0 of 4 UCS-2 segments';status('messagesStatus','Recorded in Sent. Delivery is not proven. No retry was sent.')}).catch(function(error){if(submitted)lockUnknown(error.message||'Send verification failed.');else{mutationBusy=false;setMessageControls(false);status('messagesStatus',(error.message||'Sent baseline failed.')+' Nothing was submitted.',true)}})
+  }
+  function deleteMessage(id){
+    if(mutationBusy||mutationLocked||!messagesComplete||node('folder').value!=='inbox'||!/^[A-Za-z0-9_-]{1,64}$/.test(String(id||'')))return;if(!w.confirm('Delete this SMS? This cannot be undone.'))return;
+    mutationBusy=true;setMessageControls(true);status('messagesStatus','Submitting exactly one Delete request…');var submitted=true;
+    postMutation(deleteXml(id),6).then(function(){status('messagesStatus','Delete accepted; verifying the complete inbox…');return readFolderData('inbox')}).then(function(after){for(var i=0;i<after.items.length;i++)if(after.items[i].id===id){lockUnknown('The deleted ID is still present.');return}messages=after.items;messagesComplete=true;messagePage=1;mutationBusy=false;setMessageControls(false);renderMessages();status('messagesStatus','Deleted and verified absent. No retry was sent.')}).catch(function(error){if(submitted)lockUnknown(error.message||'Delete verification failed.')})
+  }
+
+  function bind(){
+    node('boot').hidden=true;node('login').hidden=false;
+    node('loginForm').addEventListener('submit',function(event){event.preventDefault();var password=node('password').value;login(password).catch(function(){}).finally(function(){node('password').value=''})});
+    var links=w.document.querySelectorAll('[data-page]');for(var i=0;i<links.length;i++)links[i].addEventListener('click',function(event){event.preventDefault();showPage(this.getAttribute('data-page'))});
+    node('logout').addEventListener('click',function(){cancelCurrent();session=null;messages=[];messagesComplete=false;mutationBusy=false;mutationLocked=false;node('app').hidden=true;node('login').hidden=false;status('loginStatus','Signed out. No automatic request will run.');node('password').focus()});
+    node('diagnosticsRefresh').addEventListener('click',function(){readThree('diagnostics','diagnosticsValues')});node('modemRefresh').addEventListener('click',function(){readThree('modem','modemValues')});
+    node('messagesRefresh').addEventListener('click',loadMessages);node('messagesCancel').addEventListener('click',cancelCurrent);node('messagesNew').addEventListener('click',function(){if(!mutationBusy&&!mutationLocked){node('messageComposer').hidden=false;node('messageNumber').focus()}});node('messageDiscard').addEventListener('click',function(){if(!mutationBusy)node('messageComposer').hidden=true});node('messageComposer').addEventListener('submit',sendMessage);node('messageBody').addEventListener('input',function(){var length=String(this.value||'').length,parts=segments(this.value);node('messageCount').textContent=length+' / '+MAX_SMS_UNITS+' · '+parts+' of 4 UCS-2 segment'+(parts===1?'':'s')});node('folder').addEventListener('change',function(){messages=[];messagesComplete=false;messagePage=1;node('folderTitle').textContent=FOLDERS[this.value].label;renderMessages();status('messagesStatus','Nothing loaded. Background polling is off.')});
+    node('messagesPrevious').addEventListener('click',function(){if(messagePage>1){messagePage--;renderMessages()}});node('messagesNext').addEventListener('click',function(){if(messagePage<Math.ceil(messages.length/DISPLAY_PAGE_SIZE)){messagePage++;renderMessages()}});
+  }
+  w.MF885CommunityR26={version:VERSION,timeoutMs:REQUEST_TIMEOUT_MS,maxMessagePages:MAX_MESSAGE_PAGES,statusPolls:STATUS_POLLS,parseChallenge:parseChallenge,parseXml:parseXml,exactIdentity:exactIdentity,parseSmsPage:parseSmsPage,request:request,login:login,cancel:cancelCurrent,validPhone:validPhone,validBody:validBody,segments:segments,encodeUcs2:encodeUcs2,smsTime:smsTime,sendXml:sendXml,deleteXml:deleteXml,commandState:commandState};
+  if(w.document.readyState==='loading')w.document.addEventListener('DOMContentLoaded',bind);else bind();
+})(window);
