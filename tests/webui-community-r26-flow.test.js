@@ -31,6 +31,7 @@ function fixture(options = {}) {
   const document = window.document;
   Object.defineProperty(document.getElementById('folder'), 'value', { value: 'inbox', writable: true, configurable: true });
   const requests = [];
+  const consoleEntries = [];
   const counters = { semanticReads: 0, sendPosts: 0, deletePosts: 0, statusGets: 0 };
   const state = {
     inbox: Array.from({ length: 12 }, (_, index) => ({ id: `LRCV${index + 1}`, from: `+155500000${String(index + 1).padStart(2, '0')}`, body: `Inbox ${index + 1}` })),
@@ -103,10 +104,14 @@ function fixture(options = {}) {
   window.confirm = () => true;
   window.setTimeout = callback => { queueMicrotask(callback); return 1; };
   window.clearTimeout = () => {};
-  const context = { window, document, console, Date, JSON, Array, Object, String, Number, Boolean, RegExp, Error, Promise, Map, Set, Uint8Array };
+  window.console = {
+    debug(...values) { consoleEntries.push(['debug', ...values]); },
+    error(...values) { consoleEntries.push(['error', ...values]); }
+  };
+  const context = { window, document, console: window.console, Date, JSON, Array, Object, String, Number, Boolean, RegExp, Error, Promise, Map, Set, Uint8Array };
   vm.createContext(context);
   vm.runInContext(source, context, { filename: 'r26app.js' });
-  return { window, document, requests, counters, state };
+  return { window, document, requests, counters, state, consoleEntries };
 }
 
 async function waitFor(predicate, label) {
@@ -186,4 +191,6 @@ test('R2.6 never retries an ambiguous Send and locks further writes', { skip: !p
   assert.equal(value.counters.statusGets, 10);
   assert.equal(value.document.getElementById('messagesNew').disabled, true);
   assert.equal(value.document.getElementById('messageSend').disabled, true);
+  assert.match(value.document.getElementById('messagesStatus').textContent, /\[E_COMMAND_UNPROVEN · R26-[0-9]{4}\]/);
+  assert.equal(value.consoleEntries.some(entry => entry[0] === 'error' && /\[E_COMMAND_UNPROVEN\]/.test(entry[1])), true);
 });

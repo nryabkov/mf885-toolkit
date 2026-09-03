@@ -1,0 +1,123 @@
+{
+  "schema": "mf885-community-r32-manifest/v1",
+  "profile": "0.3.2-community-r2",
+  "status": "OFFLINE_CANDIDATE_NOT_INSTALLED",
+  "installed_predecessor": {
+    "file": "MF885_Community_0.3.1-community-r2-native-r4-cafe-r2.bin",
+    "bytes": 8323644,
+    "sha256": "74e61b4d0f386cfc079c7eb19d7e11ad640f96a144800d6625306104ef95ceeb",
+    "ttl_getter_live_status": "NO_RESPONSE_BYTES_WITHOUT_USB_RESET"
+  },
+  "source": {
+    "file": "MF885_golden_capture_a.bin",
+    "bytes": 8323644,
+    "sha256": "2b5880fc26805918bb574d07341ea9b863f8261be34c3bf9766fac0929204531"
+  },
+  "candidate": {
+    "file": "MF885_Community_0.3.2-community-r2-native-r5-cafe-r2.bin",
+    "bytes": 8323644,
+    "sha256": "a3326c9bf18f024e898c7cf8108c237d09b7ef92579209eb5e51a3d209ff3dfc",
+    "report_bytes": 52095,
+    "report_sha256": "2b86b913ff3e68aa2b42c2fba60045ff7ac3efaa0ead602e133c7965c4595cfe"
+  },
+  "oslo": {
+    "source_bytes": 9648064,
+    "source_sha256": "d51fb378d8ccf68662174f39d6b8c4f6be5571280790bc3a4dc4a9e8a967078c",
+    "candidate_bytes": 9648064,
+    "candidate_sha256": "825c0d10170c14b01282388ce9ef1d05cb10aee5ce314e6322e401d66648e023",
+    "compressed_bytes": 4549432,
+    "fixed_partition_bytes": 4587520,
+    "padding_bytes": 38088,
+    "partition_sha256": "ed3ecc5aba0bd9988247694499b5f444280e4bb463cc7168aff932dec2290d39",
+    "actual_changed_bytes": 646,
+    "unauthorized_changed_bytes": 0
+  },
+  "native_lifecycle": {
+    "stock_pre_get_dispatch": "0x72c51a",
+    "stock_global_flag_on": "0x72c51e",
+    "stock_core_get_region_entry": "0x72c532",
+    "stock_global_flag_off": "0x72c536",
+    "stock_post_get_dispatch": "0x72c5be",
+    "publisher_slot": "pre_get",
+    "publisher_runtime": "0x06001520",
+    "publisher_bytes": 208,
+    "publisher_code_bytes": 200,
+    "publisher_sha256": "ab8cbe2758fd7be96d97d6d837068b51f63e07c35494d80bb06435a68600ce59",
+    "publisher_byte_equal_to_r31": true,
+    "post_get_pointer": 0,
+    "r32_delta_from_r31": "only the Duster pre_get and post_get pointer words",
+    "timing_root_cause_is_hypothesis": true,
+    "target_lifecycle_proof": false
+  },
+  "web_assets": {
+    "www\\r32.html": {
+      "bytes": 15529,
+      "sha256": "acff54c8206074bcfa39a5f480a095ccff0d84faaba9716945e17dcc80fc8706"
+    },
+    "www\\js\\r32app.js": {
+      "bytes": 73163,
+      "sha256": "94bad38e59554bc39a6c338b54240c4e5dd156838684cccf31be4f76e913b21f"
+    },
+    "www\\css\\r32ui.css": {
+      "bytes": 9232,
+      "sha256": "84eaad60ed768f9a8daf1bee296bb9e9a6971214f494b3636f25cd331c023576"
+    }
+  },
+  "ttl_contract": {
+    "boot": "off",
+    "persistent": false,
+    "minimum": 1,
+    "maximum": 255,
+    "recommended": 64,
+    "compatibility_preset": 65,
+    "mutation": "one POST plus one GET readback",
+    "automatic_retry_ceiling": 0,
+    "scope": "forwarded IPv4 only"
+  },
+  "container": {
+    "changed_partitions": [
+      "OSLO",
+      "WEBI"
+    ],
+    "other_partitions_byte_identical": true,
+    "independent_inspector": "verified",
+    "double_build_equal": true
+  },
+  "qualification": {
+    "r32_lifecycle_tests": 5,
+    "r32_web_builder_tests": 3,
+    "r32_native_builder_tests": 6,
+    "r31_native_regression_tests": 9,
+    "r30_native_regression_tests": 21,
+    "browser_ttl_flow_tests": 5,
+    "substantive_tests_total": 49,
+    "all_256_getter_states_executed": true,
+    "all_256_setter_states_executed": true,
+    "all_255_forwarding_targets_executed": true,
+    "installed": false,
+    "live_ttl_get_qualified": false,
+    "live_ttl_set_qualified": false,
+    "packet_path_qualified": false,
+    "cold_boot_proven": false,
+    "repeatability_proven": false,
+    "rollback_proven": false
+  },
+  "superseded_private_builds": [
+    {
+      "label": "candidate-a",
+      "artifact_sha256": "a3326c9bf18f024e898c7cf8108c237d09b7ef92579209eb5e51a3d209ff3dfc",
+      "bytes_equal_to_candidate": true,
+      "report_complete": false,
+      "delivery_allowed": false,
+      "reason": "report JSON serialization failed after binary creation"
+    },
+    {
+      "label": "candidate-b",
+      "artifact_sha256": "a3326c9bf18f024e898c7cf8108c237d09b7ef92579209eb5e51a3d209ff3dfc",
+      "bytes_equal_to_candidate": true,
+      "report_complete": true,
+      "delivery_allowed": false,
+      "reason": "report used an over-strong model-snapshot label and builder still published binary before report"
+    }
+  ]
+}

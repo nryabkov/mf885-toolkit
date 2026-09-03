@@ -1,0 +1,132 @@
+{
+  "schema": "mf885-community-r31-manifest/v1",
+  "profile": "0.3.1-community-r2",
+  "status": "OFFLINE_CANDIDATE_NOT_INSTALLED",
+  "installed_predecessor": {
+    "file": "MF885_Community_0.3.0-community-r2-native-r3-cafe-r2.bin",
+    "bytes": 8323644,
+    "sha256": "78c785527c9e6cafc301e9c8937be3ceaace0d7d7265e1d78f77b1094e880e42",
+    "ttl_getter_live_status": "RETIRED_AFTER_RESET"
+  },
+  "source": {
+    "file": "MF885_golden_capture_a.bin",
+    "bytes": 8323644,
+    "sha256": "2b5880fc26805918bb574d07341ea9b863f8261be34c3bf9766fac0929204531"
+  },
+  "candidate": {
+    "file": "MF885_Community_0.3.1-community-r2-native-r4-cafe-r2.bin",
+    "bytes": 8323644,
+    "sha256": "74e61b4d0f386cfc079c7eb19d7e11ad640f96a144800d6625306104ef95ceeb",
+    "report_bytes": 51049,
+    "report_sha256": "2b408e9a276bcdbe24f5df4ec61df3caad898472262bcdd8d4a938b622fedf39"
+  },
+  "oslo": {
+    "source_bytes": 9648064,
+    "source_sha256": "d51fb378d8ccf68662174f39d6b8c4f6be5571280790bc3a4dc4a9e8a967078c",
+    "candidate_bytes": 9648064,
+    "candidate_sha256": "193cf63ef692ccee09d3fe134c55ca5e13e21e36077f071ca5a9eec70856e2e9",
+    "compressed_bytes": 4549429,
+    "fixed_partition_bytes": 4587520,
+    "padding_bytes": 38091,
+    "actual_changed_bytes": 646
+  },
+  "native_components": {
+    "ttl_forward": {
+      "bytes": 152,
+      "sha256": "90a12950ccc5b672c680d34875e4ac1fa2365ab8d841c164eab3f45e934a0d1d",
+      "code_bytes": 144,
+      "literal_pool": "301400064cc10207",
+      "file_range": "0x12a0..0x1338",
+      "runtime": "0x060012a0"
+    },
+    "ttl_post_set": {
+      "bytes": 232,
+      "sha256": "da94baa0b85ad7b057c007c39f19d7f02ade00973ba9eb911f66efd6a2d9ba0d",
+      "code_bytes": 220,
+      "literal_pool": "34140006db7340060ff04406",
+      "file_range": "0x1340..0x1428",
+      "runtime": "0x06001340"
+    },
+    "ttl_data": {
+      "bytes": 96,
+      "sha256": "14f8f5a2d3ce5060eab4fab0c397504407ed0dc15a6ff0bdc6cba8c291500bd1",
+      "file_range": "0x1430..0x1490",
+      "runtime": "0x06001430",
+      "layout": "one mutable state byte plus immutable model, field and result strings"
+    },
+    "ttl_post_get": {
+      "bytes": 208,
+      "sha256": "ab8cbe2758fd7be96d97d6d837068b51f63e07c35494d80bb06435a68600ce59",
+      "code_bytes": 200,
+      "literal_pool": "34140006db734006",
+      "file_range": "0x1520..0x15f0",
+      "runtime": "0x06001520",
+      "numeric_buffer": "four-byte stack-local"
+    }
+  },
+  "web_assets": {
+    "www\\r31.html": {
+      "bytes": 15529,
+      "sha256": "3fd323aae54eae62c2c98b0d500ff7fd630a8bd362d730173b9896d1c8977da9"
+    },
+    "www\\js\\r31app.js": {
+      "bytes": 73163,
+      "sha256": "1945ddd1f9981be204c9d5c39f8fde4b9c5f734af9dca34800bfd2b531e44309"
+    },
+    "www\\css\\r31ui.css": {
+      "bytes": 9232,
+      "sha256": "84eaad60ed768f9a8daf1bee296bb9e9a6971214f494b3636f25cd331c023576"
+    }
+  },
+  "ttl_contract": {
+    "boot": "off",
+    "persistent": false,
+    "minimum": 1,
+    "maximum": 255,
+    "recommended": 64,
+    "compatibility_preset": 65,
+    "mutation": "one POST plus one GET readback",
+    "automatic_retry_ceiling": 0,
+    "scope": "forwarded IPv4 only"
+  },
+  "container": {
+    "changed_partitions": [
+      "OSLO",
+      "WEBI"
+    ],
+    "other_partitions_byte_identical": true,
+    "independent_inspector": "verified",
+    "double_build_equal": true
+  },
+  "qualification": {
+    "r31_native_payload_tests": 9,
+    "r30_emulator_regression_tests": 21,
+    "r31_web_builder_tests": 3,
+    "r31_native_builder_tests": 4,
+    "substantive_tests_total": 37,
+    "all_256_getter_states_executed": true,
+    "all_256_setter_states_executed": true,
+    "malformed_setter_classes_executed": true,
+    "all_255_forwarding_targets_executed": true,
+    "installed": false,
+    "live_ttl_get_qualified": false,
+    "live_ttl_set_qualified": false,
+    "packet_path_qualified": false,
+    "cold_boot_proven": false,
+    "repeatability_proven": false,
+    "rollback_proven": false
+  },
+  "toolchain": {
+    "liblzma_version": "5.4.5",
+    "liblzma_path": "/usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5",
+    "liblzma_sha256": "696e868dd0700a19a6d65fc01608ec2d70d3cb91f65710e89180cd2e688f30cb"
+  },
+  "residual_risks": {
+    "exact_r30_reset_cause": "unproved; first high-tail access is the leading unique delta, while callback ABI or later publication remains possible",
+    "low_page_live_writability_and_ownership": "not proved until the first exact live getter qualification",
+    "live_callback_lifecycle": "machine execution proves emitted instructions, not target watchdog or serializer behavior",
+    "cold_boot": "unproved",
+    "repeatability": "unproved",
+    "rollback": "unproved"
+  }
+}

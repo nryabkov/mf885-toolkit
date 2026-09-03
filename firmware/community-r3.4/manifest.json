@@ -1,0 +1,98 @@
+{
+  "schema": "mf885-community-r34-manifest/v1",
+  "profile": "0.3.4-community-r2",
+  "status": "OFFLINE_CANDIDATE_NOT_INSTALLED",
+  "installed_predecessor": {
+    "file": "MF885_Community_0.3.3-community-r2-native-r6-cafe-r2.bin",
+    "bytes": 8323644,
+    "sha256": "9f48745b5977f0fc6ddffe08d4efff0f2ff2d2d8e1e8bb5c208838baa42bb442",
+    "installed_and_static_audit_proven": true,
+    "diagnostic_get_status": "ZERO_RESPONSE_THEN_EXACT_RNDIS_REENUMERATION"
+  },
+  "source": {
+    "file": "MF885_golden_capture_a.bin",
+    "bytes": 8323644,
+    "sha256": "2b5880fc26805918bb574d07341ea9b863f8261be34c3bf9766fac0929204531"
+  },
+  "candidate": {
+    "file": "MF885_Community_0.3.4-community-r2-native-r7-cafe-r2.bin",
+    "bytes": 8323644,
+    "sha256": "482e51ad7ecfc7f519907dac0d813664ef330553f28382a290451858580512ea",
+    "report_bytes": 57374,
+    "report_sha256": "2a3085bb4dcaf4adeef9fa65b301377d52a5e3e878f2a8513dc141025cfd82eb"
+  },
+  "oslo": {
+    "source_bytes": 9648064,
+    "source_sha256": "d51fb378d8ccf68662174f39d6b8c4f6be5571280790bc3a4dc4a9e8a967078c",
+    "candidate_bytes": 9648064,
+    "candidate_sha256": "848b3333b975467a4e211fbde65bbb6a0ab7ec2e06cd3e4e7dcf50b7ac8accfc",
+    "compressed_bytes": 4549789,
+    "fixed_partition_bytes": 4587520,
+    "padding_bytes": 37731,
+    "partition_sha256": "31501afa5958847074be5bace3919320d5485a7641eefaa00ed5e590bb382d4b",
+    "actual_changed_bytes": 6,
+    "unauthorized_changed_bytes": 0
+  },
+  "native_discriminator": {
+    "model": "diagnostic",
+    "slot": "pre_get",
+    "pointer_runtime": "0x06001521",
+    "callback_offset": "0x00001520",
+    "callback_bytes": 4,
+    "callback_hex": "00207047",
+    "callback_sha256": "a7ddd513d149ea16fdd4db3f82267f83087aeaddd06b5dde5468adb704205fc4",
+    "instructions": ["movs r0, #0", "bx lr"],
+    "return_value": 0,
+    "loads": 0,
+    "stores": 0,
+    "calls": 0,
+    "setter_calls": 0,
+    "getter_calls": 0,
+    "state_bytes": 0,
+    "literal_bytes": 0,
+    "other_diagnostic_callbacks": "zero"
+  },
+  "ttl_contract": {
+    "available": false,
+    "browser_gets": 0,
+    "browser_posts": 0,
+    "native_reads": 0,
+    "native_writes": 0,
+    "packet_hook_installed": false,
+    "automatic_retry_ceiling": 0
+  },
+  "engineering_preservation": {
+    "wan_engineering_mode_changed": false,
+    "debugon_row_changed": false,
+    "debugon_callback_changed": false,
+    "system_channel_row_changed": false,
+    "system_channel_callback_changed": false,
+    "debugmodeon_template_changed": false
+  },
+  "web_assets": {
+    "www\\r34.html": {"bytes": 14627, "sha256": "1b9f35405088216a7d1e81d1c6d59e2385d92c3a051edff21426fa79e1146c48"},
+    "www\\js\\r34app.js": {"bytes": 63060, "sha256": "b5de8a702ba1445afb951c017cc47189e5fb171f90e0434d3f13f41c269e721f"},
+    "www\\css\\r34ui.css": {"bytes": 7925, "sha256": "50b977ba920c226a4a9c03895c47d1457439adba0eefd169c20e2cca21244578"},
+    "www\\xmldata\\diagnostic.xml": {"bytes": 172, "sha256": "37db50389df6076c533355db173dc7ea9fcc16661ecb9d1608e7300278e0a3b7", "changed": false}
+  },
+  "container": {
+    "changed_partitions": ["OSLO", "WEBI"],
+    "other_partitions_byte_identical": true,
+    "independent_inspector": "verified",
+    "double_build_equal": true
+  },
+  "qualification": {
+    "r34_source_native_container_tests": 7,
+    "direct_v40_functional_tests": 10,
+    "direct_v40_javascript_tests": 3,
+    "affected_historical_direct_tests": 55,
+    "substantive_tests_total": 75,
+    "failed": 0,
+    "installed": false,
+    "diagnostic_noop_get_qualified": false,
+    "ttl_available": false,
+    "cold_boot_proven": false,
+    "repeatability_proven": false,
+    "rollback_proven": false
+  }
+}

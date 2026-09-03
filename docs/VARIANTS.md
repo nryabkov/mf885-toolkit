@@ -5,7 +5,11 @@ None is distributed as a firmware binary.
 
 | Wrapper name | Logical ID | Source | Status |
 |---|---|---|---|
-| `community-r2.6` | `0.2.6-community-r2-cafe2` | `firmware/community-r2.6/` plus exact golden derivation rules | Recommended source: standalone non-blocking UI, zero startup I/O, explicit async login/reads, no background watcher, bounded progressive Messages and one-POST/no-replay Send/Delete; WEBI-only, unflashed and not allowlisted |
+| `community-r3.5` | `0.3.5-community-r2-native-r9-cafe2` | `firmware/community-r3.5/` plus exact golden native/WEBI derivation rules | Recommended source: cumulative UI/SMS plus experimental modular same-model TTL; deterministic and structurally green, unflashed; live getter/setter/packet path, persistence, cold boot, repeatability and rollback unproved |
+| — | `0.3.4-community-r2-native-r7-cafe2` | `firmware/community-r3.4/` | Installed experimental predecessor: strict diagnostic no-op callback proved live; this proves callback attachment only, not TTL |
+| — | `0.3.0`–`0.3.3` native research line | `firmware/community-r3.0/` through `firmware/community-r3.3/` | Immutable cumulative TTL research predecessors; retained findings, not recommended outputs |
+| `community-r2.9` | `0.2.9-community-r2-cafe2` | `firmware/community-r2.9/` plus exact golden derivation rules | Installed historical UI/SMS predecessor with universal refresh and on-device help; no native TTL |
+| `community-r2.6` | `0.2.6-community-r2-cafe2` | `firmware/community-r2.6/` plus exact golden derivation rules | Historical installed predecessor: standalone non-blocking UI, zero startup I/O, explicit async login/reads, bounded progressive Messages and one-POST/no-replay Send/Delete; WEBI-only and not generally allowlisted |
 | `community-r2.5` | `0.2.5-community-r2-cafe2` | `firmware/community-r2.5/` plus exact golden/R2.4 derivation rules | Installed immutable experimental predecessor: exact post-POST asset surface verified; compact authenticated header/version, default-on tab-local watchers, read-only Engineering state and standards-mapped RSRP/RSRQ indices; not stable or restore-allowlisted, and live SMS mutations/cold boot/repeatability/rollback remain unqualified |
 | `community-r2.4` | `0.2.4-community-r2-cafe2` | `firmware/community-r2.4/` plus exact golden/R2.3 derivation rules | Older installed experimental predecessor: exact assets, authenticated navigation, Diagnostics and bounded 30-second modem polling were observed; SMS mutations, cold boot, repeatability and rollback unqualified |
 | `community-r2.3` | `0.2.3-community-r2-cafe2` | `firmware/community-r2.3/` plus exact golden/R2.2 derivation rules | Immutable unflashed predecessor: minimal canonical vendor entry plus isolated modern `/r23.html`, SMS, opt-in inbox checks and Safe Diagnostics; reproducible WEBI-only build and not allowlisted |
@@ -26,7 +30,9 @@ Earlier Logs artifacts are retained in their manifests as quarantined history.
 Some omitted the stock Digest header; later revisions fixed authentication but
 did not mask every WAN username and IPv6 representation before Copy/Export.
 `community-r1`, `community-r2`, `community-r2.1`, `community-r2.2`,
-`community-r2.3`, `community-r2.4`, `community-r2.5` and `community-r2.6` are built directly from golden rather than layered on a Logs
+`community-r2.3`, `community-r2.4`, `community-r2.5`, `community-r2.6`,
+`community-r2.7`, `community-r2.8`, `community-r2.9` and the Community R3.x
+line are built directly from golden rather than layered on a Logs
 artifact. R2.1 and later add Safe Diagnostics, not the native `detailed_log`
 canary or a raw request/console observer.
 

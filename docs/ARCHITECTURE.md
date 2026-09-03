@@ -12,7 +12,7 @@ Installed canaries are never used as a base. Generic MF96 2.5.96 is a
 comparison source only: it targets a different hardware/version profile and
 does not authorize cross-flashing or reuse of native offsets.
 
-## Development order
+## Historical development through R3.4
 
 1. **Community R2.6 WebUI** — the canonical `/index.html` stays a small English
    vendor interface with one link to the isolated `/r26.html`. The standalone
@@ -21,8 +21,8 @@ does not authorize cross-flashing or reuse of native offsets.
    no background watcher. It owns immediately visible message bodies, 10-item
    client-side pages, one separately confirmed inbox delete and bounded direct
    SMS Send. Credentials remain RAM-only. The exact model/hardware/full-version
-   proof gates authentication and all later requests. This remains WEBI-only
-   and unflashed.
+   proof gates authentication and all later requests. This historical
+   milestone remained WEBI-only and was later installed and superseded.
 2. **Safe Diagnostics** — implemented as a separate page/menu with one manual
    sequential read of `status1`, `wan` and `Engineer_parameter`. It shows
    SIM/registration, operator/RAT/band/cell, signal, WAN, traffic and battery
@@ -72,6 +72,27 @@ does not authorize cross-flashing or reuse of native offsets.
 11. **Repeater/WISP research** — concurrent station plus access-point support is
    not established. Routed WISP is the first plausible target; transparent WDS
    is not promised.
+
+## Current cumulative development order
+
+1. **Community R3.5 TTL** — keep boot state Off and volatile; prove one strict
+   same-model read before any write, then separately qualify setter/readback
+   and the real forwarded IPv4 packet with checksum repair. The UI accepts
+   `off` or canonical `1..255` and offers recommended presets without limiting
+   the operator to them.
+2. **Community R3.6 repeater/WISP** — add routed station-plus-AP behavior only
+   after coexistence, recovery and UI state ownership are proved. Transparent
+   WDS is not promised.
+3. **Community R3.7 on-device USSD** — no GL.iNet runtime dependency: one
+   request in flight, bounded result states, SMS-delivered and direct replies,
+   no automatic replay.
+4. **Community R3.8 IMEI laboratory workflow** — backup the exact original,
+   require explicit mutation, verify readback and demonstrate restoration
+   before any broader product claim.
+5. **Community R3.9 cumulative integration** — combine only independently
+   qualified milestones and rerun the complete UI, native, device and recovery
+   evidence set. A feature remains labelled unproved until its own live proof
+   is green.
 
 ## Release discipline
 

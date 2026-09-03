@@ -1,0 +1,132 @@
+{
+  "schema": "mf885-community-r33-manifest/v1",
+  "profile": "0.3.3-community-r2",
+  "status": "OFFLINE_CANDIDATE_NOT_INSTALLED",
+  "installed_predecessor": {
+    "file": "MF885_Community_0.3.2-community-r2-native-r5-cafe-r2.bin",
+    "bytes": 8323644,
+    "sha256": "a3326c9bf18f024e898c7cf8108c237d09b7ef92579209eb5e51a3d209ff3dfc",
+    "installed_and_static_audit_proven": true,
+    "ttl_getter_live_status": "ZERO_RESPONSE_BYTES_WITH_HTTP_RECOVERY"
+  },
+  "source": {
+    "file": "MF885_golden_capture_b.bin",
+    "bytes": 8323644,
+    "sha256": "2b5880fc26805918bb574d07341ea9b863f8261be34c3bf9766fac0929204531"
+  },
+  "candidate": {
+    "file": "MF885_Community_0.3.3-community-r2-native-r6-cafe-r2.bin",
+    "bytes": 8323644,
+    "sha256": "9f48745b5977f0fc6ddffe08d4efff0f2ff2d2d8e1e8bb5c208838baa42bb442",
+    "report_bytes": 70539,
+    "report_sha256": "66ccad8a3d55e128e3025c01e2f722fec4eb48b6089881095b40224c27d177d3"
+  },
+  "oslo": {
+    "source_bytes": 9648064,
+    "source_sha256": "d51fb378d8ccf68662174f39d6b8c4f6be5571280790bc3a4dc4a9e8a967078c",
+    "candidate_bytes": 9648064,
+    "candidate_sha256": "31f8a1eeea51a8169465306b69484a2fe53adbdc9c4421182ad1d6d4d253ed62",
+    "compressed_bytes": 4549726,
+    "fixed_partition_bytes": 4587520,
+    "padding_bytes": 37794,
+    "partition_sha256": "dbad0e6e937f20ae8066bdb9f250ce8e8e9b0cea3078b60916ab860684e00416",
+    "actual_changed_bytes": 568,
+    "unauthorized_changed_bytes": 0
+  },
+  "native_transport": {
+    "trigger_model": "diagnostic",
+    "read_model": "SystemChannelName",
+    "read_field": "PRODUCT_CHANNEL",
+    "publisher_slot": "pre_get",
+    "publisher_runtime": "0x06001520",
+    "publisher_bytes": 164,
+    "publisher_code_bytes": 156,
+    "publisher_sha256": "69045bebf5ff7f176be67d12481dbc2e42066b071e2a99f18da6207b5f047523",
+    "publisher_setter_calls": 1,
+    "stock_restore_slot": "SystemChannelName.post_get",
+    "stock_restore_value": "release",
+    "stock_restore_callback_bytes": 20,
+    "stock_restore_callback_sha256": "fcd8f7f90c71947bb75fc23639d56747d1b352d9b53d553b90a70cff6dd0826e",
+    "stock_restore_callback_preserved": true,
+    "set_model": "diagnostic",
+    "set_fields": ["command", "arg"],
+    "set_response_setter_calls": 0,
+    "state_runtime": "0x06001430",
+    "state_persistent": false
+  },
+  "engineering_preservation": {
+    "wan_engineering_mode_changed": false,
+    "debugon_row_changed": false,
+    "debugon_callback_changed": false,
+    "debugmodeon_template_changed": false,
+    "debugon_callback_sha256": "a726d474a84f0e4c953a18308f078c27b4d0f8485043c63f9471f693b2dad2df",
+    "wan_row_sha256": "2acd419cb2665e906855ac1fda930fa23d1a9e7c4b9498aa0f6a7f2dd20d2b17",
+    "wan_template_sha256": "b68cd199237b995a26e7efa16d1ec2e235d7043d1a9fa7755eabe7d8d33c8fb0",
+    "debugmodeon_template_sha256": "8da449fce5c4c0c4494dfe5e2098c2d7e66bec472dcf5a832e64eb7c21149226"
+  },
+  "web_assets": {
+    "www\\r33.html": {
+      "bytes": 15529,
+      "sha256": "4c9de90b24b22a5ec0f4ef2dcdde4a9aad2b4e5779cbe6938242d04061a51552"
+    },
+    "www\\js\\r33app.js": {
+      "bytes": 73226,
+      "sha256": "cdf9b90089e9b2440cee6e431997c8605bd970df97e1e43d087d370dad2bb4d3"
+    },
+    "www\\css\\r33ui.css": {
+      "bytes": 9232,
+      "sha256": "84eaad60ed768f9a8daf1bee296bb9e9a6971214f494b3636f25cd331c023576"
+    },
+    "www\\xmldata\\diagnostic.xml": {
+      "bytes": 148,
+      "sha256": "a3e8cb4db652dbd9607f4f360a0f82afa258b242c7e2c6cd292d268ffa246c46"
+    },
+    "www\\xmldata\\ttl_set.xml": {
+      "bytes": 133,
+      "sha256": "5305b719dfcc22d5984048d1bd875086bc2c53cfd81a67da84c6c533c9e19e4b"
+    }
+  },
+  "ttl_contract": {
+    "boot": "off",
+    "persistent": false,
+    "minimum": 1,
+    "maximum": 255,
+    "recommended": 64,
+    "compatibility_preset": 65,
+    "mutation": "one ttl_set POST plus one diagnostic GET readback",
+    "automatic_retry_ceiling": 0,
+    "scope": "forwarded IPv4 only"
+  },
+  "container": {
+    "changed_partitions": ["OSLO", "WEBI"],
+    "other_partitions_byte_identical": true,
+    "independent_inspector": "verified",
+    "double_build_equal": true
+  },
+  "qualification": {
+    "r33_native_web_container_tests": 16,
+    "inherited_native_regression_tests": 30,
+    "browser_ttl_flow_tests": 5,
+    "substantive_tests_total": 51,
+    "all_256_getter_states_executed": true,
+    "all_256_setter_states_executed": true,
+    "all_255_forwarding_targets_executed": true,
+    "installed": false,
+    "live_ttl_get_qualified": false,
+    "system_channel_restore_qualified": false,
+    "live_ttl_set_qualified": false,
+    "packet_path_qualified": false,
+    "cold_boot_proven": false,
+    "repeatability_proven": false,
+    "rollback_proven": false
+  },
+  "superseded_private_builds": [
+    {
+      "label": "candidate-a",
+      "artifact_sha256": "9f48745b5977f0fc6ddffe08d4efff0f2ff2d2d8e1e8bb5c208838baa42bb442",
+      "bytes_equal_to_candidate": true,
+      "delivery_allowed": false,
+      "reason": "feature-specific report fingerprinted only 18 of the 20 stock restore-callback bytes and used constant rather than measured Engineering flags"
+    }
+  ]
+}

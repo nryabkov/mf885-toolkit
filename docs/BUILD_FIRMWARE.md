@@ -75,7 +75,7 @@ set. Never weaken a failed gate to make an unknown image fit.
 mkdir -p out
 python tools/mf885_build_variant.py --list
 python tools/mf885_build_variant.py \
-  --variant community-r2.6 \
+  --variant community-r3.5 \
   --golden input/MF885_golden.bin \
   --identity-xml input/mf885-base.xml \
   --output-dir out \
@@ -84,7 +84,7 @@ python tools/mf885_build_variant.py \
 
 The Logs variants are research observers and `sms-r1` is a historical
 send/delete prototype. Choose them only after reading their source and
-manifest; `community-r2.6` is the recommended product-oriented profile. The
+manifest; `community-r3.5` is the current recommended source profile. The
 output and a JSON report are created exclusively; rerunning does not overwrite
 them. Delete or move an old local output deliberately before rebuilding.
 
@@ -94,9 +94,20 @@ them. Delete or move an old local output deliberately before rebuilding.
 python tools/mf885_firmware_inspect.py \
   input/MF885_golden.bin \
   --identity-xml input/mf885-base.xml \
-  --compare out/MF885_Community_0.2.6-community-r2-cafe-r2.bin \
+  --compare out/MF885_Community_0.3.5-community-r2-native-r9-cafe-r2.bin \
   --json
 ```
+
+For `community-r3.5`, the retained reference candidate is exactly 8,323,644
+bytes with SHA-256
+`efd74c1ff0127961f8036d0f6e51b7fec35856b128f23b3f18de5191663087f3`.
+Only OSLO and WEBI may differ; the independent inspector, all 47 final
+conditions and the deterministic double build must be green. The output must
+preserve the exact Engineering/debugon and SystemChannel surfaces. The native
+TTL code is experimental: a structural pass is not proof that its getter,
+setter or packet hook works on hardware.
+
+The following R2.6 details are retained as historical build documentation.
 
 For `community-r2.6`, the report must show exactly six reviewed replacements,
 three standalone additions (`/r26.html`, `r26app.js`, `r26ui.css`) and 18

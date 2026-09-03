@@ -12,7 +12,7 @@ class BuildVariantTests(unittest.TestCase):
     def test_registry_is_public_and_structural_only(self):
         self.assertEqual(
             tuple(wrapper.VARIANTS),
-            ("community-r2.6", "community-r2.5", "community-r2.4", "community-r2.3", "community-r2.2", "community-r2.1", "community-r2", "community-r1", "logs-r1", "logs-r2", "sms-r1"),
+            ("community-r3.5", "community-r2.9", "community-r2.8", "community-r2.7", "community-r2.6", "community-r2.5", "community-r2.4", "community-r2.3", "community-r2.2", "community-r2.1", "community-r2", "community-r1", "logs-r1", "logs-r2", "sms-r1"),
         )
         for item in wrapper.describe_variants():
             self.assertIn("structural-only", item["qualification"])
@@ -248,6 +248,91 @@ class BuildVariantTests(unittest.TestCase):
                 self.assertEqual(
                     Path(arguments[arguments.index("--output") + 1]).name,
                     "MF885_Community_0.2.6-community-r2-cafe-r2.bin",
+                )
+
+    def test_community_r27_uses_extension_profile(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            with mock.patch.object(wrapper.stage_builder, "main", return_value=0) as main:
+                result = wrapper.main(
+                    [
+                        "--variant",
+                        "community-r2.7",
+                        "--output-dir",
+                        temporary,
+                        "--acknowledge-brick-risk",
+                    ]
+                )
+                self.assertEqual(result, 0)
+                arguments = main.call_args.args[0]
+                self.assertEqual(arguments[arguments.index("--profile") + 1], "0.2.7-community-r2")
+                self.assertEqual(
+                    Path(arguments[arguments.index("--output") + 1]).name,
+                    "MF885_Community_0.2.7-community-r2-cafe-r2.bin",
+                )
+
+    def test_community_r28_uses_in_interface_modem_lab_profile(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            with mock.patch.object(wrapper.stage_builder, "main", return_value=0) as main:
+                result = wrapper.main(
+                    [
+                        "--variant",
+                        "community-r2.8",
+                        "--output-dir",
+                        temporary,
+                        "--acknowledge-brick-risk",
+                    ]
+                )
+                self.assertEqual(result, 0)
+                arguments = main.call_args.args[0]
+                self.assertEqual(arguments[arguments.index("--profile") + 1], "0.2.8-community-r2")
+                self.assertEqual(
+                    Path(arguments[arguments.index("--output") + 1]).name,
+                    "MF885_Community_0.2.8-community-r2-cafe-r2.bin",
+                )
+
+    def test_community_r29_uses_universal_refresh_profile(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            with mock.patch.object(wrapper.stage_builder, "main", return_value=0) as main:
+                result = wrapper.main(
+                    [
+                        "--variant",
+                        "community-r2.9",
+                        "--output-dir",
+                        temporary,
+                        "--acknowledge-brick-risk",
+                    ]
+                )
+                self.assertEqual(result, 0)
+                arguments = main.call_args.args[0]
+                self.assertEqual(arguments[arguments.index("--profile") + 1], "0.2.9-community-r2")
+                self.assertEqual(
+                    Path(arguments[arguments.index("--output") + 1]).name,
+                    "MF885_Community_0.2.9-community-r2-cafe-r2.bin",
+                )
+
+    def test_community_r35_uses_exact_native_builder_and_risk_gate(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            with mock.patch.object(wrapper.r35_native_builder, "main", return_value=0) as main:
+                result = wrapper.main(
+                    [
+                        "--variant",
+                        "community-r3.5",
+                        "--golden",
+                        "golden.bin",
+                        "--identity-xml",
+                        "base.xml",
+                        "--output-dir",
+                        temporary,
+                        "--acknowledge-brick-risk",
+                    ]
+                )
+                self.assertEqual(result, 0)
+                arguments = main.call_args.args[0]
+                self.assertIn("--confirm-native-ttl-risk", arguments)
+                self.assertNotIn("--confirm-structural-only", arguments)
+                self.assertEqual(
+                    Path(arguments[arguments.index("--output") + 1]).name,
+                    "MF885_Community_0.3.5-community-r2-native-r9-cafe-r2.bin",
                 )
 
 

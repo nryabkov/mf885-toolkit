@@ -83,7 +83,7 @@ python -m pip install -r requirements.txt
 mkdir -p out
 python tools/mf885_build_variant.py --list
 python tools/mf885_build_variant.py \
-  --variant community-r2.6 \
+  --variant community-r3.5 \
   --acknowledge-brick-risk
 ```
 
@@ -98,7 +98,16 @@ reference-unit raw hash is documented only as a reproducibility example. Any
 semantic mismatch is rejected; do not bypass this check or use another unit's
 built binary.
 
-`community-r2.6` is the recommended product-oriented source profile. Its
+`community-r3.5` is the current recommended source profile. It cumulatively
+keeps the proved Community SMS/interface work and adds an experimental native
+TTL control split into strict setter, same-model `diagnostic.output` getter and
+IPv4 forwarding/checksum modules. The retained `native-r9` candidate is
+deterministic and structurally verified, but is unflashed and TTL getter,
+setter, packet path, persistence, cold boot, repeatability and rollback remain
+unproved. Its exact source contract and hashes are in
+`firmware/community-r3.5/`.
+
+`community-r2.6` is a historical product-oriented source profile. Its
 standalone `/r26.html` paints before network I/O and replaces the legacy
 synchronous startup, login, SMS-page loop and default background watchers with
 explicit asynchronous requests that each have a ten-second timeout. It stores
@@ -108,7 +117,7 @@ bounded pages progressively and paginates locally. Diagnostics and Modem stay
 manual, read-only three-endpoint views. Exact candidate hashes are in
 `firmware/community-r2.6/manifest.json`.
 
-`community-r2.5` is the installed predecessor. The
+`community-r2.5` is an older installed historical predecessor. The
 canonical `/index.html` remains a small English vendor interface with one link
 to `/r25.html`; it loads no Community authentication, menu, Messages,
 Diagnostics or CSS. The isolated modern entry keeps R2.3's exact identity and

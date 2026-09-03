@@ -24,6 +24,14 @@ class CommunityR26BuilderTests(unittest.TestCase):
         self.assertEqual(specification["marker"], community_r26.MARKER)
         self.assertEqual(safety["routerRequestsOnPageLoad"], [])
         self.assertEqual(safety["requestTimeoutSeconds"], 10)
+        self.assertTrue(safety["expectedClientFailuresVisible"])
+        self.assertTrue(safety["unexpectedClientFailuresVisible"])
+        self.assertEqual(
+            safety["clientErrorCorrelation"],
+            "stable error code plus per-session request or JavaScript error ID",
+        )
+        self.assertFalse(safety["clientConsoleLogsQueryStrings"])
+        self.assertFalse(safety["clientRawResponsesVisible"])
         self.assertFalse(safety["automaticReadPolling"])
         self.assertEqual(safety["automaticMutationRetries"], 0)
         self.assertTrue(safety["mutationUnknownLocksPageSession"])

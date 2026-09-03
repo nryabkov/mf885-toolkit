@@ -1,0 +1,15 @@
+      <section id="page-ttl" class="page" hidden>
+        <div class="page-head"><div><p class="eyebrow">TTL transport isolation</p><h1>TTL unavailable</h1><p class="section-intro">This release checks only whether the router can safely enter and return from the stock diagnostic callback path.</p></div></div>
+        <p class="status" role="status">No TTL value is read or changed by this page. Community R3.4 sends no browser request to <code>diagnostic</code>.</p>
+        <div class="cards">
+          <article><strong>Unavailable</strong><span>TTL control</span></article>
+          <article><strong>Off</strong><span>Browser polling</span></article>
+          <article><strong>0</strong><span>TTL writes and retries</span></article>
+        </div>
+        <details class="terms" open><summary>Why the control is disabled</summary><dl>
+          <div><dt>R3.3</dt><dd>The diagnostic request lost its response and the exact USB/RNDIS unit temporarily re-enumerated.</dd></div>
+          <div><dt>R3.4</dt><dd>The native callback is a four-byte return-only function. It has no TTL state, property publication, or packet hook.</dd></div>
+          <div><dt>Next</dt><dd>One separate target-side read-only qualification will decide whether this callback route is safe enough for further research.</dd></div>
+        </dl></details>
+        <p class="muted">Engineering mode, hidden debug profile, router settings and packet forwarding remain unchanged.</p>
+      </section>

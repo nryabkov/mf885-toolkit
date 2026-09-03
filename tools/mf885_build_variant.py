@@ -19,6 +19,7 @@ if str(TOOLS) not in sys.path:
 
 import mf885_webi_builder as logs_builder
 import mf885_webui_stage_builder as stage_builder
+import mf885_community_r35_native_builder as r35_native_builder
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,6 +28,26 @@ DEFAULT_IDENTITY = ROOT / "input" / "mf885-base.xml"
 DEFAULT_OUTPUT = ROOT / "out"
 
 VARIANTS: dict[str, dict[str, Any]] = {
+    "community-r3.5": {
+        "kind": "native-r35",
+        "profile": "0.3.5-community-r2",
+        "artifact": "MF885_Community_0.3.5-community-r2-native-r9-cafe-r2.bin",
+    },
+    "community-r2.9": {
+        "kind": "stage",
+        "profile": "0.2.9-community-r2",
+        "artifact": "MF885_Community_0.2.9-community-r2-cafe-r2.bin",
+    },
+    "community-r2.8": {
+        "kind": "stage",
+        "profile": "0.2.8-community-r2",
+        "artifact": "MF885_Community_0.2.8-community-r2-cafe-r2.bin",
+    },
+    "community-r2.7": {
+        "kind": "stage",
+        "profile": "0.2.7-community-r2",
+        "artifact": "MF885_Community_0.2.7-community-r2-cafe-r2.bin",
+    },
     "community-r2.6": {
         "kind": "stage",
         "profile": "0.2.6-community-r2",
@@ -143,8 +164,10 @@ def build(args: argparse.Namespace) -> int:
         str(output),
         "--report",
         str(report),
-        "--confirm-structural-only",
     ]
+    if specification["kind"] == "native-r35":
+        return r35_native_builder.main(common + ["--confirm-native-ttl-risk"])
+    common.append("--confirm-structural-only")
     if specification["kind"] == "logs":
         return logs_builder.main(
             common

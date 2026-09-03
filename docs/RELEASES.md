@@ -36,10 +36,12 @@ At present **no firmware variant is stable, generally flash-qualified, or
 restore-allowlisted**. Do not infer stability from a successful build, a known
 SHA-256, one live device, or the word `verified` in a structural report.
 
-Community R2.6 is the current recommended source candidate. Its deterministic
-reference-unit image is documented in its manifest, but it remains
-`experimental-unflashed`; the installed device stays on Community R2.5 until a
-separate exact firmware authorization is given.
+Community R3.5 `native-r9` is the current recommended source candidate. Its
+deterministic reference-unit image is documented in its manifest, but it
+remains `experimental-unflashed`; the reference device stays on proven
+Community R3.4 until a separate exact firmware authorization is given. Its TTL
+getter, setter, packet path, persistence, cold boot, repeatability and rollback
+remain unproved.
 
 Operation-safety records are not toolkit releases and are never stability
 labels.

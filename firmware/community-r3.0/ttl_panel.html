@@ -1,0 +1,18 @@
+      <section id="page-ttl" class="page" hidden>
+        <div class="page-head">
+          <div><p class="eyebrow">IPv4 forwarding · temporary</p><h1>TTL</h1><p class="section-intro">Choose the TTL written to IPv4 packets forwarded through this MF885. The setting stays only in memory and returns to Off after every restart.</p></div>
+          <button id="ttlRefresh" type="button" class="secondary">Read current state</button>
+        </div>
+        <p id="ttlStatus" class="status" role="status" aria-live="polite">Current state will load automatically after sign-in and refresh every 30 seconds.</p>
+        <div class="ttl-current"><span>Current mode</span><strong id="ttlCurrent">Loading…</strong><small id="ttlCurrentDetail">No TTL state has been read yet.</small></div>
+        <div class="ttl-options" role="group" aria-label="TTL mode">
+          <article data-ttl-card="off"><h2>Off</h2><p>Keep the firmware's normal forwarding behavior.</p><button type="button" data-ttl-value="off" class="secondary">Turn off</button></article>
+          <article data-ttl-card="64"><h2>64 · Recommended</h2><p>Match the normal IPv4 TTL used by an iPhone. The MF885 writes exactly 64 immediately before output.</p><button type="button" data-ttl-value="64">Use TTL 64</button></article>
+          <article data-ttl-card="65"><h2>65 · Compatibility</h2><p>Use only when another downstream forwarding step is known to subtract one after this router.</p><button type="button" data-ttl-value="65">Use TTL 65</button></article>
+          <article data-ttl-card="custom"><h2>Custom TTL</h2><p>Write any exact IPv4 TTL from 1 through 255.</p><label for="ttlCustom">TTL value</label><div class="ttl-custom"><input id="ttlCustom" type="number" min="1" max="255" step="1" inputmode="numeric" value="64"><button id="ttlCustomApply" type="button">Apply custom</button></div></article>
+        </div>
+        <div class="ttl-notes">
+          <h2>What this changes</h2>
+          <ul><li>Forwarded IPv4 traffic only; packets created by the router itself are unchanged.</li><li>IPv6 is unchanged.</li><li>Incoming TTL 0 or 1 is never rescued by the extension.</li><li>Allowed values are Off or any canonical integer from 1 to 255.</li><li>One click sends one state change and one readback. There is no automatic retry.</li><li>If readback is lost, changes lock until a fresh read proves the current state.</li></ul>
+        </div>
+      </section>

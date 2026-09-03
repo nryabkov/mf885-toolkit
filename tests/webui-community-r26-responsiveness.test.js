@@ -80,6 +80,7 @@ function fixture() {
   const document = testDocument();
   const requests = [];
   const timers = [];
+  const consoleEntries = [];
   class FakeXHR {
     constructor() { this.headers = {}; requests.push(this); }
     open(method, url, async) { this.method = method; this.url = url; this.async = async; }
@@ -99,14 +100,18 @@ function fixture() {
     setTimeout(callback, milliseconds) { timers.push({ callback, milliseconds }); return timers.length; },
     clearTimeout() {},
     confirm() { return true; },
-    DOMParser: XMLDOMParser || class {}
+    DOMParser: XMLDOMParser || class {},
+    console: {
+      debug(...values) { consoleEntries.push(['debug', ...values]); },
+      error(...values) { consoleEntries.push(['error', ...values]); }
+    }
   };
   window.window = window;
   const context = window;
   vm.createContext(context);
   vm.runInContext(script, context, { filename: 'r26app.js' });
   document.dispatchEvent(new TestEvent('DOMContentLoaded'));
-  return { window, document, requests, timers };
+  return { window, document, requests, timers, consoleEntries };
 }
 
 test('R2.6 entry is a standalone shell and cannot start the legacy blocking stack', () => {
@@ -120,7 +125,7 @@ test('R2.6 entry is a standalone shell and cannot start the legacy blocking stac
 test('R2.6 transport has no synchronous XHR and every request has one 10-second deadline', () => {
   assert.doesNotMatch(script, /async\s*:\s*false|\.open\([^\n]+,\s*false\s*\)/);
   assert.match(script, /REQUEST_TIMEOUT_MS=10000/);
-  assert.match(script, /xhr\.open\(options\.method\|\|'GET',options\.url,true\)/);
+  assert.match(script, /xhr\.open\(method,options\.url,true\)/);
   assert.match(script, /xhr\.timeout=options\.timeoutMs\|\|REQUEST_TIMEOUT_MS/);
   assert.match(script, /xhr\.ontimeout=/);
 });
@@ -147,7 +152,58 @@ test('R2.6 leaves the page responsive while login is pending and reports the exa
   await new Promise(resolve => setImmediate(resolve));
   assert.equal(value.document.getElementById('signIn').disabled, false);
   assert.match(value.document.getElementById('loginStatus').textContent, /did not answer within 10 seconds/);
+  assert.match(value.document.getElementById('loginStatus').textContent, /\[E_TIMEOUT · R26-0001\]/);
   assert.match(value.document.getElementById('loginStatus').className, /error/);
+  assert.equal(value.consoleEntries.some(entry => entry[0] === 'error' && /\[MF885\]\[R26-0001\]\[E_TIMEOUT\]/.test(entry[1])), true);
+});
+
+test('R2.6 displays an HTTP failure with the same searchable request ID used in console', async () => {
+  const value = fixture();
+  value.document.getElementById('password').value = 'fixture-password';
+  value.document.getElementById('loginForm').dispatchEvent(new value.window.Event('submit'));
+  value.requests[0].status = 503;
+  value.requests[0].onload();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.match(value.document.getElementById('loginStatus').textContent, /Router HTTP 503\. \[E_HTTP · R26-0001\]/);
+  assert.equal(value.consoleEntries.some(entry => entry[0] === 'error' && /\[R26-0001\]\[E_HTTP\]/.test(entry[1])), true);
+});
+
+test('R2.6 displays a connection failure with the same searchable request ID used in console', async () => {
+  const value = fixture();
+  value.document.getElementById('password').value = 'fixture-password';
+  value.document.getElementById('loginForm').dispatchEvent(new value.window.Event('submit'));
+  value.requests[0].onerror();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.match(value.document.getElementById('loginStatus').textContent, /connection failed\. \[E_NETWORK · R26-0001\]/);
+  assert.equal(value.consoleEntries.some(entry => entry[0] === 'error' && /\[R26-0001\]\[E_NETWORK\]/.test(entry[1])), true);
+});
+
+test('R2.6 displays cancellation with the same searchable request ID used in console', async () => {
+  const value = fixture();
+  value.document.getElementById('password').value = 'fixture-password';
+  value.document.getElementById('loginForm').dispatchEvent(new value.window.Event('submit'));
+  value.window.MF885CommunityR26.cancel();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.match(value.document.getElementById('loginStatus').textContent, /Request cancelled\. \[E_CANCELLED · R26-0001\]/);
+  assert.equal(value.consoleEntries.some(entry => entry[0] === 'error' && /\[R26-0001\]\[E_CANCELLED\]/.test(entry[1])), true);
+});
+
+test('R2.6 makes unexpected JavaScript failures visible without exposing their message on screen', () => {
+  const value = fixture();
+  const id = value.window.MF885CommunityR26.reportUnexpected('test', new Error('private console detail'));
+  const banner = value.document.getElementById('runtimeStatus');
+  assert.equal(banner.hidden, false);
+  assert.match(banner.textContent, /Unexpected interface error/);
+  assert.match(banner.textContent, /\[E_UNEXPECTED · JS-0001\]/);
+  assert.doesNotMatch(banner.textContent, /private console detail/);
+  assert.equal(id, 'JS-0001');
+  assert.equal(value.consoleEntries.some(entry => entry[0] === 'error' && /\[MF885\]\[JS-0001\]\[E_UNEXPECTED\]/.test(entry[1]) && String(entry[2]).includes('private console detail')), true);
+});
+
+test('R2.6 registers global error and unhandled-rejection visibility handlers', () => {
+  assert.match(script, /addEventListener\('error'/);
+  assert.match(script, /addEventListener\('unhandledrejection'/);
+  assert.match(html, /id="runtimeStatus"[^>]+role="alert"[^>]+aria-live="assertive"/);
 });
 
 test('R2.6 parses the proven Digest envelope and rejects incomplete challenges', () => {
@@ -201,6 +257,10 @@ test('R2.6 uses the exact browser Digest sequence and never mixes in the APP pro
   assert.equal(value.requests.length, 3);
   assert.match(value.requests[2].url, /file=status1$/);
   assert.match(value.requests[2].headers.Authorization, /nc=00000002/);
+  const starts = value.consoleEntries.filter(entry => entry[0] === 'debug' && /request start/.test(entry[1]));
+  assert.deepEqual(starts.map(entry => entry[2].route), ['/login.cgi', '/login.cgi', '/xml_action.cgi']);
+  assert.equal(JSON.stringify(value.consoleEntries).includes('nonce=abcdef'), false);
+  assert.equal(JSON.stringify(value.consoleEntries).includes('response='), false);
 });
 
 test('R2.6 builds the stock Send/Delete XML once from validated values', () => {
@@ -232,9 +292,9 @@ test('R2.6 mutation completion is bounded, GET-only, and fail-closed after submi
   const api = fixture().window.MF885CommunityR26;
   assert.equal(api.statusPolls, 10);
   assert.match(script, /function pollCommand\(command,attempt\)\{return request\(\{method:'GET'/);
-  assert.match(script, /if\(attempt>=STATUS_POLLS-1\)throw new Error\('Command completion was not proven\.'/);
-  assert.match(script, /if\(submitted\)lockUnknown\(error\.message\|\|'Send verification failed\.'/);
-  assert.match(script, /if\(submitted\)lockUnknown\(error\.message\|\|'Delete verification failed\.'/);
+  assert.match(script, /if\(attempt>=STATUS_POLLS-1\)throw fault\('E_COMMAND_UNPROVEN','Command completion was not proven\.'/);
+  assert.match(script, /if\(submitted\)lockUnknown\(error\)/);
+  assert.match(script, /\.catch\(function\(error\)\{if\(submitted\)lockUnknown\(error\)\}\)/);
   assert.equal((script.match(/postMutation\(sendXml/g) || []).length, 1);
   assert.equal((script.match(/postMutation\(deleteXml/g) || []).length, 1);
 });

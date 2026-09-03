@@ -1,0 +1,133 @@
+{
+  "schema": "mf885-community-r30-manifest/v1",
+  "profile": "0.3.0-community-r2",
+  "status": "OFFLINE_CANDIDATE_NOT_INSTALLED",
+  "source": {
+    "file": "MF885_golden_capture_a.bin",
+    "bytes": 8323644,
+    "sha256": "2b5880fc26805918bb574d07341ea9b863f8261be34c3bf9766fac0929204531"
+  },
+  "candidate": {
+    "file": "MF885_Community_0.3.0-community-r2-native-r3-cafe-r2.bin",
+    "bytes": 8323644,
+    "sha256": "78c785527c9e6cafc301e9c8937be3ceaace0d7d7265e1d78f77b1094e880e42",
+    "report_bytes": 75497,
+    "report_sha256": "82f2fa28cec3d7e9491e39381cfe9bf55884ff1d34e5196905fb311509bd9ae3"
+  },
+  "oslo": {
+    "source_bytes": 9648064,
+    "source_sha256": "d51fb378d8ccf68662174f39d6b8c4f6be5571280790bc3a4dc4a9e8a967078c",
+    "candidate_bytes": 9648064,
+    "candidate_sha256": "2582c5b07c8bea0a6cd4552e61eb6f3a8700a17a15b0af8e5ed3a49c92a98984",
+    "compressed_bytes": 4549585,
+    "fixed_partition_bytes": 4587520,
+    "padding_bytes": 37935,
+    "actual_changed_bytes": 1222
+  },
+  "native_components": {
+    "ttl_forward": {
+      "bytes": 152,
+      "sha256": "2a97d1fc60fdf095a3a6dbb40476fbb0af01ead767da8b85657057c1eae9d3cb",
+      "code_bytes": 144,
+      "literal_pool": "003293064cc10207",
+      "file_range": "0x12a0..0x1338",
+      "runtime": "0x060012a0"
+    },
+    "ttl_post_set": {
+      "bytes": 232,
+      "sha256": "93c9f564f2eb092b47d3ac91311283ff7b8dba6f7ab2523e30d69184c8cbc58b",
+      "code_bytes": 220,
+      "literal_pool": "04329306db7340060ff04406",
+      "file_range": "0x1340..0x1428",
+      "runtime": "0x06001340"
+    },
+    "ttl_post_get": {
+      "bytes": 84,
+      "sha256": "864f2e95e06bc08f7d3eb9340a4e2404f6d4c447f3b7498391744773ca182323",
+      "code_bytes": 76,
+      "literal_pool": "04329306db734006",
+      "file_range": "0x1520..0x1574",
+      "runtime": "0x06001520"
+    },
+    "ttl_data": {
+      "bytes": 1280,
+      "sha256": "b391fea1c3a269ddfbfdba0cb395aeed1fc1789e8d4bd3304b7b509515e77bca",
+      "file_range": "0x933200..0x933700",
+      "runtime": "0x06933200",
+      "layout": "one mutable state byte plus immutable 256x4 canonical readback table"
+    }
+  },
+  "web_assets": {
+    "www\\r30.html": {
+      "bytes": 15529,
+      "sha256": "1cc0d54a68ea0f423ae88e7cbff3d700adf978ce1ad13c19f6c7c1c144ca69b2"
+    },
+    "www\\js\\r30app.js": {
+      "bytes": 73163,
+      "sha256": "872a28e96ccab80d61aecd56ec3e15f4b2e3330eef4ad97bff3585a07f53d154"
+    },
+    "www\\css\\r30ui.css": {
+      "bytes": 9232,
+      "sha256": "84eaad60ed768f9a8daf1bee296bb9e9a6971214f494b3636f25cd331c023576"
+    }
+  },
+  "ttl_contract": {
+    "boot": "off",
+    "persistent": false,
+    "minimum": 1,
+    "maximum": 255,
+    "recommended": 64,
+    "compatibility_preset": 65,
+    "mutation": "one POST plus one GET readback",
+    "automatic_retry_ceiling": 0,
+    "scope": "forwarded IPv4 only"
+  },
+  "container": {
+    "changed_partitions": [
+      "OSLO",
+      "WEBI"
+    ],
+    "other_partitions_byte_identical": true,
+    "independent_inspector": "verified",
+    "double_build_equal": true
+  },
+  "qualification": {
+    "offline_native_tests": 21,
+    "emitted_thumb_executions": 2589,
+    "emitted_thumb_decoder_boundary": "LLVM records with separately implemented instruction semantics",
+    "offline_web_builder_tests": 2,
+    "offline_native_builder_tests": 4,
+    "offline_ui_scenarios": 5,
+    "offline_ttl_protocol_pcap_tests": 10,
+    "offline_direct_v35_tests": 82,
+    "offline_state_first_gate_scenarios": 7,
+    "direct_v35_all_pins_match": true,
+    "ipv4_header_rewrites_checked": 441344,
+    "visual_browser_review": "blocked_by_local_file_url_policy",
+    "installed": false,
+    "live_ttl_qualified": false,
+    "cold_boot_proven": false,
+    "repeatability_proven": false,
+    "rollback_proven": false
+  },
+  "delivery": {
+    "logic_commit": "29ee26ed55c87694696fb4ec8e8b898c13b645ca",
+    "transport_contract_sha256": "ed08a31189d714465f59584bf1f0428d709b516ffa9f4606e382b6e1fb1f8388",
+    "normalized_once_sha256": "86cedbb15af0a3f679802a097d86acb438d168dd0496645a9d9e9af7c08f939a",
+    "normalized_dispatcher_sha256": "3dd439eb44f872e6d84d431def2539be16745295e45bbc97f97696a785b30c6d",
+    "ttl_probe_sha256": "c4571c04f50645dc4df045eaab064989aa47509abe1cbed2e4d07922175a0c25",
+    "fence_ref": "refs/tags/mf885-mini-rndis-community-r30-direct-fence-v35-b88db38495842115ac30ba4aa750be2663e52274b1c3831aaca23290e4e9e7b9"
+  },
+  "toolchain": {
+    "liblzma_version": "5.4.5",
+    "liblzma_path": "/usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5",
+    "liblzma_sha256": "696e868dd0700a19a6d65fc01608ec2d70d3cb91f65710e89180cd2e688f30cb"
+  },
+  "residual_risks": {
+    "state_page_live_writability_and_ownership": "not proved until exact live setter/getter qualification",
+    "independent_thumb_decoder": "not present; subset semantics execute independently from LLVM-decoded records",
+    "cold_boot": "unproved",
+    "repeatability": "unproved",
+    "rollback": "unproved"
+  }
+}

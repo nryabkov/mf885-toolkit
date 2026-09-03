@@ -27,18 +27,18 @@ CSS_PATH = "www\\css\\r26ui.css"
 CUSTOM_FILES = {
     ENTRY_PATH: (
         "firmware/community-r2.6/r26.html",
-        5_269,
-        "e57665e8667429268c0eea7f46c00ef9a3c91b5e555d8120fb091495912d656a",
+        5_376,
+        "46e559e77dfb22526f8e004aa4e2755743614ad1294f0648ef2c0c8ee8253ce0",
     ),
     APP_PATH: (
         "firmware/community-r2.6/r26app.js",
-        24_765,
-        "742a520d1d36cb6c569b43d014e4d595d637f195e743b738fbece94c8bcf3c54",
+        28_447,
+        "e8c702980ab99610f994a54097f2888d653bf97cb0ccf8031287cd001aff9a35",
     ),
     CSS_PATH: (
         "firmware/community-r2.6/r26ui.css",
-        5_052,
-        "3f5192c823c21818b0861f5b9bb2eee8fbc68b4c8b43b106eb9272cc73a29c8b",
+        5_215,
+        "5aafcb88e81d23827136bfb6cde67df75b7c46fee4e9f001034aaf58f70c8a1a",
     ),
 }
 

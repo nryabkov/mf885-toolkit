@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MF885 Community extension</title>
+  <link rel="stylesheet" href="css/r27ui.css">
+  <script src="js/library/md5.js"></script>
+  <script defer src="js/r27app.js"></script>
+</head>
+<body>
+  <div id="boot" class="boot" role="status">Loading interface…</div>
+  <p id="runtimeStatus" class="runtime-status status error" role="alert" aria-live="assertive" hidden></p>
+
+  <main id="login" class="login" hidden>
+    <form id="loginForm" class="login-card">
+      <p class="eyebrow">MF885</p>
+      <h1>Community extension</h1>
+      <p class="muted">Extra tools alongside your router settings · 0.2.7</p>
+      <label for="password">Router password</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required>
+      <button id="signIn" type="submit">Sign in</button>
+      <p id="loginStatus" class="status" role="status" aria-live="polite">No router request has been sent.</p>
+      <a href="/index.html" class="legacy">Open router settings</a>
+    </form>
+  </main>
+
+  <div id="app" class="app" hidden>
+    <header>
+      <a href="#dashboard" class="brand" data-page="dashboard">MF885 <span>Community extension 0.2.7</span></a>
+      <nav aria-label="Primary">
+        <button type="button" data-page="dashboard">Home</button>
+        <button type="button" data-page="messages">Messages</button>
+        <button type="button" data-page="diagnostics">Diagnostics</button>
+        <button type="button" data-page="modem">Modem</button>
+      </nav>
+      <button id="logout" type="button" class="quiet">Sign out</button>
+    </header>
+
+    <main class="content">
+      <section id="page-dashboard" class="page">
+        <p class="eyebrow">Extension home</p>
+        <h1>Extra tools for your MF885</h1>
+        <p>Messages, device health and radio details live here. The original router settings remain available and unchanged.</p>
+        <div class="cards">
+          <article><strong>0.2.7</strong><span>Community extension</span></article>
+          <article><strong>Shared</strong><span>One diagnostics snapshot</span></article>
+          <article><strong>Manual</strong><span>No background router polling</span></article>
+        </div>
+        <div class="actions">
+          <button type="button" data-page="messages">Open Messages</button>
+          <button type="button" data-page="diagnostics" class="secondary">Check device health</button>
+          <a href="/index.html" class="button-link">Router settings</a>
+        </div>
+      </section>
+
+      <section id="page-messages" class="page" hidden>
+        <div class="page-head">
+          <div><p class="eyebrow">Messages</p><h1 id="folderTitle">Device inbox</h1></div>
+          <select id="folder" aria-label="Message folder">
+            <option value="inbox">Device inbox</option>
+            <option value="sent">Sent messages</option>
+            <option value="sim">SIM messages</option>
+            <option value="drafts">Drafts</option>
+          </select>
+        </div>
+        <div class="actions"><button id="messagesRefresh" type="button">Load messages</button><button id="messagesNew" type="button" class="secondary">New message</button><button id="messagesCancel" type="button" class="secondary" disabled>Cancel</button></div>
+        <p id="messagesStatus" class="status" role="status" aria-live="polite">Nothing loaded. Background polling is off.</p>
+        <form id="messageComposer" class="composer" hidden>
+          <h2>New message</h2>
+          <label for="messageNumber">Phone number</label>
+          <input id="messageNumber" type="tel" inputmode="tel" autocomplete="tel" placeholder="+1234567890">
+          <label for="messageBody">Message</label>
+          <textarea id="messageBody" rows="5" maxlength="268"></textarea>
+          <p id="messageCount" class="muted">0 / 268 · 0 of 4 UCS-2 segments</p>
+          <p class="muted">One explicit send. Carrier charges may apply; a Sent record does not prove delivery.</p>
+          <div class="actions"><button id="messageSend" type="submit">Send once</button><button id="messageDiscard" type="button" class="secondary">Discard</button></div>
+        </form>
+        <div id="messagesList" class="message-list"><p class="empty">Choose Load messages.</p></div>
+        <div id="messagesPager" class="pager" hidden><button id="messagesPrevious" type="button" class="secondary">Previous</button><span id="messagesPage"></span><button id="messagesNext" type="button" class="secondary">Next</button></div>
+      </section>
+
+      <section id="page-diagnostics" class="page" hidden>
+        <div class="page-head"><div><p class="eyebrow">Device health · read only</p><h1>Diagnostics</h1><p class="section-intro">Identity, SIM, registration, battery and power. Each source reports its own request ID and freshness.</p></div><button id="diagnosticsRefresh" type="button">Refresh shared snapshot</button></div>
+        <p id="diagnosticsStatus" class="status" role="status" aria-live="polite">No snapshot yet. Nothing is read in the background.</p>
+        <div id="diagnosticsValues" class="values"></div>
+        <h2 class="subheading">Source health</h2>
+        <div id="diagnosticsSources" class="source-grid" aria-label="Diagnostics source health"></div>
+      </section>
+
+      <section id="page-modem" class="page" hidden>
+        <div class="page-head"><div><p class="eyebrow">Cellular radio · read only</p><h1>Modem</h1><p class="section-intro">Network and cell measurements from the same three-source snapshot used by Diagnostics.</p></div><button id="modemRefresh" type="button">Refresh shared snapshot</button></div>
+        <p id="modemStatus" class="status" role="status" aria-live="polite">No snapshot yet. Automatic watch is off.</p>
+        <div id="modemValues" class="values"></div>
+        <details class="terms"><summary>Radio terms</summary><dl><div><dt>RSRP</dt><dd>Reference Signal Received Power. Signed values are shown in dBm; report indices 0–97 use the documented LTE mapping.</dd></div><div><dt>RSRQ</dt><dd>Reference Signal Received Quality. Signed values are shown in dB; report indices 0–34 use the documented LTE mapping.</dd></div><div><dt>SINR / RSSI</dt><dd>Shown as raw values because this firmware does not prove their units.</dd></div><div><dt>EARFCN / PCI</dt><dd>LTE channel number and physical cell identity.</dd></div><div><dt>Cell ID / TAC</dt><dd>Serving-cell and tracking-area identifiers returned by the modem.</dd></div></dl></details>
+        <h2 class="subheading">Snapshot sources</h2>
+        <div id="modemSources" class="source-grid" aria-label="Modem source health"></div>
+      </section>
+    </main>
+
+    <footer><span>MF885 Community extension 0.2.7</span><a href="/index.html">Router settings</a></footer>
+  </div>
+</body>
+</html>
