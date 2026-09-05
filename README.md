@@ -103,9 +103,11 @@ recommendation. Its source contract and immutable build hashes remain in
 `firmware/community-r3.5/`. No native TTL variant is a qualified functional
 release.
 
-The current development increment is an [offline fixed64 forwarding
-component](firmware/community-r4.3/README.md), with emitted-machine packet,
-checksum and ABI tests. It has no full update container or live TTL qualification.
+The current development increment is the [R4.3 fixed64 forwarding
+release](firmware/community-r4.3/README.md), available through `--variant
+community-r4.3`. It has a reproducible full container, emitted-machine packet,
+checksum and ABI tests. It has no runtime Off, direction filter or live TTL
+qualification.
 The earlier [R4.2 guarded context-read builder](firmware/community-r4.2/README.md)
 is retained with its exact machine-code and container tests. It supplies no binary image or live runner. Per-variant READMEs,
 manifests and stage metadata describe historical checkpoints; their device

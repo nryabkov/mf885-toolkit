@@ -4,8 +4,11 @@ Variant installation and qualification statements below are historical
 checkpoint descriptions; see [release and research status](RELEASES.md). The
 R4.2 full-container builder is available as `--variant community-r4.2`; its
 standalone decompressed native-component output is not an update image.
-The newer [R4.3 fixed64 component](../firmware/community-r4.3/README.md) has only
-a standalone OSLO builder; it is not a `--variant` option or an update image.
+The newer [R4.3 fixed64 forwarding release](../firmware/community-r4.3/README.md)
+is available as `--variant community-r4.3`. Its full container changes the
+forwarding hook and versioned UI; the separate decompressed OSLO component
+is not an update image. There is no runtime Off or direction filter and no
+live packet TTL qualification.
 
 ## What this workflow does
 

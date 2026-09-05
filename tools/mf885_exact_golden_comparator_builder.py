@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Shared exact-golden container path for single-callback comparators.
+"""Shared exact-golden container path for native comparators.
 
 Release modules supply only their profile, native payload builder and explicit
 verification conditions.  This module owns the repeated ZIMI/OSLO/WEBI
-container work so later ABI ladder increments do not copy that mechanism.
+container work so later native increments do not copy that mechanism.
 """
 
 from __future__ import annotations

@@ -37,11 +37,13 @@ restore-allowlisted**. Do not infer stability from a successful build, a known
 SHA-256, one live device, or the word `verified` in a structural report.
 
 As of 2026-09-05, the current development increment is the
-[R4.3 fixed64 forwarding component](../firmware/community-r4.3/README.md).
+[R4.3 fixed64 forwarding release](../firmware/community-r4.3/README.md).
 It rewrites eligible IPv4 packet TTL in emitted-machine tests, preserves the
 original output ABI, and contains no custom state or diagnostic callback.
-There is no runtime Off switch or direction filter, full R4.3 container or
-live packet qualification. R4.2 remains the separate guarded context-read
+A reproducible full R4.3 container and distinct UI are available through
+`--variant community-r4.3`; 60 structural conditions and independent container
+inspection passed. There is no runtime Off switch, direction filter or live
+packet qualification. R4.2 remains the separate guarded context-read
 full-container builder. Neither is a qualified functional TTL release. The public export contains no binary image or delivery runner. R3.5 remains
 a historical build-wrapper example, not an installation recommendation.
 

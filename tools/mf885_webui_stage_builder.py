@@ -41,6 +41,7 @@ import mf885_community_r39 as community_r39
 import mf885_community_r40 as community_r40
 import mf885_community_r41 as community_r41
 import mf885_community_r42 as community_r42
+import mf885_community_r43 as community_r43
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -1159,6 +1160,31 @@ STAGE_PROFILES[community_r42.PROFILE] = {
     },
 }
 
+# R4.3 changes the full-image forwarding path, with no browser TTL control.
+STAGE_PROFILES[community_r43.PROFILE] = {
+    **STAGE_PROFILES[community_r42.PROFILE],
+    "kind": "webui-community-fixed64-forward",
+    "marker": community_r43.MARKER,
+    "artifact": "MF885_Community_0.4.3-community-r2-webi-stage-only.bin",
+    "patcher": "community-r4.3",
+    "safety": {
+        **{key: value for key, value in STAGE_PROFILES[community_r42.PROFILE]["safety"].items()
+           if not key.startswith("diagnosticNative") and key not in {
+               "guardedContextReadLiveQualified", "contextReadExecutionProven", "contextTypeValueProven",
+               "ttlForwardingHookInstalled"}},
+        "ttlUiState": "fixed64-experimental-no-runtime-control",
+        "ttlMode": "fixed-64",
+        "ttlFixedValue": 64,
+        "ttlScope": "eligible-forwarded-ipv4-both-directions",
+        "ttlRuntimeOffAvailable": False,
+        "ttlDirectionFilter": False,
+        "ttlForwardingHookIncludedInFullImage": True,
+        "ttlPacketPathQualified": False,
+        "externalQualificationContract": "separate packet measurement required; no diagnostic request or runtime TTL configuration",
+        "buildPinned": bool(community_r43.OUTPUT_RECORDS and community_r43.ADDITION_OUTPUT_RECORDS),
+    },
+}
+
 DERIVED_PATCHERS = {
     "community-r2": (community_r2, community_r2.CommunityR2Error),
     "community-r2.1": (community_r21, community_r21.CommunityR21Error),
@@ -1183,6 +1209,7 @@ DERIVED_PATCHERS = {
     "community-r4.0": (community_r40, community_r40.CommunityR40Error),
     "community-r4.1": (community_r41, community_r41.CommunityR41Error),
     "community-r4.2": (community_r42, community_r42.CommunityR42Error),
+    "community-r4.3": (community_r43, community_r43.CommunityR43Error),
 }
 
 

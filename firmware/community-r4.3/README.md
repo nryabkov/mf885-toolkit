@@ -1,8 +1,10 @@
-# Community R4.3 fixed64 forwarding component
+# Community R4.3 fixed64 forwarding firmware
 
-Status: **offline decompressed OSLO component only**. No full R4.3 firmware
-container, installed image, runtime configuration or live packet test exists.
-This source-only component is separate from the R4.2 context-read probe.
+Status: **experimental, built offline and unflashed**. The full container is
+available through `--variant community-r4.3`. It combines the unchanged fixed64
+component with a versioned `/r43.html` UI. No installed R4.3 image, runtime
+configuration or live packet test is claimed. The R4.2 context-read callback
+is absent: each build starts from exact stock, not the installed predecessor.
 
 The helper replaces the already reviewed ip_forward output call with the
 existing argument trampoline and a fixed TTL=64 algorithm. It does not attach
@@ -52,7 +54,8 @@ python3 -B -m unittest discover -s tests -p mf885_ttl_native_payload_r43_test.py
 MF885_R43_TEST_OSLO=/path/to/stock-oslo.bin python3 -B -m unittest discover -s tests -p mf885_ttl_native_payload_r43_test.py -v
 ```
 
-The output is **not a flashable update**. Existing output files are refused.
+The standalone decompressed OSLO output above is **not a flashable update**.
+Existing output files are refused.
 No backup, generated image or live delivery helper is distributed.
 
 Tests execute emitted machine instructions, with state/CGI memory unmapped.
@@ -66,3 +69,41 @@ check exact OSLO patches and reject source/candidate drift or truncation.
 
 These checks demonstrate offline packet rewriting, not live forwarding-hook
 execution or an observed TTL at a real egress interface.
+
+## Full offline container
+
+```sh
+mkdir -p out
+python3 tools/mf885_build_variant.py --variant community-r4.3 \
+  --golden input/MF885_golden.bin --identity-xml input/mf885-base.xml \
+  --output-dir out --acknowledge-brick-risk
+```
+
+The native builder uses `--confirm-fixed64-forwarding-risk` when invoked
+directly. Neither entry point contacts a device. The wrapper builds twice,
+compares image and report bytes, verifies the exact native result and all
+unmodified partitions, then runs the independent ZIMI/CAFE/LZMA inspector.
+Only OSLO and WEBI partition payloads change; container checksums are repaired.
+Engineering templates and all other partition payloads remain byte-identical.
+The UI retains the prior controller and CSS behavior, with version substitutions
+in the controller. Its TTL page describes fixed64, both directions, no On/Off
+control and the need for a real measurement; browser TTL/diagnostic traffic is zero.
+
+- Artifact: `MF885_Community_0.4.3-community-r2-native-r17-cafe-r2.bin`.
+- Length: 8,323,644 bytes.
+- Reference-unit raw SHA256: `8db4be3167ae8fa80f80d1bc36a693d061be0ac671cffb58cae302c8c7d986f4`.
+- Portable plaintext SHA256: `dfdd79be27409e829596b952c93a2f1a231e2ac00621191c499429ddfd30f498`.
+- Two fresh-process builds and their reports matched; all 60 full-container
+  conditions passed and the independent inspector reported `verified`.
+
+Raw encrypted-header hashes are unit-bound. Use the portable plaintext hash
+and exact verified input contract when checking a build for another owned unit.
+The manifest's `flashable: false` means no operational flashing qualification;
+the full artifact has a complete update-container structure. The decompressed
+component remains a separate non-update artifact. A full container is not a
+boot, recovery, installation or real-packet TTL guarantee.
+
+A remote receiver sees TTL after subsequent routers decrement it. Equal received
+TTLs for distinct input TTLs can show normalization under a controlled path;
+absolute MF885 egress64 requires a correctly placed capture or an independently
+proved remaining decrement count. No such live result is claimed here.

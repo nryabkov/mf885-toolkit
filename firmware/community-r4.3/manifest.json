@@ -1,20 +1,41 @@
 {
+  "artifact": {
+    "bytes": 8323644,
+    "file": "MF885_Community_0.4.3-community-r2-native-r17-cafe-r2.bin",
+    "portable_plaintext_sha256": "dfdd79be27409e829596b952c93a2f1a231e2ac00621191c499429ddfd30f498",
+    "reference_raw_sha256": "8db4be3167ae8fa80f80d1bc36a693d061be0ac671cffb58cae302c8c7d986f4"
+  },
   "component": "community-r4.3-fixed64-forward",
+  "component_artifact_flashable": false,
   "custom_state": false,
   "diagnostic_callbacks": false,
   "direction_filter": false,
   "fixed_ttl": 64,
+  "flash_qualified": false,
   "flashable": false,
-  "full_firmware_container_built": false,
+  "full_firmware_container_built": true,
   "helper_bytes": 140,
   "helper_code_bytes": 136,
   "helper_sha256": "f1a939377d18d60688179c474d4d4bba352c0a72afd69f70fe3a81113824a6d2",
   "installed": false,
   "live_packet_ttl_verified": false,
   "oslo_sha256": "b0d527e2c48df02d00e76ac606636068a1e7052e1be18e406cc5f83474f8b2e6",
+  "packet_hook_in_candidate": true,
+  "profile": "0.4.3-community-r2",
   "runtime_off": false,
-  "schema": "mf885-offline-native-component/v1",
+  "schema": "mf885-offline-native-release/v1",
   "source": "native/ttl_forward_fixed64.ll",
   "source_sha256": "3a864b9d738f2791e91f1f1c3232fc0e7aadf1f97eef6e39744e8e9ea6d44c25",
-  "status": "offline-component-only"
+  "status": "experimental-unflashed",
+  "verification": {
+    "changed_partitions": [
+      "OSLO",
+      "WEBI"
+    ],
+    "double_build_equal": true,
+    "full_container_conditions": 60,
+    "independent_container_status": "verified",
+    "other_partitions_byte_identical": true
+  },
+  "webui_entry": "/r43.html"
 }
