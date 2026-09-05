@@ -40,6 +40,7 @@ import mf885_community_r38 as community_r38
 import mf885_community_r39 as community_r39
 import mf885_community_r40 as community_r40
 import mf885_community_r41 as community_r41
+import mf885_community_r42 as community_r42
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -1132,6 +1133,32 @@ STAGE_PROFILES: dict[str, dict[str, Any]] = {
     },
 }
 
+
+# R4.2 inherits cumulative UI behaviour with a separate version marker.
+STAGE_PROFILES[community_r42.PROFILE] = {
+    **STAGE_PROFILES[community_r41.PROFILE],
+    "kind": "webui-community-guarded-context-read-comparator",
+    "marker": community_r42.MARKER,
+    "artifact": "MF885_Community_0.4.2-community-r2-webi-stage-only.bin",
+    "patcher": "community-r4.2",
+    "safety": {
+        **{key: value for key, value in STAGE_PROFILES[community_r41.PROFILE]["safety"].items() if key != "lowEntryReturnZeroQualified"},
+        "ttlUiState": "visible-unavailable-guarded-context-read-comparator",
+        "diagnosticNativeCallback": "guard phase==3 and context!=NULL, read context halfword, discard and return zero",
+        "diagnosticNativeBytes": 12,
+        "diagnosticNativeLoads": 1,
+        "diagnosticNativeExecutedLoadBounds": [0, 1],
+        "diagnosticNativeContextReadBytes": 2,
+        "diagnosticNativeContextReadOffset": 0,
+        "diagnosticNativeStackAccesses": 0,
+        "guardedContextReadLiveQualified": False,
+        "contextReadExecutionProven": False,
+        "contextTypeValueProven": False,
+        "externalQualificationContract": "one exact authenticated command=ttl,arg=x SET; guarded survival only, no later diagnostic GET",
+        "buildPinned": bool(community_r42.OUTPUT_RECORDS and community_r42.ADDITION_OUTPUT_RECORDS),
+    },
+}
+
 DERIVED_PATCHERS = {
     "community-r2": (community_r2, community_r2.CommunityR2Error),
     "community-r2.1": (community_r21, community_r21.CommunityR21Error),
@@ -1155,6 +1182,7 @@ DERIVED_PATCHERS = {
     "community-r3.9": (community_r39, community_r39.CommunityR39Error),
     "community-r4.0": (community_r40, community_r40.CommunityR40Error),
     "community-r4.1": (community_r41, community_r41.CommunityR41Error),
+    "community-r4.2": (community_r42, community_r42.CommunityR42Error),
 }
 
 

@@ -103,9 +103,9 @@ recommendation. Its source contract and immutable build hashes remain in
 `firmware/community-r3.5/`. No native TTL variant is a qualified functional
 release.
 
-The current R4.2 development increment is an [offline context-read native
-component](firmware/community-r4.2/README.md), with exact machine-code tests.
-It supplies no flashable R4.2 image or live runner. Per-variant READMEs,
+The current R4.2 development increment is an [offline full-container builder
+for the guarded context-read probe](firmware/community-r4.2/README.md), with
+exact machine-code and container tests. It supplies no binary image or live runner. Per-variant READMEs,
 manifests and stage metadata describe historical checkpoints; their device
 installation and qualification fields are not current device status. See
 [release and research status](docs/RELEASES.md).

@@ -1,7 +1,8 @@
 # Community R4.2 native context access probe
 
-Status: **offline native component validated; no flashable R4.2 image or live
-qualification is supplied by this component**. It does not implement TTL.
+Status: **full R4.2 container verified offline; not installed or live-qualified**.
+The source-only distribution supplies builders and tests, not a binary image.
+R4.2 does not implement TTL.
 
 This increment keeps the R4.1 low callback entry (`0x06001340`, Thumb pointer
 `0x06001341`) and adds one guarded halfword read from the callback context.
@@ -57,9 +58,9 @@ python3 tools/mf885_ttl_native_payload_r42.py stock-oslo.bin --output r42-oslo-c
 ```
 
 **The resulting file is a decompressed OSLO component, not an update image.**
-Full container assembly, a distinct installed-version marker, container checks
-and a separately bounded delivery protocol are still required before any
-device operation. No live runner is included.
+The separate full-container builder below performs container assembly and
+verification with distinct R4.2 versioned assets. Device delivery and live
+qualification remain separate; no live runner is included in the public export.
 
 Only the callback cave and diagnostic post_set pointer are patched. Exact
 whole-source and whole-candidate checks preserve all other bytes. Compared to
@@ -82,3 +83,33 @@ Pinned callback SHA-256:
 
 Pinned LLVM source SHA-256:
 `1644e56f18312b9ee307a1540bbceeeda5e8c9c2f3faa3a39c87c22fcee9a558`.
+
+## Full firmware container
+
+The full offline builder combines this exact OSLO component with the cumulative
+UI under `/r42.html`, `/js/r42app.js` and `/css/r42ui.css`. The page keeps TTL
+unavailable and emits no diagnostic requests. Browser JavaScript is identical
+to R4.1 after version renaming; CSS is byte-identical. The stock UI links point
+to R4.2 and all other partitions stay byte-identical to the supplied golden.
+
+```sh
+python3 tools/mf885_build_variant.py --variant community-r4.2 --golden input/MF885_golden.bin --identity-xml input/mf885-base.xml --output-dir out --acknowledge-brick-risk
+```
+
+The output directory must already exist. The builder compares two sequential
+builds and their reports, checks native/WebUI preservation and independently
+inspects the final ZIMI/CAFE/LZMA container. It refuses to overwrite outputs.
+No network, USB or device action is performed by this command.
+
+Reference artifact: `MF885_Community_0.4.2-community-r2-native-r16-cafe-r2.bin`,
+8,323,644 bytes, raw SHA-256
+`c30af4456cf5232939a1926bb6f5d31e390470d79a959dfd0db37686feab096d`.
+The raw encrypted header is bound to the supplied unit. Portable plaintext
+SHA-256 is `fce690236a567a8e57ffa1dc59718e9d35e8486c1d8427aac3e17a07e400b285`.
+All 79 final verification conditions passed and the independent inspector
+reported verified. Exact asset and report pins are in manifest.json.
+
+Full-container tests use optional local fixtures via `MF885_TEST_GOLDEN` and
+`MF885_TEST_IDENTITY`; native-component tests use `MF885_R42_TEST_OSLO`.
+Successful container checks do not establish callback execution, packet TTL,
+persistence, recovery, or compatibility with another firmware revision.

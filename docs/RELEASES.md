@@ -37,9 +37,10 @@ restore-allowlisted**. Do not infer stability from a successful build, a known
 SHA-256, one live device, or the word `verified` in a structural report.
 
 As of 2026-09-05, the current development increment is the
-[R4.2 guarded context-read native component](../firmware/community-r4.2/README.md).
-It has exact source and machine-byte checks and optional local stock-OSLO tests.
-It is not a full firmware container or a functional TTL release. R3.5 remains
+[R4.2 guarded context-read firmware builder](../firmware/community-r4.2/README.md).
+It has exact source/machine-byte checks, deterministic full-container assembly
+and optional local fixture tests. It is not live-qualified or a functional TTL
+release. The public export contains no binary image or delivery runner. R3.5 remains
 a historical build-wrapper example, not an installation recommendation.
 
 Per-variant READMEs, manifests and stage safety metadata are retained snapshots

@@ -1,0 +1,106 @@
+{
+  "browser": {
+    "diagnostic_requests": 0,
+    "ttl_available": false,
+    "ttl_requests": 0
+  },
+  "build_report": {
+    "bytes": 47767,
+    "sha256": "92b7aa4b637a49322c575debb43036b7ed773718ba32f618a65517aad9762c24"
+  },
+  "candidate": {
+    "bytes": 8323644,
+    "file": "MF885_Community_0.4.2-community-r2-native-r16-cafe-r2.bin",
+    "sha256": "c30af4456cf5232939a1926bb6f5d31e390470d79a959dfd0db37686feab096d"
+  },
+  "container": {
+    "bytes": 8323644,
+    "changed_partitions": [
+      "OSLO",
+      "WEBI"
+    ],
+    "double_build_equal": true,
+    "failed_conditions": 0,
+    "independent_inspector": "verified",
+    "other_partitions_byte_identical": true,
+    "verification_conditions": 79
+  },
+  "native_component": {
+    "bytes": 12,
+    "calls": 0,
+    "context_read_bytes": 2,
+    "context_read_offset": 0,
+    "executed_read_bounds": [
+      0,
+      1
+    ],
+    "guard": "phase == 3 and context != NULL",
+    "hex": "032801d101b1088800207047",
+    "loaded_value_checked": false,
+    "loaded_value_published": false,
+    "native_delta_from_r41_bytes": 11,
+    "native_delta_from_stock_bytes": 14,
+    "runtime": "0x06001341",
+    "sha256": "3566a3b6f4ee7d2a847e49265dde1f168e6ae7be706021bfe8def3936e2bc55e",
+    "stack_accesses": 0,
+    "writes": 0
+  },
+  "portable_plaintext_sha256": "fce690236a567a8e57ffa1dc59718e9d35e8486c1d8427aac3e17a07e400b285",
+  "profile": "0.4.2-community-r2",
+  "qualification": {
+    "cold_boot_proven": false,
+    "context_load_execution_proven": false,
+    "context_type_value_proven": false,
+    "flash_qualified": false,
+    "full_firmware_container_built": true,
+    "guarded_context_read_live_survival": false,
+    "packet_hook_installed": false,
+    "persistence_proven": false,
+    "reason": "offline deterministic full container only; later survival of the guarded callback does not establish the taken branch or loaded context value",
+    "repeatability_proven": false,
+    "request_tree_parser_installed": false,
+    "rollback_proven": false,
+    "state_installed": false,
+    "ttl_functional": false
+  },
+  "schema": "mf885-community-r42-manifest/v1",
+  "status": "OFFLINE_FULL_CONTAINER_VERIFIED_NOT_INSTALLED",
+  "web_assets": {
+    "/": {
+      "bytes": 26636,
+      "sha256": "c3ea3ac0494cd1ffd33e5efc498a48f8ec36341bceee42f335a29015292f70db"
+    },
+    "/css/r42ui.css": {
+      "bytes": 7925,
+      "sha256": "50b977ba920c226a4a9c03895c47d1457439adba0eefd169c20e2cca21244578"
+    },
+    "/help_en.html": {
+      "bytes": 21381,
+      "sha256": "00f8097d158c9bbe9dc28af72d4ce1ea8bd940ca42f0669e51c779a4d6eef7b2"
+    },
+    "/html/adminApp.html": {
+      "bytes": 4766,
+      "sha256": "1580d0861f62a00b8b07a7d5c6d55d7560fc8a8c19e1adee0fc03c3c3c4f9269"
+    },
+    "/js/base/ajax_calls.js": {
+      "bytes": 21467,
+      "sha256": "f8f2326f9d32a55d3566a9b5b743ae0fcd979c4d755ffec3823086b44068c127"
+    },
+    "/js/base/utils.js": {
+      "bytes": 16873,
+      "sha256": "5aa5c57d1e194c9ce0d21e946ad4b2358cd754d15c7bfb570bdef327d6c64103"
+    },
+    "/js/r42app.js": {
+      "bytes": 63060,
+      "sha256": "8cfb05f03f1f15c47d3e00be192411e0e1ff7649476f1a0217ca4e8367736c1c"
+    },
+    "/properties/Messages_en.properties": {
+      "bytes": 46943,
+      "sha256": "2c602877a1d515a8b022136ba289ef887a1eeffba27d13d761403146dc93d60c"
+    },
+    "/r42.html": {
+      "bytes": 13875,
+      "sha256": "9fe9aa701c9d9bd5a259fb5a57855f129a8c03475256c89f8a8d2644d6c863fd"
+    }
+  }
+}
