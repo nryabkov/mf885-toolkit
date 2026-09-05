@@ -1,0 +1,20 @@
+{
+  "component": "community-r4.3-fixed64-forward",
+  "custom_state": false,
+  "diagnostic_callbacks": false,
+  "direction_filter": false,
+  "fixed_ttl": 64,
+  "flashable": false,
+  "full_firmware_container_built": false,
+  "helper_bytes": 140,
+  "helper_code_bytes": 136,
+  "helper_sha256": "f1a939377d18d60688179c474d4d4bba352c0a72afd69f70fe3a81113824a6d2",
+  "installed": false,
+  "live_packet_ttl_verified": false,
+  "oslo_sha256": "b0d527e2c48df02d00e76ac606636068a1e7052e1be18e406cc5f83474f8b2e6",
+  "runtime_off": false,
+  "schema": "mf885-offline-native-component/v1",
+  "source": "native/ttl_forward_fixed64.ll",
+  "source_sha256": "3a864b9d738f2791e91f1f1c3232fc0e7aadf1f97eef6e39744e8e9ea6d44c25",
+  "status": "offline-component-only"
+}

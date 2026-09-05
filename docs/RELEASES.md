@@ -37,10 +37,12 @@ restore-allowlisted**. Do not infer stability from a successful build, a known
 SHA-256, one live device, or the word `verified` in a structural report.
 
 As of 2026-09-05, the current development increment is the
-[R4.2 guarded context-read firmware builder](../firmware/community-r4.2/README.md).
-It has exact source/machine-byte checks, deterministic full-container assembly
-and optional local fixture tests. It is not live-qualified or a functional TTL
-release. The public export contains no binary image or delivery runner. R3.5 remains
+[R4.3 fixed64 forwarding component](../firmware/community-r4.3/README.md).
+It rewrites eligible IPv4 packet TTL in emitted-machine tests, preserves the
+original output ABI, and contains no custom state or diagnostic callback.
+There is no runtime Off switch or direction filter, full R4.3 container or
+live packet qualification. R4.2 remains the separate guarded context-read
+full-container builder. Neither is a qualified functional TTL release. The public export contains no binary image or delivery runner. R3.5 remains
 a historical build-wrapper example, not an installation recommendation.
 
 Per-variant READMEs, manifests and stage safety metadata are retained snapshots
