@@ -1,0 +1,24 @@
+      <section id="page-ttl" class="page" hidden>
+        <div class="page-head">
+          <div><p class="eyebrow">IPv4 forwarding · volatile</p><h1>TTL extension</h1><p class="section-intro">Choose the IPv4 TTL requested from the Community extension. The image initializes its private state to Off; restart behavior is not yet live-qualified.</p></div>
+          <button id="ttlRefresh" type="button" class="secondary">Read last request</button>
+        </div>
+        <p id="ttlStatus" class="status" role="status" aria-live="polite">TTL data will load with the rest of the interface after sign-in.</p>
+        <div class="ttl-summary">
+          <article><span>Last requested value</span><strong id="ttlRequested">Not loaded</strong><small id="ttlRequestedDetail">No diagnostic read has completed.</small></article>
+          <article><span>Packet application</span><strong>Checked separately</strong><small>A matching readback proves request retention, not the packet path.</small></article>
+          <article><span>Restart behavior</span><strong>Not qualified</strong><small>The image initializes the private state to Off. Cold-boot behavior is checked separately.</small></article>
+        </div>
+        <div class="ttl-options" role="group" aria-label="Requested TTL value">
+          <article data-ttl-card="off"><h2>Off</h2><p>Use the firmware's normal IPv4 forwarding behavior.</p><button type="button" data-ttl-value="off" class="secondary">Request Off</button></article>
+          <article data-ttl-card="64"><h2>64 · Recommended</h2><p>Use the common initial IPv4 TTL used by iPhone and many other clients.</p><button type="button" data-ttl-value="64">Request 64</button></article>
+          <article data-ttl-card="65"><h2>65 · Compatibility</h2><p>Use when another known forwarding step subtracts one after this router.</p><button type="button" data-ttl-value="65">Request 65</button></article>
+          <article data-ttl-card="custom"><h2>Custom</h2><p>Request any canonical integer from 1 through 255.</p><label for="ttlCustom">TTL value</label><div class="ttl-custom"><input id="ttlCustom" type="number" min="1" max="255" step="1" inputmode="numeric" value="64"><button id="ttlCustomApply" type="button">Request value</button></div></article>
+        </div>
+        <details class="terms" open><summary>What the screen proves</summary><dl>
+          <div><dt>Readback</dt><dd>The router retained the exact <code>command=ttl</code> and requested <code>arg</code> between separate HTTP requests.</dd></div>
+          <div><dt>Not implied</dt><dd>The screen does not infer packet rewriting from that retained value. Release qualification observes an actual packet separately.</dd></div>
+          <div><dt>Failure</dt><dd>An incomplete, malformed or unexpected response locks writes and shows an error ID. No request is retried automatically.</dd></div>
+          <div><dt>Earlier builds</dt><dd>R3.0–R3.7 tried to publish a synthetic output value from native callbacks and could hang or reset. R3.8 proved safe entry and return with no setter. R3.9 reads stock-retained input and writes one private state byte.</dd></div>
+        </dl></details>
+      </section>

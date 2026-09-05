@@ -1,0 +1,88 @@
+{
+  "schema": "mf885-community-r41-manifest/v1",
+  "profile": "0.4.1-community-r2",
+  "status": "OFFLINE_CANDIDATE_NOT_INSTALLED",
+  "installed_predecessor": {
+    "file": "MF885_Community_0.4.0-community-r2-native-r14-cafe-r2.bin",
+    "bytes": 8323644,
+    "sha256": "6a64aba82333c36614b13fdd4d068f5b64a66bfc128b2527481d768ca091c1f9",
+    "installed_and_static_audit_proven": true,
+    "callback_terminal": "R40_CONTEXT_POST_OUTCOME_UNKNOWN"
+  },
+  "source": {
+    "file": "MF885_golden_capture_a.bin",
+    "bytes": 8323644,
+    "sha256": "2b5880fc26805918bb574d07341ea9b863f8261be34c3bf9766fac0929204531"
+  },
+  "candidate": {
+    "file": "MF885_Community_0.4.1-community-r2-native-r15-cafe-r2.bin",
+    "bytes": 8323644,
+    "sha256": "e3aa9bd67a6d558443ecb80e14c3035bf080cf75c2031ff6f7a2e1f749934b56",
+    "report_bytes": 70610,
+    "report_sha256": "da5aa48adeb67fa99344631f2f445f9a0d4960bddefff49a2f3be4a09c12f997"
+  },
+  "oslo": {
+    "candidate_bytes": 9648064,
+    "candidate_sha256": "fdf1a92a8d01a63dd1767b5fab44eeafe7da9e4f73078f90122efcb3586341ef",
+    "compressed_bytes": 4549546,
+    "fixed_partition_bytes": 4587520,
+    "padding_bytes": 37974,
+    "actual_changed_bytes": 6,
+    "unauthorized_changed_bytes": 0
+  },
+  "native_discriminator": {
+    "model": "diagnostic",
+    "callback_slot": "post_set",
+    "phase": 3,
+    "callback_runtime": "0x06001341",
+    "callback_bytes": 4,
+    "callback_sha256": "a7ddd513d149ea16fdd4db3f82267f83087aeaddd06b5dde5468adb704205fc4",
+    "callback_hex": "00207047",
+    "instructions": ["movs r0, #0", "bx lr"],
+    "reserved_bytes": 272,
+    "zero_tail_bytes": 236,
+    "zero_data_bytes": 32,
+    "calls": 0,
+    "loads": 0,
+    "stores": 0,
+    "field_lookups": 0,
+    "text_child_lookups": 0,
+    "generic_getter_calls": 0,
+    "generic_free_calls": 0,
+    "property_setter_calls": 0,
+    "custom_state_reads": 0,
+    "custom_state_writes": 0,
+    "get_callbacks": 0,
+    "packet_hook_installed": false,
+    "wrapper_return": 0,
+    "ttl_functional": false
+  },
+  "engineering_preservation": {
+    "wan_engineering_mode_changed": false,
+    "debugon_row_changed": false,
+    "debugon_callback_changed": false,
+    "system_channel_row_changed": false,
+    "system_channel_callback_changed": false,
+    "debugmodeon_template_changed": false
+  },
+  "container": {
+    "changed_partitions": ["OSLO", "WEBI"],
+    "other_partitions_byte_identical": true,
+    "independent_inspector": "verified",
+    "double_build_equal": true,
+    "final_conditions": 71,
+    "failed_conditions": 0
+  },
+  "qualification": {
+    "high_entry_return_zero_live_qualified": true,
+    "low_entry_return_zero_live_qualified": false,
+    "request_shape_for_eventual_qualifier": "command=ttl,arg=x without output",
+    "request_tree_parser_installed": false,
+    "state_installed": false,
+    "ttl_functional": false,
+    "persistence_proven": false,
+    "cold_boot_proven": false,
+    "repeatability_proven": false,
+    "rollback_proven": false
+  }
+}

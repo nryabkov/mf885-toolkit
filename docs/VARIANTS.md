@@ -1,11 +1,16 @@
 # Source variant registry
 
 All variants are source-only and built locally from a strictly verified compatible backup.
-None is distributed as a firmware binary.
+None is distributed as a firmware binary. Installation and qualification
+fields in this registry, variant READMEs/manifests and stage metadata are
+historical checkpoint descriptions, not current device status. See
+[release and research status](RELEASES.md).
 
 | Wrapper name | Logical ID | Source | Status |
 |---|---|---|---|
-| `community-r3.5` | `0.3.5-community-r2-native-r9-cafe2` | `firmware/community-r3.5/` plus exact golden native/WEBI derivation rules | Recommended source: cumulative UI/SMS plus experimental modular same-model TTL; deterministic and structurally green, unflashed; live getter/setter/packet path, persistence, cold boot, repeatability and rollback unproved |
+| — | R4.2 native component | `firmware/community-r4.2/` and `tools/mf885_ttl_native_payload_r42.py` | Offline 12-byte guarded context-read probe and OSLO patch builder; no full update container, live runner or TTL implementation |
+| — | R3.6–R4.1 source snapshots | `firmware/community-r3.6/` through `firmware/community-r4.1/` | Historical native sources and WebUI derivations; complete native-image wrappers for these releases are not included in the public export |
+| `community-r3.5` | `0.3.5-community-r2-native-r9-cafe2` | `firmware/community-r3.5/` plus exact golden native/WEBI derivation rules | Historical wrapper example with experimental same-model TTL; structural verification is not a functional TTL or installation qualification |
 | — | `0.3.4-community-r2-native-r7-cafe2` | `firmware/community-r3.4/` | Installed experimental predecessor: strict diagnostic no-op callback proved live; this proves callback attachment only, not TTL |
 | — | `0.3.0`–`0.3.3` native research line | `firmware/community-r3.0/` through `firmware/community-r3.3/` | Immutable cumulative TTL research predecessors; retained findings, not recommended outputs |
 | `community-r2.9` | `0.2.9-community-r2-cafe2` | `firmware/community-r2.9/` plus exact golden derivation rules | Installed historical UI/SMS predecessor with universal refresh and on-device help; no native TTL |

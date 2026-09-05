@@ -1,0 +1,15 @@
+      <section id="page-ttl" class="page" hidden>
+        <div class="page-head"><div><p class="eyebrow">TTL callback research</p><h1>TTL control locked</h1><p class="section-intro">This release tests only the stock request-tree parser path used by a phase-3 diagnostic callback.</p></div></div>
+        <p class="status" role="status">This page sends no TTL or diagnostic request. A separately authorized post-install qualifier may send one exact <code>command=ttl,arg=x</code> request; this firmware never stores or applies that value.</p>
+        <div class="cards">
+          <article><strong>2 + 2</strong><span>Field and text-child lookups</span></article>
+          <article><strong>0</strong><span>State writes and frees</span></article>
+          <article><strong>0</strong><span>Packet-path changes</span></article>
+        </div>
+        <details class="terms" open><summary>What this increment proves</summary><dl>
+          <div><dt>Earlier</dt><dd>R3.8 returned safely because its four-byte callback called, read and wrote nothing. R3.9 combined generic getter/free, a private state write and a packet hook; its first valid SET lost the response and RNDIS re-enumerated.</dd></div>
+          <div><dt>R4.0</dt><dd>The callback validates the exact phase-3 context, reads its request tree, resolves <code>command</code> and <code>arg</code> with the byte-pinned stock helpers, treats both values as borrowed and always returns zero.</dd></div>
+          <div><dt>Boundary</dt><dd>There is no generic property getter/free, property setter, custom state, GET callback or forwarding hook. A complete response with stable identity proves only that the callback survived this exact request; the lookup branch itself is not live-observable. TTL remains unavailable.</dd></div>
+        </dl></details>
+        <p class="muted">The existing router UI, Messages, Engineering mode, hidden debug profile and stock packet forwarding remain unchanged.</p>
+      </section>

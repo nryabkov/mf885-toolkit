@@ -1,0 +1,15 @@
+      <section id="page-ttl" class="page" hidden>
+        <div class="page-head"><div><p class="eyebrow">TTL return-path research</p><h1>TTL control locked</h1><p class="section-intro">This release isolates whether the stock property layer can retain one constant diagnostic value between two requests.</p></div></div>
+        <p class="status" role="status">This page sends no TTL or diagnostic request. A separately authorized qualifier may publish <code>off</code> once and read it once; that does not enable TTL control.</p>
+        <div class="cards">
+          <article><strong>Locked</strong><span>TTL control</span></article>
+          <article><strong>0</strong><span>Browser TTL requests</span></article>
+          <article><strong>0</strong><span>Packet-path changes</span></article>
+        </div>
+        <details class="terms" open><summary>What this increment proves</summary><dl>
+          <div><dt>Known</dt><dd>Stock phase-3 callbacks may publish a same-model value through the stock property setter while later GET callbacks remain empty.</dd></div>
+          <div><dt>R3.7</dt><dd>One post-set callback builds <code>output</code> and <code>off</code> on its stack. It has no custom state, getter, free, TTL hook or Engineering dependency.</dd></div>
+          <div><dt>Unknown</dt><dd>Only a later plain GET can show whether <code>diagnostic.output</code> retained that value. Packet TTL, writes and persistence remain unproved.</dd></div>
+        </dl></details>
+        <p class="muted">The existing router UI, Messages, Engineering mode, hidden debug profile and packet forwarding remain unchanged.</p>
+      </section>

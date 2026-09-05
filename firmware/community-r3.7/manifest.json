@@ -1,0 +1,124 @@
+{
+  "schema": "mf885-community-r37-manifest/v1",
+  "profile": "0.3.7-community-r2",
+  "status": "INSTALLED_STATIC_AUDIT_PROVEN_RETENTION_PENDING",
+  "installed_predecessor": {
+    "file": "MF885_Community_0.3.6-community-r2-native-r10-cafe-r2.bin",
+    "bytes": 8323644,
+    "sha256": "4984024babae9aa89e967101771063be0ae9cd8481a7f7992d05fa875cd6969f",
+    "installed_and_static_audit_proven": true,
+    "ttl_getter_qualified": false
+  },
+  "source": {
+    "file": "MF885_golden_capture_a.bin",
+    "bytes": 8323644,
+    "sha256": "2b5880fc26805918bb574d07341ea9b863f8261be34c3bf9766fac0929204531"
+  },
+  "candidate": {
+    "file": "MF885_Community_0.3.7-community-r2-native-r11-cafe-r2.bin",
+    "bytes": 8323644,
+    "sha256": "2b1a40fc0e794f4b876aeb16b1377d359c06ef0bb56f8997fc73ff0f8851d6af",
+    "report_bytes": 64645,
+    "report_sha256": "810dbe4e799a6eccc61981bb6ec9279b3c9f8a3020673106a5a1aeabb8adfb9e"
+  },
+  "native_discriminator": {
+    "purpose": "stock property-setter cross-request retention and serialization only",
+    "ttl_functional": false,
+    "model": "diagnostic",
+    "callback_slot": "post_set",
+    "phase": 3,
+    "setter": "0x064073da",
+    "setter_calls_per_phase3_callback": 1,
+    "published_field": "output",
+    "published_value": "off",
+    "field_storage": "stack-local 8 bytes",
+    "value_storage": "stack-local 4 bytes",
+    "pre_get_pointer": 0,
+    "post_get_pointer": 0,
+    "custom_state_reads": 0,
+    "custom_state_writes": 0,
+    "packet_hook_installed": false,
+    "persistent": false,
+    "component": {
+      "bytes": 84,
+      "code_bytes": 68,
+      "sha256": "d787a259a1b953a85af923b0c3a06bdc4bdb90894afcf1027b6c1eedea7579a0"
+    },
+    "declared_changed_ranges": 2,
+    "actual_changed_ranges": 7,
+    "actual_changed_bytes": 83
+  },
+  "engineering_preservation": {
+    "wan_engineering_mode_changed": false,
+    "debugon_row_changed": false,
+    "debugon_callback_changed": false,
+    "system_channel_row_changed": false,
+    "system_channel_callback_changed": false,
+    "debugmodeon_template_changed": false
+  },
+  "web_assets": {
+    "www\\index.html": {
+      "bytes": 26636,
+      "sha256": "f1586033ef20ef28e88260f6d99815b1873b1deaaa879455abc2d8f49f9989aa"
+    },
+    "www\\help_en.html": {
+      "bytes": 21381,
+      "sha256": "00f8097d158c9bbe9dc28af72d4ce1ea8bd940ca42f0669e51c779a4d6eef7b2"
+    },
+    "www\\html\\adminApp.html": {
+      "bytes": 4766,
+      "sha256": "077d6c4f2138612d318c73b3fbbdeba60139eb8e1a367938fc480ae748d32035"
+    },
+    "www\\js\\base\\ajax_calls.js": {
+      "bytes": 21467,
+      "sha256": "f8f2326f9d32a55d3566a9b5b743ae0fcd979c4d755ffec3823086b44068c127"
+    },
+    "www\\js\\base\\utils.js": {
+      "bytes": 16873,
+      "sha256": "5aa5c57d1e194c9ce0d21e946ad4b2358cd754d15c7bfb570bdef327d6c64103"
+    },
+    "www\\properties\\Messages_en.properties": {
+      "bytes": 46943,
+      "sha256": "2c602877a1d515a8b022136ba289ef887a1eeffba27d13d761403146dc93d60c"
+    },
+    "www\\r37.html": {
+      "bytes": 14795,
+      "sha256": "37074a98339431bc424579868531b86b6dfa59de4e9fecac979ae45330c24e00"
+    },
+    "www\\js\\r37app.js": {
+      "bytes": 63060,
+      "sha256": "3d27cfe36a3cec7157e72c4aa33a43351c7712c8aa50d9fa952fbad4f3a56c2b"
+    },
+    "www\\css\\r37ui.css": {
+      "bytes": 7925,
+      "sha256": "50b977ba920c226a4a9c03895c47d1457439adba0eefd169c20e2cca21244578"
+    }
+  },
+  "container": {
+    "changed_partitions": ["OSLO", "WEBI"],
+    "other_partitions_byte_identical": true,
+    "decompressed_oslo_bytes": 9648064,
+    "decompressed_oslo_sha256": "47b8e9ad821421ceed5305db237df9a5f86b66f47cf089c022947f4197cef520",
+    "compressed_oslo_bytes": 4548533,
+    "independent_inspector": "verified",
+    "double_build_equal": true,
+    "final_conditions": 44,
+    "failed_conditions": 0
+  },
+  "qualification": {
+    "exact_stock_and_native_machine_tests": 6,
+    "web_source_tests": 3,
+    "native_container_tests": 6,
+    "substantive_tests_total": 15,
+    "failed": 0,
+    "installed": true,
+    "diagnostic_output_retention_qualified": false,
+    "ttl_functional": false,
+    "ttl_setter_qualified": false,
+    "packet_path_qualified": false,
+    "cold_boot_proven": false,
+    "persistence_proven": false,
+    "repeatability_proven": false,
+    "rollback_proven": false
+  }
+}

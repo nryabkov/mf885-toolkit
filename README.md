@@ -98,14 +98,17 @@ reference-unit raw hash is documented only as a reproducibility example. Any
 semantic mismatch is rejected; do not bypass this check or use another unit's
 built binary.
 
-`community-r3.5` is the current recommended source profile. It cumulatively
-keeps the proved Community SMS/interface work and adds an experimental native
-TTL control split into strict setter, same-model `diagnostic.output` getter and
-IPv4 forwarding/checksum modules. The retained `native-r9` candidate is
-deterministic and structurally verified, but is unflashed and TTL getter,
-setter, packet path, persistence, cold boot, repeatability and rollback remain
-unproved. Its exact source contract and hashes are in
-`firmware/community-r3.5/`.
+`community-r3.5` is a historical wrapper example, not a current installation
+recommendation. Its source contract and immutable build hashes remain in
+`firmware/community-r3.5/`. No native TTL variant is a qualified functional
+release.
+
+The current R4.2 development increment is an [offline context-read native
+component](firmware/community-r4.2/README.md), with exact machine-code tests.
+It supplies no flashable R4.2 image or live runner. Per-variant READMEs,
+manifests and stage metadata describe historical checkpoints; their device
+installation and qualification fields are not current device status. See
+[release and research status](docs/RELEASES.md).
 
 `community-r2.6` is a historical product-oriented source profile. Its
 standalone `/r26.html` paints before network I/O and replaces the legacy

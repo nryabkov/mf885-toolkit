@@ -1,0 +1,15 @@
+      <section id="page-ttl" class="page" hidden>
+        <div class="page-head"><div><p class="eyebrow">TTL callback research</p><h1>TTL control locked</h1><p class="section-intro">This release isolates only whether the proven four-byte return-zero callback survives at the lower R4.0 entry address.</p></div></div>
+        <p class="status" role="status">This page sends no TTL or diagnostic request. A separately authorized post-install qualifier may send the same exact <code>command=ttl,arg=x</code> request used for R4.0; this firmware ignores its fields, stores nothing and always returns zero.</p>
+        <div class="cards">
+          <article><strong>4 bytes</strong><span><code>movs r0,#0; bx lr</code></span></article>
+          <article><strong>0</strong><span>Loads, stores and helper calls</span></article>
+          <article><strong>0</strong><span>State and packet-path changes</span></article>
+        </div>
+        <details class="terms" open><summary>What this increment proves</summary><dl>
+          <div><dt>Earlier</dt><dd>R3.8 proved the same four-byte leaf at <code>0x06001521</code> with a <code>ttl/off</code> request. R4.0 moved to <code>0x06001341</code>, added a 124-byte parser component, low-page field-name data and four helper calls, then reset on <code>ttl/x</code>.</dd></div>
+          <div><dt>R4.1</dt><dd>The callback remains at R4.0's lower entry <code>0x06001341</code>, but its entire body is reduced to the proven four-byte return-zero leaf. The former parser tail and field-name region remain zero.</dd></div>
+          <div><dt>Boundary</dt><dd>A complete response with stable identity proves only that the lower entry and unchanged <code>ttl/x</code> request shape survive without parser work. A reset points to the lower entry or request-shape delta. TTL remains unavailable either way.</dd></div>
+        </dl></details>
+        <p class="muted">The existing router UI, Messages, Engineering mode, hidden debug profile and stock packet forwarding remain unchanged.</p>
+      </section>

@@ -1,5 +1,9 @@
 # Build firmware locally
 
+Variant installation and qualification statements below are historical
+checkpoint descriptions; see [release and research status](RELEASES.md). The
+R4.2 native component has a separate offline workflow and is not an update image.
+
 ## What this workflow does
 
 It patches a strictly verified operator-supplied MF885 BackupFw image, recalculates the
@@ -84,7 +88,7 @@ python tools/mf885_build_variant.py \
 
 The Logs variants are research observers and `sms-r1` is a historical
 send/delete prototype. Choose them only after reading their source and
-manifest; `community-r3.5` is the current recommended source profile. The
+manifest; `community-r3.5` above is a historical wrapper example. The
 output and a JSON report are created exclusively; rerunning does not overwrite
 them. Delete or move an old local output deliberately before rebuilding.
 

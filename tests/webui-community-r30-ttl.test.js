@@ -16,7 +16,8 @@ const releaseConfig = Object.freeze({
   r30: Object.freeze({ module: 'mf885_community_r30', html: 'r30.html', js: 'r30app.js', namespace: 'MF885CommunityR30', label: 'R3.0' }),
   r32: Object.freeze({ module: 'mf885_community_r32', html: 'r32.html', js: 'r32app.js', namespace: 'MF885CommunityR32', label: 'R3.2' }),
   r33: Object.freeze({ module: 'mf885_community_r33', html: 'r33.html', js: 'r33app.js', namespace: 'MF885CommunityR33', label: 'R3.3', bridge: true, setFile: 'ttl_set' }),
-  r35: Object.freeze({ module: 'mf885_community_r35', html: 'r35.html', js: 'r35app.js', namespace: 'MF885CommunityR35', label: 'R3.5', sameModel: true, setFile: 'ttl_set' })
+  r35: Object.freeze({ module: 'mf885_community_r35', html: 'r35.html', js: 'r35app.js', namespace: 'MF885CommunityR35', label: 'R3.5', sameModel: true, setFile: 'ttl_set' }),
+  r36: Object.freeze({ module: 'mf885_community_r36', html: 'r36.html', js: 'r36app.js', namespace: 'MF885CommunityR36', label: 'R3.6', sameModel: true, setFile: 'ttl_set', manualTtl: true })
 });
 const selectedRelease = releaseConfig[releaseName];
 if (!selectedRelease) throw new Error(`Unsupported MF885_TTL_TEST_RELEASE ${releaseName}`);
@@ -152,11 +153,19 @@ async function waitFor(predicate, label) {
   throw new Error(`Timed out waiting for ${label}`);
 }
 
-async function login(value) {
+async function login(value, qualifyTtl = true) {
   value.document.getElementById('password').value = 'fixture-password';
   value.document.getElementById('loginForm').dispatchEvent(new value.window.Event('submit'));
   await waitFor(() => !value.document.getElementById('app').hidden, 'authenticated shell');
-  await waitFor(() => /TTL state Off/.test(value.document.getElementById('ttlStatus').textContent), 'TTL bootstrap');
+  if (selectedRelease.manualTtl) {
+    await waitFor(() => /not read automatically/i.test(value.document.getElementById('ttlStatus').textContent), 'manual TTL boundary');
+    if (qualifyTtl) {
+      value.document.getElementById('ttlRefresh').click();
+      await waitFor(() => /TTL state Off/.test(value.document.getElementById('ttlStatus').textContent), 'explicit TTL read');
+    }
+  } else {
+    await waitFor(() => /TTL state Off/.test(value.document.getElementById('ttlStatus').textContent), 'TTL bootstrap');
+  }
 }
 
 async function rejectedSameModelBody(body, failedCondition) {
@@ -165,7 +174,12 @@ async function rejectedSameModelBody(body, failedCondition) {
   value.document.getElementById('password').value = 'fixture-password';
   value.document.getElementById('loginForm').dispatchEvent(new value.window.Event('submit'));
   await waitFor(() => !value.document.getElementById('app').hidden, 'authenticated shell');
-  await waitFor(() => value.community.ttlRuntime.locked, 'fail-closed TTL read');
+  if (selectedRelease.manualTtl) {
+    await waitFor(() => /not read automatically/i.test(value.document.getElementById('ttlStatus').textContent), 'manual TTL boundary');
+    value.document.getElementById('ttlRefresh').click();
+  }
+  await waitFor(() => /writes are locked/i.test(value.document.getElementById('ttlStatus').textContent), 'fail-closed TTL read');
+  assert.equal(value.community.ttlRuntime.locked, true);
   assert.equal([...value.document.querySelectorAll('button[data-ttl-value]')].every(button => button.disabled), true);
   assert.match(value.document.getElementById('ttlStatus').textContent, /writes are locked/i);
   if (failedCondition) {
@@ -174,17 +188,27 @@ async function rejectedSameModelBody(body, failedCondition) {
   return value;
 }
 
-test(`${selectedRelease.label} is the existing extension plus one immediate-loading TTL page`, { skip: !parseHTML }, async () => {
+test(`${selectedRelease.label} exposes TTL with its exact automatic/manual qualification boundary`, { skip: !parseHTML }, async () => {
   const value = fixture();
   assert.equal(value.document.querySelectorAll('nav [data-page]').length, 5);
   assert.equal(value.document.querySelectorAll('#page-ttl').length, 1);
   assert.match(value.document.getElementById('page-ttl').textContent, /returns to Off after every restart/);
   assert.equal([...value.document.querySelectorAll('button[data-ttl-value]')].every(button => button.disabled), true);
   assert.equal(value.document.getElementById('ttlCustomApply').disabled, true);
-  await login(value);
-  assert.deepEqual(value.requests.slice(0, 8).map(request => { const match = request.url.match(/file=([^&]+)/); return [request.method, match ? match[1] : request.url.split('?')[0]]; }), [
+  await login(value, false);
+  const bootstrapExpected = [
     ['GET', '/login.cgi'], ['GET', '/login.cgi'], ['GET', 'status1'], ['GET', 'wan'], ['GET', 'Engineer_parameter'], ['POST', 'message'], ['GET', 'message'], ['GET', 'diagnostic']
-  ]);
+  ];
+  if (selectedRelease.manualTtl) bootstrapExpected.pop();
+  assert.deepEqual(value.requests.slice(0, bootstrapExpected.length).map(request => { const match = request.url.match(/file=([^&]+)/); return [request.method, match ? match[1] : request.url.split('?')[0]]; }), bootstrapExpected);
+  assert.equal(value.requests.length, bootstrapExpected.length);
+  if (selectedRelease.manualTtl) {
+    assert.equal(value.document.getElementById('ttlCurrent').textContent, 'Loading…');
+    assert.equal([...value.document.querySelectorAll('button[data-ttl-value]')].every(button => button.disabled), true);
+    value.document.getElementById('ttlRefresh').click();
+    await waitFor(() => /TTL state Off/.test(value.document.getElementById('ttlStatus').textContent), 'manual TTL proof');
+    assert.equal(value.requests.length, bootstrapExpected.length + 1);
+  }
   assert.equal(value.document.getElementById('ttlCurrent').textContent, 'Off');
   assert.equal([...value.document.querySelectorAll('button[data-ttl-value]')].every(button => !button.disabled), true);
   assert.equal(value.document.getElementById('ttlCustomApply').disabled, false);
@@ -269,7 +293,7 @@ test('same-model read never trims a noncanonical TTL value', { skip: !parseHTML 
   await rejectedSameModelBody('<RGW><diagnostic><output> off </output></diagnostic></RGW>', 'output_is_off_or_canonical_decimal');
 });
 
-test('universal polling includes TTL on every page and logout forgets RAM state', { skip: !parseHTML }, async () => {
+test('universal polling obeys the TTL qualification boundary and logout forgets RAM state', { skip: !parseHTML }, async () => {
   const value = fixture();
   await login(value);
   value.document.querySelector('nav [data-page="messages"]').click();
@@ -277,10 +301,12 @@ test('universal polling includes TTL on every page and logout forgets RAM state'
   value.document.getElementById('liveToggle').click();
   const before = value.requests.length;
   value.fireNextTimer(timer => timer.delay === 0);
-  await waitFor(() => value.requests.length === before + 6, 'universal TTL refresh');
-  assert.deepEqual(value.requests.slice(before).map(request => [request.method, (request.url.match(/file=([^&]+)/) || [])[1]]), [
-    ['GET', 'status1'], ['GET', 'wan'], ['GET', 'Engineer_parameter'], ['POST', 'message'], ['GET', 'message'], ['GET', 'diagnostic']
-  ]);
+  const expected = [
+    ['GET', 'status1'], ['GET', 'wan'], ['GET', 'Engineer_parameter'], ['POST', 'message'], ['GET', 'message']
+  ];
+  if (!selectedRelease.manualTtl) expected.push(['GET', 'diagnostic']);
+  await waitFor(() => value.requests.length === before + expected.length, 'universal refresh');
+  assert.deepEqual(value.requests.slice(before).map(request => [request.method, (request.url.match(/file=([^&]+)/) || [])[1]]), expected);
   value.document.getElementById('logout').click();
   assert.equal(value.community.ttlRuntime.current, null);
   assert.equal(value.community.ttlRuntime.locked, false);

@@ -1,0 +1,15 @@
+      <section id="page-ttl" class="page" hidden>
+        <div class="page-head"><div><p class="eyebrow">TTL callback research</p><h1>TTL control locked</h1><p class="section-intro">This release isolates the stock diagnostic post-set entry and return path with an exact four-byte return-zero callback.</p></div></div>
+        <p class="status" role="status">This page sends no TTL or diagnostic request. A separately authorized qualifier may send one exact command/argument request; this comparator does not publish, retain or apply a TTL value.</p>
+        <div class="cards">
+          <article><strong>Locked</strong><span>TTL control</span></article>
+          <article><strong>0</strong><span>Setter calls</span></article>
+          <article><strong>0</strong><span>Packet-path changes</span></article>
+        </div>
+        <details class="terms" open><summary>What this increment proves</summary><dl>
+          <div><dt>Known</dt><dd>The exact command/argument-only request still produced no response and the device disappeared while R3.7 called the stock setter.</dd></div>
+          <div><dt>R3.8</dt><dd>The same diagnostic post-set slot points to <code>movs r0,#0; bx lr</code>. The remaining callback cave is zero and there are no calls, loads, stores, state or TTL hooks.</dd></div>
+          <div><dt>Decision</dt><dd>A response with stable identity clears callback entry/return and isolates the removed R3.7 body. Another disappearance shows the setter was not necessary, leaving generic SET dispatch or the non-null callback boundary.</dd></div>
+        </dl></details>
+        <p class="muted">The existing router UI, Messages, Engineering mode, hidden debug profile and packet forwarding remain unchanged.</p>
+      </section>

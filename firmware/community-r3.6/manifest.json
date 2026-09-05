@@ -1,0 +1,118 @@
+{
+  "schema": "mf885-community-r36-manifest/v1",
+  "profile": "0.3.6-community-r2",
+  "status": "OFFLINE_CANDIDATE_NOT_INSTALLED",
+  "installed_predecessor": {
+    "file": "MF885_Community_0.3.5-community-r2-native-r9-cafe-r2.bin",
+    "bytes": 8323644,
+    "sha256": "efd74c1ff0127961f8036d0f6e51b7fec35856b128f23b3f18de5191663087f3",
+    "installed_and_static_audit_proven": true,
+    "ttl_getter_qualified": false
+  },
+  "source": {
+    "file": "MF885_golden_capture_a.bin",
+    "bytes": 8323644,
+    "sha256": "2b5880fc26805918bb574d07341ea9b863f8261be34c3bf9766fac0929204531"
+  },
+  "candidate": {
+    "file": "MF885_Community_0.3.6-community-r2-native-r10-cafe-r2.bin",
+    "bytes": 8323644,
+    "sha256": "4984024babae9aa89e967101771063be0ae9cd8481a7f7992d05fa875cd6969f",
+    "report_bytes": 76325,
+    "report_sha256": "e80acdec514497a018ebbbf17c68ac433c3d65ba59061f8b144422b01d8798a3"
+  },
+  "native_ttl": {
+    "state_runtime": "0x06001430",
+    "boot_value": 0,
+    "persistent": false,
+    "read_model": "diagnostic",
+    "read_field": "output",
+    "publisher_slot": "pre_get",
+    "publisher_timing": "before bounded core GET serialization",
+    "publisher_setter_calls": 1,
+    "get_dispatches_post_set": false,
+    "set_template": "ttl_set",
+    "set_response_setter_calls": 0,
+    "accepted_values": "off|canonical-decimal-1..255",
+    "automatic_browser_reads": 0,
+    "automatic_retry_ceiling": 0,
+    "components": {
+      "ttl_forward": {
+        "bytes": 152,
+        "sha256": "90a12950ccc5b672c680d34875e4ac1fa2365ab8d841c164eab3f45e934a0d1d"
+      },
+      "ttl_post_set": {
+        "bytes": 208,
+        "sha256": "be9b3332cca6771ec4472791de5fbba988fe6560d5e3fc82dd3a264e6bc3d0db"
+      },
+      "ttl_pre_get": {
+        "bytes": 168,
+        "sha256": "7b94a4375e6557df537233321d0e83193528d99625128f0959b71c6fea1e7d6b"
+      },
+      "state_and_names": {
+        "bytes": 48,
+        "sha256": "0eaca06bf0695b710699e8dd10850899b182c0ad722808f2085601ec413a5815"
+      }
+    },
+    "declared_changed_ranges": 7,
+    "actual_changed_bytes": 537
+  },
+  "engineering_preservation": {
+    "wan_engineering_mode_changed": false,
+    "debugon_row_changed": false,
+    "debugon_callback_changed": false,
+    "system_channel_row_changed": false,
+    "system_channel_callback_changed": false,
+    "debugmodeon_template_changed": false
+  },
+  "web_assets": {
+    "www\\r36.html": {
+      "bytes": 15539,
+      "sha256": "a04971c67d94713dcf7b3c09de33de003ce8f4c7582b3b5cb91c093c739cbf5e"
+    },
+    "www\\js\\r36app.js": {
+      "bytes": 75999,
+      "sha256": "afcc1ab8087f900425ed3201fe1206500c27cf912218bb0ae655acfa1694a415"
+    },
+    "www\\css\\r36ui.css": {
+      "bytes": 9232,
+      "sha256": "84eaad60ed768f9a8daf1bee296bb9e9a6971214f494b3636f25cd331c023576"
+    },
+    "www\\xmldata\\ttl_set.xml": {
+      "bytes": 121,
+      "sha256": "8de4597280dfac12c8e33bc6db32aec30e99e13d4e8583a7bfa67da448b23bd8"
+    },
+    "www\\xmldata\\diagnostic.xml": {
+      "bytes": 107,
+      "sha256": "e6bfeecef30e22a1a7fd64ec99613f91a232934cd988d03d38e5fbcc8f6ab00e"
+    }
+  },
+  "container": {
+    "changed_partitions": ["OSLO", "WEBI"],
+    "other_partitions_byte_identical": true,
+    "decompressed_oslo_bytes": 9648064,
+    "decompressed_oslo_sha256": "10b4c8a0831c95d0bef44d0be2f2d5426537c5437c9c5d497b7f61c73941f923",
+    "compressed_oslo_bytes": 4549966,
+    "independent_inspector": "verified",
+    "double_build_equal": true,
+    "final_conditions": 52,
+    "failed_conditions": 0
+  },
+  "qualification": {
+    "exact_stock_callback_abi_tests": 5,
+    "native_machine_contract_tests": 6,
+    "web_source_tests": 3,
+    "native_container_tests": 6,
+    "browser_functional_tests": 9,
+    "substantive_tests_total": 29,
+    "failed": 0,
+    "installed": false,
+    "live_ttl_get_qualified": false,
+    "live_ttl_set_qualified": false,
+    "packet_path_qualified": false,
+    "cold_boot_proven": false,
+    "persistence_proven": false,
+    "repeatability_proven": false,
+    "rollback_proven": false
+  }
+}

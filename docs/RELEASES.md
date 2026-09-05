@@ -36,12 +36,23 @@ At present **no firmware variant is stable, generally flash-qualified, or
 restore-allowlisted**. Do not infer stability from a successful build, a known
 SHA-256, one live device, or the word `verified` in a structural report.
 
-Community R3.5 `native-r9` is the current recommended source candidate. Its
-deterministic reference-unit image is documented in its manifest, but it
-remains `experimental-unflashed`; the reference device stays on proven
-Community R3.4 until a separate exact firmware authorization is given. Its TTL
-getter, setter, packet path, persistence, cold boot, repeatability and rollback
-remain unproved.
+As of 2026-09-05, the current development increment is the
+[R4.2 guarded context-read native component](../firmware/community-r4.2/README.md).
+It has exact source and machine-byte checks and optional local stock-OSLO tests.
+It is not a full firmware container or a functional TTL release. R3.5 remains
+a historical build-wrapper example, not an installation recommendation.
+
+Per-variant READMEs, manifests and stage safety metadata are retained snapshots
+from their original build/research checkpoints. In particular, fields such as
+`NOT_INSTALLED`, `installed_predecessor`, and `live_qualified` do not describe
+current device state or a transferable hardware guarantee. Old status fields
+and immutable hashes are not silently rewritten when later research advances.
+Current device observations and operational evidence are maintained separately
+from this source-only distribution.
+
+The R4.2 probe performs at most one guarded two-byte read and returns zero. A
+future successful response alone would not reveal whether the read branch ran
+or what it read; it would not qualify tree helpers, state or packet TTL.
 
 Operation-safety records are not toolkit releases and are never stability
 labels.
