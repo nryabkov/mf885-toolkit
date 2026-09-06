@@ -12,7 +12,7 @@ class BuildVariantTests(unittest.TestCase):
     def test_registry_is_public_and_structural_only(self):
         self.assertEqual(
             tuple(wrapper.VARIANTS),
-            ("community-r4.3", "community-r4.2", "community-r3.5", "community-r2.9", "community-r2.8", "community-r2.7", "community-r2.6", "community-r2.5", "community-r2.4", "community-r2.3", "community-r2.2", "community-r2.1", "community-r2", "community-r1", "logs-r1", "logs-r2", "sms-r1"),
+            ("community-r4.4", "community-r4.3", "community-r4.2", "community-r3.5", "community-r2.9", "community-r2.8", "community-r2.7", "community-r2.6", "community-r2.5", "community-r2.4", "community-r2.3", "community-r2.2", "community-r2.1", "community-r2", "community-r1", "logs-r1", "logs-r2", "sms-r1"),
         )
         for item in wrapper.describe_variants():
             self.assertIn("structural-only", item["qualification"])

@@ -103,7 +103,16 @@ recommendation. Its source contract and immutable build hashes remain in
 `firmware/community-r3.5/`. No native TTL variant is a qualified functional
 release.
 
-The current development increment is the [R4.3 fixed64 forwarding
+As of 2026-09-06, the current development candidate is
+[R4.4 ARMv5/Thumb-1 fixed64](firmware/community-r4.4/README.md), available as
+`--variant community-r4.4`. It corrects an erroneous Cortex-A9/Thumb-2 native
+build assumption and replaces the incompatible long direct call. Two full
+offline builds match; hardware execution and live packet TTL remain unproved.
+Earlier native variants and their manifests are immutable historical evidence;
+their successful compilation or UI boot does not establish ISA compatibility.
+Do not use R4.3's native forwarding patch as a compatible reference.
+
+Historical checkpoint: the prior development increment was the [R4.3 fixed64 forwarding
 release](firmware/community-r4.3/README.md), available through `--variant
 community-r4.3`. It has a reproducible full container, emitted-machine packet,
 checksum and ABI tests. It has no runtime Off, direction filter or live TTL

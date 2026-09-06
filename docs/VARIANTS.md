@@ -8,7 +8,8 @@ historical checkpoint descriptions, not current device status. See
 
 | Wrapper name | Logical ID | Source | Status |
 |---|---|---|---|
-| `community-r4.3` | `0.4.3-community-r2-native-r17-cafe2` | `firmware/community-r4.3/` plus native/full-container builders | Reproducible full container and distinct UI; 60 structural conditions, packet/checksum/ABI tests; no runtime Off, direction filter or live TTL qualification |
+| `community-r4.4` | `0.4.4-community-r2-native-r18-cafe2` | `firmware/community-r4.4/` plus native/full-container builders | ARMv5/Thumb-1 profile and complete call-chain tests; reproducible full container; uninstalled, no hardware or live TTL qualification |
+| `community-r4.3` | `0.4.3-community-r2-native-r17-cafe2` | `firmware/community-r4.3/` plus native/full-container builders | Historical build with erroneous Cortex-A9/Thumb-2 assumptions; retained unchanged for analysis, not a compatible forwarding reference |
 | `community-r4.2` | `0.4.2-community-r2-native-r16-cafe2` | `firmware/community-r4.2/` plus native/full-container builders | Deterministic full-container build with a 12-byte guarded context read and distinct R4.2 UI; 79 structural conditions passed; not installed, no live qualification, delivery runner or TTL implementation |
 | — | R3.6–R4.1 source snapshots | `firmware/community-r3.6/` through `firmware/community-r4.1/` | Historical native sources and WebUI derivations; complete native-image wrappers for these releases are not included in the public export |
 | `community-r3.5` | `0.3.5-community-r2-native-r9-cafe2` | `firmware/community-r3.5/` plus exact golden native/WEBI derivation rules | Historical wrapper example with experimental same-model TTL; structural verification is not a functional TTL or installation qualification |

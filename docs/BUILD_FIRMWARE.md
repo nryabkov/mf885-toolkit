@@ -1,5 +1,14 @@
 # Build firmware locally
 
+As of 2026-09-06, the current development candidate is
+[R4.4 ARMv5/Thumb-1 fixed64](../firmware/community-r4.4/README.md), available as
+`--variant community-r4.4`. It corrects an erroneous Cortex-A9/Thumb-2 native
+build assumption and replaces the incompatible long direct call. Two full
+offline builds match; hardware execution and live packet TTL remain unproved.
+Earlier native variants and their manifests are immutable historical evidence;
+their successful compilation or UI boot does not establish ISA compatibility.
+Do not use R4.3's native forwarding patch as a compatible reference.
+
 Variant installation and qualification statements below are historical
 checkpoint descriptions; see [release and research status](RELEASES.md). The
 R4.2 full-container builder is available as `--variant community-r4.2`; its

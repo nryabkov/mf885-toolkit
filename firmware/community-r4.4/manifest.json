@@ -1,0 +1,47 @@
+{
+  "artifact": {
+    "bytes": 8323644,
+    "file": "MF885_Community_0.4.4-community-r2-native-r18-cafe-r2.bin",
+    "portable_plaintext_sha256": "02048911c1a556074a2b1e7773dd2c24d3dad9a84487f467e03e11c12e09c2c2",
+    "reference_raw_sha256": "f6b4ce3eb99d75c86a329e77e791c65b1095cf50247004faaa6017d5b08d9316"
+  },
+  "compiled_body_bytes": 148,
+  "component": "community-r4.4-fixed64-forward-thumb1",
+  "component_artifact_flashable": false,
+  "custom_state": false,
+  "diagnostic_callbacks": false,
+  "direction_filter": false,
+  "entry_stub_bytes": 8,
+  "fixed_ttl": 64,
+  "flash_qualified": false,
+  "flashable": false,
+  "full_firmware_container_built": true,
+  "hardware_execution_proven": false,
+  "helper_bytes": 156,
+  "helper_code_bytes": 148,
+  "helper_sha256": "c04dc80c7f37309d1e9304257211ba84cf2ab51fbe55d7e9e79e62bb49750c6d",
+  "hook_hex": "014b984702e0a1120006c046",
+  "installed": false,
+  "live_packet_ttl_verified": false,
+  "oslo_sha256": "a9cbc51a48decc11cb7aee393034f1996a35a6d4a19107346d76f36c45e022d8",
+  "packet_hook_in_candidate": true,
+  "profile": "0.4.4-community-r2",
+  "runtime_off": false,
+  "schema": "mf885-offline-native-release/v1",
+  "source": "native/ttl_forward_fixed64_armv5.ll",
+  "source_sha256": "6bcd059032cc30c8ff780d9d7677b8744ab0ba780054f4e9b5df4c9e0571fc7b",
+  "status": "experimental-unflashed",
+  "target_architecture": "ARMv5TE/Thumb-1",
+  "target_cpu_profile": "arm926ej-s",
+  "verification": {
+    "changed_partitions": [
+      "OSLO",
+      "WEBI"
+    ],
+    "double_build_equal": true,
+    "full_container_conditions": 60,
+    "independent_container_status": "verified",
+    "other_partitions_byte_identical": true
+  },
+  "webui_entry": "/r44.html"
+}

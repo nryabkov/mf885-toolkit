@@ -16,6 +16,8 @@ from pathlib import Path
 
 
 LLVM_LIBRARY = Path("/lib/x86_64-linux-gnu/libLLVM.so.20.1")
+# Historical reproducibility defaults, not a hardware qualification. New native
+# variants must select and validate their hardware profile explicitly.
 TARGET_TRIPLE = b"thumbv7-none-eabi"
 TARGET_CPU = b"cortex-a9"
 TARGET_FEATURES = b"-neon,-vfp2"
@@ -104,7 +106,9 @@ def _take_message(lib: ctypes.CDLL, value: ctypes.c_char_p) -> str:
     return result
 
 
-def _emit_object(source: bytes) -> bytes:
+def _emit_object(source: bytes, *, target_triple: bytes = TARGET_TRIPLE,
+                 target_cpu: bytes = TARGET_CPU,
+                 target_features: bytes = TARGET_FEATURES) -> bytes:
     lib = _llvm()
     context = lib.LLVMContextCreate()
     module = ctypes.c_void_p()
@@ -120,14 +124,14 @@ def _emit_object(source: bytes) -> bytes:
             raise NativeBuildError(_take_message(lib, error))
         target = ctypes.c_void_p()
         if lib.LLVMGetTargetFromTriple(
-            TARGET_TRIPLE, ctypes.byref(target), ctypes.byref(error)
+            target_triple, ctypes.byref(target), ctypes.byref(error)
         ):
             raise NativeBuildError(_take_message(lib, error))
         machine = lib.LLVMCreateTargetMachine(
             target,
-            TARGET_TRIPLE,
-            TARGET_CPU,
-            TARGET_FEATURES,
+            target_triple,
+            target_cpu,
+            target_features,
             2,
             0,
             0,
@@ -301,8 +305,12 @@ def compile_ir(source: bytes) -> bytes:
     return extract_text(_emit_object(source))
 
 
-def compile_ir_layout(source: bytes) -> dict[str, object]:
-    return extract_text_layout(_emit_object(source))
+def compile_ir_layout(source: bytes, *, target_triple: bytes = TARGET_TRIPLE,
+                      target_cpu: bytes = TARGET_CPU,
+                      target_features: bytes = TARGET_FEATURES) -> dict[str, object]:
+    return extract_text_layout(_emit_object(
+        source, target_triple=target_triple, target_cpu=target_cpu,
+        target_features=target_features))
 
 
 def main(argv: list[str] | None = None) -> int:
