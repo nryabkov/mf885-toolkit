@@ -326,12 +326,27 @@ class BuildVariantTests(unittest.TestCase):
                 self.assertIn("quarantined", stderr.getvalue())
                 self.assertIn("ARMv5TE/Thumb-1", stderr.getvalue())
 
+    def test_r46_hardware_failure_blocks_even_with_risk_acknowledgement(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            with mock.patch.object(wrapper.r46_native_builder, "main") as main, \
+                 mock.patch.object(Path, "read_bytes", side_effect=AssertionError("input opened")), \
+                 contextlib.redirect_stderr(io.StringIO()) as stderr:
+                result = wrapper.main(["--variant", "community-r4.6", "--output-dir", temporary,
+                                       "--acknowledge-brick-risk"])
+            self.assertEqual(result, 2)
+            main.assert_not_called()
+            self.assertEqual(list(Path(temporary).iterdir()), [])
+            self.assertIn("first native TTL GET", stderr.getvalue())
+        item = next(x for x in wrapper.describe_variants() if x["name"] == "community-r4.6")
+        self.assertFalse(item["build_allowed"])
+        self.assertEqual(item["status"], "quarantined-hardware-test-failed")
+
     def test_list_exposes_quarantine_without_hiding_history(self):
         variants = {item["name"]: item for item in wrapper.describe_variants()}
         for name in ("community-r3.5", "community-r4.2", "community-r4.3"):
             self.assertFalse(variants[name]["build_allowed"])
             self.assertEqual(variants[name]["status"], "quarantined-target-mismatch")
-        for name in ("community-r4.4", "community-r4.5", "community-r4.6"):
+        for name in ("community-r4.4", "community-r4.5"):
             self.assertTrue(variants[name]["build_allowed"])
             self.assertIn("never flash-qualified", variants[name]["qualification"])
 

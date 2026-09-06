@@ -9,7 +9,7 @@ historical checkpoint fields; those fields are not current device status. See
 
 | Wrapper name | Logical ID | Source | Status |
 |---|---|---|---|
-| `community-r4.6` | `0.4.6-community-r2-native-r20-cafe2` | `firmware/community-r4.6/` and `webui/r4.6/` | Offline native RAM TTL editor, actual-state readback and Off; uninstalled and not hardware-qualified |
+| `community-r4.6` | `0.4.6-community-r2-native-r20-cafe2` | `firmware/community-r4.6/` and `webui/r4.6/` | Quarantined: boot/static passed; first native TTL GET timed out with USB identity drift; editor/Off not qualified |
 | `community-r4.5` | `0.4.5-community-r2-native-r19-cafe2` | `firmware/community-r4.5/` plus native/full-container builders | Installed on one research unit; exact assets and two bounded TTL packet observations verified; USB stability and recovery still unqualified |
 | `community-r4.4` | `0.4.4-community-r2-native-r18-cafe2` | `firmware/community-r4.4/` plus native/full-container builders | Installed historical ARMv5/Thumb-1 predecessor; superseded by R4.5 after an offline alignment-coverage defect and unsuccessful live TTL observation |
 | `community-r4.3` | `0.4.3-community-r2-native-r17-cafe2` | `firmware/community-r4.3/` plus native/full-container builders | Quarantined target mismatch: Cortex-A9/Thumb-2 forwarding patch; common wrapper rejects it; historical analysis only |

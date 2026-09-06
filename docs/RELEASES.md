@@ -51,20 +51,22 @@ Future firmware source increments are published after qualification on the
 actual target, with offline checks before installation. The already published
 R4.6 increment below predates this ordering rule and remains unqualified.
 
-The next source increment is [R4.6 native TTL editor](../firmware/community-r4.6/README.md),
-with a [Russian usage guide](TTL_EDITOR_R46_RU.md). It adds current-request SET,
-actual-state GET with generation freshness, Off and a versioned editor. Local
-machine/DOM tests pass, a full container reproduces exactly, and73 structural
-conditions plus independent container inspection pass. Dynamic hardware behavior, native RAM writability and
-recovery are still unqualified. R4.5 remains the installed research baseline.
+R4.6 is now **quarantined after a failed hardware test**. Boot and exact static
+assets passed, but its first native TTL GET returned zero bytes before timeout
+with USB identity drift; the device recovered automatically. Root cause is
+unresolved. No second read, SET, Off or dynamic packet test was performed.
+Do not use its editor or repeat the failing request. The common build wrapper
+rejects R4.6 even with the general risk acknowledgement; the individual historical
+builder remains offline research only. Original sources and hashes are retained.
+See the [R4.6 limitations](TTL_EDITOR_R46_RU.md).
 
-The installed research baseline as of 2026-09-06 is
+The last packet-proven research baseline as of 2026-09-06 is
 [R4.5 byte-access ARMv5 fixed64](../firmware/community-r4.5/README.md), available as
 `--variant community-r4.5`. It fixes R4.4's rejection of otherwise eligible
 IPv4 headers at non-four-byte-aligned addresses. Actual Thumb-1 bytes pass a
 complete 18,432-case alignment/checksum/ABI matrix; two full builds match.
 Three byte stores finish before stock output under inherited packet ownership;
-the update is not atomic. R4.5 is installed on one research unit. In each of two
+the update is not atomic. R4.5 was tested on one research unit. In each of two
 separate bounded UDP experiments, four source TTLs 32/96/32/96 arrived at the
 server as 49/49/49/49; four replies with source TTLs 32/96/32/96 arrived at the receiving
 GL interface as 64/64/64/64. This establishes those host-tap observations, not

@@ -1,12 +1,12 @@
 # Build firmware locally
 
-As of 2026-09-06, the installed research baseline is
+As of 2026-09-06, the last packet-proven research baseline is
 [R4.5 byte-access ARMv5 fixed64](../firmware/community-r4.5/README.md), available as
 `--variant community-r4.5`. It fixes R4.4's rejection of otherwise eligible
 IPv4 headers at non-four-byte-aligned addresses. Actual Thumb-1 bytes pass a
 complete 18,432-case alignment/checksum/ABI matrix; two full builds match.
 Three byte stores finish before stock output under inherited packet ownership;
-the update is not atomic. R4.5 is installed on one research unit. In each of two
+the update is not atomic. R4.5 was tested on one research unit. In each of two
 separate bounded UDP experiments, four source TTLs 32/96/32/96 arrived at the
 server as 49/49/49/49; four replies with source TTLs 32/96/32/96 arrived at the receiving
 GL interface as 64/64/64/64. This establishes those host-tap observations, not
@@ -23,9 +23,11 @@ verified ARMv5TE/Thumb-1 hardware profile. Do not bypass this rejection for devi
 use. Lower-level historical tools remain unchanged for reproducibility and are
 not installation recommendations.
 
-R4.6 is a separate published offline candidate with a native TTL editor and Off.
-It has not yet been installed or qualified on the research device. R4.5 remains
-the installed baseline; see [release and research status](RELEASES.md).
+R4.6 passed installation/static checks but failed its first native TTL GET:
+zero response bytes before timeout, followed by USB identity drift. The device
+recovered automatically; root cause is unresolved. Do not use its editor or
+repeat the failing request. The common wrapper now rejects R4.6; historical
+lower-level tools remain for offline analysis. See [research status](RELEASES.md).
 
 ## What this workflow does
 

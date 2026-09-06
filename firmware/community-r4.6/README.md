@@ -1,4 +1,14 @@
-# R4.6 native TTL editor — offline candidate
+# R4.6 native TTL editor — hardware test failed
+
+**2026-09-06 hardware result: do not use the R4.6 TTL editor.** Boot and exact
+static assets passed, but the first native diagnostic GET returned zero bytes
+before timeout and USB identity drift was observed. The device automatically
+recovered. No second read, TTL SET or Off/packet test was attempted; root cause
+remains unresolved. The common build wrapper rejects this profile. Original
+source/image identities remain unchanged for research; the individual historical
+builder remains available only for offline analysis. The following design and
+offline evidence do not establish working hardware behavior.
+
 
 This is an experimental source increment, not a stable or generally installable
 release. No R4.6 device callback, dynamic packet effect, Off, cold boot or recovery

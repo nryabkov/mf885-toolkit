@@ -18,7 +18,7 @@ under the ignored `input/` directory.
 | Version | Evidence and status |
 |---|---|
 | R4.5 | Installed on one research MF885; exact assets checked and two bounded TTL packet observations passed. USB disconnects remain unexplained; not stable. |
-| R4.6 | Published experimental source candidate. Offline tests passed; not installed or tested on the MF885. TTL editing and Off are not hardware-qualified. |
+| R4.6 | Quarantined after hardware test: boot/static passed; first native TTL GET timed out with USB identity drift. Do not use the editor; SET and Off were not tested. |
 | R3.5, R4.2, R4.3 | Historical native profiles using ARMv7/Cortex-A9 assumptions. The common build wrapper rejects them for the verified ARMv5TE/Thumb-1 target. |
 
 Future firmware implementation increments are tested on the actual target before
@@ -138,13 +138,13 @@ Its source contract and immutable build hashes remain in
 `firmware/community-r3.5/`. No native TTL variant is a qualified functional
 release.
 
-As of 2026-09-06, the installed research baseline is
+As of 2026-09-06, the last packet-proven research baseline is
 [R4.5 byte-access ARMv5 fixed64](firmware/community-r4.5/README.md), available as
 `--variant community-r4.5`. It fixes R4.4's rejection of otherwise eligible
 IPv4 headers at non-four-byte-aligned addresses. Actual Thumb-1 bytes pass a
 complete 18,432-case alignment/checksum/ABI matrix; two full builds match.
 Three byte stores finish before stock output under inherited packet ownership;
-the update is not atomic. R4.5 is installed on one research unit. In each of two
+the update is not atomic. R4.5 was tested on one research unit. In each of two
 separate bounded UDP experiments, four source TTLs 32/96/32/96 arrived at the
 server as 49/49/49/49; four replies with source TTLs 32/96/32/96 arrived at the receiving
 GL interface as 64/64/64/64. This establishes those host-tap observations, not

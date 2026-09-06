@@ -31,10 +31,10 @@ class SourceTests(unittest.TestCase):
         self.assertFalse(safety['ttlPacketPathQualified']);self.assertFalse(safety['rawResponseBodiesLogged'])
         self.assertEqual(stage.STAGE_PROFILES['0.4.5-community-r2']['safety']['ttlFixedValue'],64)
         self.assertFalse(builder.QUALIFICATION['flash_qualified']);self.assertFalse(builder.QUALIFICATION['live_dynamic_ttl_verified'])
-    def test_wrapper_delegates_to_offline_builder(self):
+    def test_wrapper_rejects_hardware_failed_profile(self):
         with tempfile.TemporaryDirectory() as d,patch.object(builder,'main',return_value=17) as run:
-            self.assertEqual(wrapper.main(['--variant','community-r4.6','--output-dir',d,'--acknowledge-brick-risk']),17)
-            self.assertIn(builder.CONFIRMATION_FLAG,run.call_args.args[0])
+            self.assertEqual(wrapper.main(['--variant','community-r4.6','--output-dir',d,'--acknowledge-brick-risk']),2)
+            run.assert_not_called()
     def test_ack_and_existing_outputs_fail_before_build(self):
         with tempfile.TemporaryDirectory() as d,patch.object(builder.comparator,'build_candidate') as build:
             out=Path(d)/'image.bin';report=Path(d)/'report.json'

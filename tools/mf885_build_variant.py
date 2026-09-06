@@ -144,6 +144,14 @@ QUARANTINE_REASON = (
 )
 
 
+HARDWARE_FAILED_VARIANTS = frozenset({"community-r4.6"})
+HARDWARE_FAILURE_REASON = (
+    "R4.6 passed boot/static checks but its first native TTL GET timed out with "
+    "zero response bytes and USB identity drift; automatic recovery was observed, "
+    "root cause is unresolved, and the editor must not be used"
+)
+
+
 def parser() -> argparse.ArgumentParser:
     value = argparse.ArgumentParser(
         description="Build a local structural-only MF885 firmware variant"
@@ -168,9 +176,9 @@ def describe_variants() -> list[dict[str, Any]]:
             "profile": specification["profile"],
             "artifact": specification["artifact"],
             "qualification": "structural-only; never flash-qualified by this wrapper",
-            "build_allowed": name not in QUARANTINED_VARIANTS,
-            "status": "quarantined-target-mismatch" if name in QUARANTINED_VARIANTS else "experimental",
-            "reason": QUARANTINE_REASON if name in QUARANTINED_VARIANTS else "hardware qualification is separate",
+            "build_allowed": name not in QUARANTINED_VARIANTS | HARDWARE_FAILED_VARIANTS,
+            "status": "quarantined-target-mismatch" if name in QUARANTINED_VARIANTS else "quarantined-hardware-test-failed" if name in HARDWARE_FAILED_VARIANTS else "experimental",
+            "reason": QUARANTINE_REASON if name in QUARANTINED_VARIANTS else HARDWARE_FAILURE_REASON if name in HARDWARE_FAILED_VARIANTS else "hardware qualification is separate",
         }
         for name, specification in VARIANTS.items()
     ]
@@ -182,6 +190,9 @@ def build(args: argparse.Namespace) -> int:
         return 2
     if args.variant in QUARANTINED_VARIANTS:
         print(f"refusing quarantined variant {args.variant}: {QUARANTINE_REASON}", file=sys.stderr)
+        return 2
+    if args.variant in HARDWARE_FAILED_VARIANTS:
+        print(f"refusing quarantined variant {args.variant}: {HARDWARE_FAILURE_REASON}", file=sys.stderr)
         return 2
     if not args.acknowledge_brick_risk:
         print(
