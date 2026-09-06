@@ -44,6 +44,7 @@ import mf885_community_r42 as community_r42
 import mf885_community_r43 as community_r43
 import mf885_community_r44 as community_r44
 import mf885_community_r45 as community_r45
+import mf885_community_r46 as community_r46
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -1209,6 +1210,29 @@ STAGE_PROFILES[community_r45.PROFILE] = {
     },
 }
 
+STAGE_PROFILES[community_r46.PROFILE] = {
+    **STAGE_PROFILES[community_r45.PROFILE],
+    "marker": community_r46.MARKER,
+    "artifact": "MF885_Community_0.4.6-community-r2-webi-stage-only.bin",
+    "patcher": "community-r4.6",
+    "safety": {
+        **{k:v for k,v in STAGE_PROFILES[community_r45.PROFILE]["safety"].items()
+           if not k.startswith(("ttl", "diagnostic")) and k != "externalQualificationContract"},
+        "ttlAvailable": True, "ttlMode": "native-ram-editor",
+        "ttlInitialValue": 64, "ttlNumericRange": [1,255],
+        "ttlScope": "eligible-forwarded-ipv4-both-directions",
+        "ttlRuntimeOffAvailable": True, "ttlDirectionFilter": False,
+        "ttlForwardingHookIncludedInFullImage": True, "ttlPacketPathQualified": False,
+        "ttlRequiresFreshReadback": True, "ttlAutomaticRequests": 0,
+        "ttlBrowserGetRequestsPerRead": 2, "ttlBrowserGetRequestsPerChange": 2,
+        "ttlBrowserPostRequestsPerChange": 1, "diagnosticGetCallbacks": 1,
+        "diagnosticPostSetCallbacks": 1, "automaticMutationRetries": 0,
+        "rawResponseBodiesLogged": False, "ttlPersistenceAdded": False,
+        "externalQualificationContract": "Native callbacks, RAM writability, dynamic packet effects and Off require device qualification.",
+        "buildPinned": bool(community_r46.OUTPUT_RECORDS and community_r46.ADDITION_OUTPUT_RECORDS),
+    },
+}
+
 DERIVED_PATCHERS = {
     "community-r2": (community_r2, community_r2.CommunityR2Error),
     "community-r2.1": (community_r21, community_r21.CommunityR21Error),
@@ -1236,6 +1260,7 @@ DERIVED_PATCHERS = {
     "community-r4.3": (community_r43, community_r43.CommunityR43Error),
     "community-r4.4": (community_r44, community_r44.CommunityR44Error),
     "community-r4.5": (community_r45, community_r45.CommunityR45Error),
+    "community-r4.6": (community_r46, community_r46.CommunityR46Error),
 }
 
 

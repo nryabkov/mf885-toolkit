@@ -24,6 +24,7 @@ import mf885_community_r42_native_builder as r42_native_builder
 import mf885_community_r43_native_builder as r43_native_builder
 import mf885_community_r44_native_builder as r44_native_builder
 import mf885_community_r45_native_builder as r45_native_builder
+import mf885_community_r46_native_builder as r46_native_builder
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,6 +33,7 @@ DEFAULT_IDENTITY = ROOT / "input" / "mf885-base.xml"
 DEFAULT_OUTPUT = ROOT / "out"
 
 VARIANTS: dict[str, dict[str, Any]] = {
+    "community-r4.6": {"kind": "native-r46", "profile": r46_native_builder.PROFILE, "artifact": r46_native_builder.ARTIFACT},
     "community-r4.5": {
         "kind": "native-r45",
         "profile": r45_native_builder.PROFILE,
@@ -189,6 +191,8 @@ def build(args: argparse.Namespace) -> int:
         "--report",
         str(report),
     ]
+    if specification["kind"] == "native-r46":
+        return r46_native_builder.main(common + [r46_native_builder.CONFIRMATION_FLAG])
     if specification["kind"] == "native-r45":
         return r45_native_builder.main(common + [r45_native_builder.CONFIRMATION_FLAG])
     if specification["kind"] == "native-r44":

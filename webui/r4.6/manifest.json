@@ -1,0 +1,29 @@
+{
+  "entry": "r46.html",
+  "files": {
+    "css/r46ttl.css": {
+      "bytes": 945,
+      "sha256": "dbd3ecf613a198281af74a30d402a591f2766e12e31e35bc1550c9a67fc4d3a1"
+    },
+    "css/r46ui.css": {
+      "bytes": 7925,
+      "sha256": "50b977ba920c226a4a9c03895c47d1457439adba0eefd169c20e2cca21244578"
+    },
+    "js/r46app.js": {
+      "bytes": 65240,
+      "sha256": "06b1477544cc65746974db272f553caab36c50bd74d2f445eeaa28d0bbf4ef8f"
+    },
+    "js/r46ttl.js": {
+      "bytes": 8813,
+      "sha256": "114db9d334020dd1ecb0b26c5c6482eb92164e63211ebec4fae3e10efac4c530"
+    },
+    "r46.html": {
+      "bytes": 16924,
+      "sha256": "98e09013988203160fc8b04e7f048d1e1248ef146f9de1af5e9899e3cda7bec5"
+    }
+  },
+  "qualification": "offline development candidate; device behavior unqualified",
+  "runtime": "MF885 stock web server and authenticated R4.6 native callbacks; not a standalone hosted application",
+  "schema": "mf885-webui-source-snapshot/v1",
+  "version": "0.4.6"
+}

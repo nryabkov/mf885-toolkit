@@ -1,0 +1,6 @@
+/* MF885 Community R4.6 TTL editor */
+.ttl-layout{display:grid;grid-template-columns:minmax(220px,.8fr) minmax(280px,1.4fr);gap:24px;margin:28px 0 18px}
+.ttl-state,.ttl-editor{border:1px solid var(--line,#dce4e8);border-radius:16px;padding:24px;background:var(--panel,#fff)}
+.ttl-state>span{display:block;color:var(--muted,#64748b);font-size:14px}.ttl-state>strong{display:block;font-size:36px;margin:12px 0}.ttl-state>p{font-size:14px;min-height:40px}
+.ttl-editor label{display:block;font-weight:600;margin-bottom:12px}.ttl-editor input{max-width:180px;font-size:24px}.ttl-editor .muted,.ttl-hint,.ttl-notes{font-size:14px;line-height:1.65}.ttl-hint{min-height:24px}.ttl-hint.error{color:#b42318}.ttl-notes{max-width:850px}.ttl-notes p{margin:16px 0}
+@media(max-width:720px){.ttl-layout{grid-template-columns:1fr;gap:16px}.ttl-state,.ttl-editor{padding:20px}.ttl-editor .actions{align-items:stretch}.ttl-editor .actions button{flex:1 1 180px}}

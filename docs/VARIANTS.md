@@ -8,6 +8,7 @@ historical checkpoint descriptions, not current device status. See
 
 | Wrapper name | Logical ID | Source | Status |
 |---|---|---|---|
+| `community-r4.6` | `0.4.6-community-r2-native-r20-cafe2` | `firmware/community-r4.6/` and `webui/r4.6/` | Offline native RAM TTL editor, actual-state readback and Off; uninstalled and not hardware-qualified |
 | `community-r4.5` | `0.4.5-community-r2-native-r19-cafe2` | `firmware/community-r4.5/` plus native/full-container builders | Byte-wide IPv4 access at all alignments; full emitted-chain tests and reproducible container; uninstalled, no live TTL qualification |
 | `community-r4.4` | `0.4.4-community-r2-native-r18-cafe2` | `firmware/community-r4.4/` plus native/full-container builders | ARMv5/Thumb-1 profile and complete call-chain tests; reproducible full container; uninstalled, no hardware or live TTL qualification |
 | `community-r4.3` | `0.4.3-community-r2-native-r17-cafe2` | `firmware/community-r4.3/` plus native/full-container builders | Historical build with erroneous Cortex-A9/Thumb-2 assumptions; retained unchanged for analysis, not a compatible forwarding reference |

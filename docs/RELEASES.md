@@ -36,7 +36,14 @@ At present **no firmware variant is stable, generally flash-qualified, or
 restore-allowlisted**. Do not infer stability from a successful build, a known
 SHA-256, one live device, or the word `verified` in a structural report.
 
-As of 2026-09-06, the current development candidate is
+The next source increment is [R4.6 native TTL editor](../firmware/community-r4.6/README.md),
+with a [Russian usage guide](TTL_EDITOR_R46_RU.md). It adds current-request SET,
+actual-state GET with generation freshness, Off and a versioned editor. Local
+machine/DOM tests pass, a full container reproduces exactly, and73 structural
+conditions plus independent container inspection pass. Dynamic hardware behavior, native RAM writability and
+recovery are still unqualified. R4.5 remains the installed research baseline.
+
+The installed research baseline as of 2026-09-06 is
 [R4.5 byte-access ARMv5 fixed64](../firmware/community-r4.5/README.md), available as
 `--variant community-r4.5`. It fixes R4.4's rejection of otherwise eligible
 IPv4 headers at non-four-byte-aligned addresses. Actual Thumb-1 bytes pass a
