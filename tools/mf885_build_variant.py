@@ -134,6 +134,16 @@ VARIANTS: dict[str, dict[str, Any]] = {
 }
 
 
+# Historical builders preserve immutable research artifacts. Their target
+# assumptions do not satisfy the verified ARMv5TE/Thumb-1 deployment profile.
+# A generic brick-risk acknowledgement must not bypass a known target mismatch.
+QUARANTINED_VARIANTS = frozenset({"community-r3.5", "community-r4.2", "community-r4.3"})
+QUARANTINE_REASON = (
+    "historical ARMv7/Cortex-A9 target assumptions conflict with the verified "
+    "ARMv5TE/Thumb-1 deployment profile; retained for offline analysis only"
+)
+
+
 def parser() -> argparse.ArgumentParser:
     value = argparse.ArgumentParser(
         description="Build a local structural-only MF885 firmware variant"
@@ -142,7 +152,7 @@ def parser() -> argparse.ArgumentParser:
     value.add_argument("--golden", type=Path, default=DEFAULT_GOLDEN)
     value.add_argument("--identity-xml", type=Path, default=DEFAULT_IDENTITY)
     value.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT)
-    value.add_argument("--list", action="store_true", help="list reviewed variants")
+    value.add_argument("--list", action="store_true", help="list variants and explicit build eligibility")
     value.add_argument(
         "--acknowledge-brick-risk",
         action="store_true",
@@ -151,13 +161,16 @@ def parser() -> argparse.ArgumentParser:
     return value
 
 
-def describe_variants() -> list[dict[str, str]]:
+def describe_variants() -> list[dict[str, Any]]:
     return [
         {
             "name": name,
             "profile": specification["profile"],
             "artifact": specification["artifact"],
             "qualification": "structural-only; never flash-qualified by this wrapper",
+            "build_allowed": name not in QUARANTINED_VARIANTS,
+            "status": "quarantined-target-mismatch" if name in QUARANTINED_VARIANTS else "experimental",
+            "reason": QUARANTINE_REASON if name in QUARANTINED_VARIANTS else "hardware qualification is separate",
         }
         for name, specification in VARIANTS.items()
     ]
@@ -166,6 +179,9 @@ def describe_variants() -> list[dict[str, str]]:
 def build(args: argparse.Namespace) -> int:
     if not args.variant:
         print("--variant is required", file=sys.stderr)
+        return 2
+    if args.variant in QUARANTINED_VARIANTS:
+        print(f"refusing quarantined variant {args.variant}: {QUARANTINE_REASON}", file=sys.stderr)
         return 2
     if not args.acknowledge_brick_risk:
         print(

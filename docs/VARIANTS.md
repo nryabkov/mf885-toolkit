@@ -1,20 +1,21 @@
 # Source variant registry
 
-All variants are source-only and built locally from a strictly verified compatible backup.
-None is distributed as a firmware binary. Installation and qualification
-fields in this registry, variant READMEs/manifests and stage metadata are
-historical checkpoint descriptions, not current device status. See
+All variants are source-only. Eligible profiles build locally from a strictly
+verified compatible backup; quarantined profiles are rejected by the common wrapper.
+None is distributed as a firmware binary. This registry records known status
+as of 2026-09-06. Variant READMEs/manifests and stage metadata preserve their
+historical checkpoint fields; those fields are not current device status. See
 [release and research status](RELEASES.md).
 
 | Wrapper name | Logical ID | Source | Status |
 |---|---|---|---|
 | `community-r4.6` | `0.4.6-community-r2-native-r20-cafe2` | `firmware/community-r4.6/` and `webui/r4.6/` | Offline native RAM TTL editor, actual-state readback and Off; uninstalled and not hardware-qualified |
-| `community-r4.5` | `0.4.5-community-r2-native-r19-cafe2` | `firmware/community-r4.5/` plus native/full-container builders | Byte-wide IPv4 access at all alignments; full emitted-chain tests and reproducible container; uninstalled, no live TTL qualification |
-| `community-r4.4` | `0.4.4-community-r2-native-r18-cafe2` | `firmware/community-r4.4/` plus native/full-container builders | ARMv5/Thumb-1 profile and complete call-chain tests; reproducible full container; uninstalled, no hardware or live TTL qualification |
-| `community-r4.3` | `0.4.3-community-r2-native-r17-cafe2` | `firmware/community-r4.3/` plus native/full-container builders | Historical build with erroneous Cortex-A9/Thumb-2 assumptions; retained unchanged for analysis, not a compatible forwarding reference |
-| `community-r4.2` | `0.4.2-community-r2-native-r16-cafe2` | `firmware/community-r4.2/` plus native/full-container builders | Deterministic full-container build with a 12-byte guarded context read and distinct R4.2 UI; 79 structural conditions passed; not installed, no live qualification, delivery runner or TTL implementation |
+| `community-r4.5` | `0.4.5-community-r2-native-r19-cafe2` | `firmware/community-r4.5/` plus native/full-container builders | Installed on one research unit; exact assets and two bounded TTL packet observations verified; USB stability and recovery still unqualified |
+| `community-r4.4` | `0.4.4-community-r2-native-r18-cafe2` | `firmware/community-r4.4/` plus native/full-container builders | Installed historical ARMv5/Thumb-1 predecessor; superseded by R4.5 after an offline alignment-coverage defect and unsuccessful live TTL observation |
+| `community-r4.3` | `0.4.3-community-r2-native-r17-cafe2` | `firmware/community-r4.3/` plus native/full-container builders | Quarantined target mismatch: Cortex-A9/Thumb-2 forwarding patch; common wrapper rejects it; historical analysis only |
+| `community-r4.2` | `0.4.2-community-r2-native-r16-cafe2` | `firmware/community-r4.2/` plus native/full-container builders | Quarantined target assumptions: ARMv7/Cortex-A9; common wrapper rejects the profile; historical guarded-read source only |
 | — | R3.6–R4.1 source snapshots | `firmware/community-r3.6/` through `firmware/community-r4.1/` | Historical native sources and WebUI derivations; complete native-image wrappers for these releases are not included in the public export |
-| `community-r3.5` | `0.3.5-community-r2-native-r9-cafe2` | `firmware/community-r3.5/` plus exact golden native/WEBI derivation rules | Historical wrapper example with experimental same-model TTL; structural verification is not a functional TTL or installation qualification |
+| `community-r3.5` | `0.3.5-community-r2-native-r9-cafe2` | `firmware/community-r3.5/` plus exact golden native/WEBI derivation rules | Quarantined target assumptions: ARMv7/Cortex-A9; common wrapper rejects the profile; historical analysis only |
 | — | `0.3.4-community-r2-native-r7-cafe2` | `firmware/community-r3.4/` | Installed experimental predecessor: strict diagnostic no-op callback proved live; this proves callback attachment only, not TTL |
 | — | `0.3.0`–`0.3.3` native research line | `firmware/community-r3.0/` through `firmware/community-r3.3/` | Immutable cumulative TTL research predecessors; retained findings, not recommended outputs |
 | `community-r2.9` | `0.2.9-community-r2-cafe2` | `firmware/community-r2.9/` plus exact golden derivation rules | Installed historical UI/SMS predecessor with universal refresh and on-device help; no native TTL |

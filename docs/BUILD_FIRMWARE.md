@@ -1,29 +1,31 @@
 # Build firmware locally
 
-As of 2026-09-06, the current development candidate is
+As of 2026-09-06, the installed research baseline is
 [R4.5 byte-access ARMv5 fixed64](../firmware/community-r4.5/README.md), available as
 `--variant community-r4.5`. It fixes R4.4's rejection of otherwise eligible
 IPv4 headers at non-four-byte-aligned addresses. Actual Thumb-1 bytes pass a
 complete 18,432-case alignment/checksum/ABI matrix; two full builds match.
 Three byte stores finish before stock output under inherited packet ownership;
-the update is not atomic. R4.5 is now installed on one research unit. In one
-bounded UDP experiment, four source TTLs 32/96/32/96 arrived at the server as
-49/49/49/49; four replies with source TTLs 32/96/32/96 arrived at the receiving
+the update is not atomic. R4.5 is installed on one research unit. In each of two
+separate bounded UDP experiments, four source TTLs 32/96/32/96 arrived at the
+server as 49/49/49/49; four replies with source TTLs 32/96/32/96 arrived at the receiving
 GL interface as 64/64/64/64. This establishes those host-tap observations, not
-physical cellular-egress TTL64, direct native-hook execution or repeatability.
+physical cellular-egress TTL64, direct native-hook execution or long-term
+stability.
 No firmware variant is a stable or generally flash-qualified release. Earlier
 native variants and their hashes remain historical evidence; R4.3's
 Cortex-A9/Thumb-2 forwarding patch is not a compatible reference.
 
-Variant installation and qualification statements below are historical
-checkpoint descriptions; see [release and research status](RELEASES.md). The
-R4.2 full-container builder is available as `--variant community-r4.2`; its
-standalone decompressed native-component output is not an update image.
-The newer [R4.3 fixed64 forwarding release](../firmware/community-r4.3/README.md)
-is available as `--variant community-r4.3`. Its full container changes the
-forwarding hook and versioned UI; the separate decompressed OSLO component
-is not an update image. There is no runtime Off or direction filter and no
-live packet TTL qualification.
+Historical native R3.5, R4.2 and R4.3 sources remain available for analysis,
+but the common wrapper rejects these profiles even with a brick-risk
+acknowledgement: their ARMv7/Cortex-A9 target assumptions conflict with the
+verified ARMv5TE/Thumb-1 hardware profile. Do not bypass this rejection for device
+use. Lower-level historical tools remain unchanged for reproducibility and are
+not installation recommendations.
+
+R4.6 is a separate published offline candidate with a native TTL editor and Off.
+It has not yet been installed or qualified on the research device. R4.5 remains
+the installed baseline; see [release and research status](RELEASES.md).
 
 ## What this workflow does
 

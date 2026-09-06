@@ -44,13 +44,12 @@ class R42SourceTests(unittest.TestCase):
             self.assertFalse(safety[key], key)
         self.assertEqual(stage.STAGE_PROFILES[previous.PROFILE]["safety"]["diagnosticNativeLoads"], 0)
 
-    def test_wrapper_delegates_only_to_offline_r42_builder(self):
-        with tempfile.TemporaryDirectory() as tmp, mock.patch.object(builder, "main", return_value=17) as run:
+    def test_wrapper_rejects_historical_r42_target_before_build(self):
+        with tempfile.TemporaryDirectory() as tmp, mock.patch.object(builder, "main") as run:
             result = wrapper.main(["--variant", "community-r4.2", "--output-dir", tmp, "--acknowledge-brick-risk"])
-            self.assertEqual(result, 17)
-            args = run.call_args.args[0]
-            self.assertIn(builder.CONFIRMATION_FLAG, args)
-            self.assertIn(str(Path(tmp) / builder.ARTIFACT), args)
+            self.assertEqual(result, 2)
+            run.assert_not_called()
+            self.assertEqual(list(Path(tmp).iterdir()), [])
 
     def test_existing_output_and_missing_ack_fail_before_build(self):
         with tempfile.TemporaryDirectory() as tmp:

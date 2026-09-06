@@ -36,6 +36,17 @@ At present **no firmware variant is stable, generally flash-qualified, or
 restore-allowlisted**. Do not infer stability from a successful build, a known
 SHA-256, one live device, or the word `verified` in a structural report.
 
+Historical native R3.5, R4.2 and R4.3 profiles are quarantined in the common
+build wrapper. Their ARMv7/Cortex-A9 target assumptions do not satisfy the
+verified ARMv5TE/Thumb-1 device profile. `--list` reports the rejection and the
+reason; acknowledging generic brick risk does not override it. Original native
+sources, individual historical builders and hashes remain unchanged for offline
+analysis. They are not compatible device-build recommendations.
+
+Future firmware source increments are published after qualification on the
+actual target, with offline checks before installation. The already published
+R4.6 increment below predates this ordering rule and remains unqualified.
+
 The next source increment is [R4.6 native TTL editor](../firmware/community-r4.6/README.md),
 with a [Russian usage guide](TTL_EDITOR_R46_RU.md). It adds current-request SET,
 actual-state GET with generation freshness, Off and a versioned editor. Local
@@ -49,11 +60,12 @@ The installed research baseline as of 2026-09-06 is
 IPv4 headers at non-four-byte-aligned addresses. Actual Thumb-1 bytes pass a
 complete 18,432-case alignment/checksum/ABI matrix; two full builds match.
 Three byte stores finish before stock output under inherited packet ownership;
-the update is not atomic. R4.5 is now installed on one research unit. In one
-bounded UDP experiment, four source TTLs 32/96/32/96 arrived at the server as
-49/49/49/49; four replies with source TTLs 32/96/32/96 arrived at the receiving
+the update is not atomic. R4.5 is installed on one research unit. In each of two
+separate bounded UDP experiments, four source TTLs 32/96/32/96 arrived at the
+server as 49/49/49/49; four replies with source TTLs 32/96/32/96 arrived at the receiving
 GL interface as 64/64/64/64. This establishes those host-tap observations, not
-physical cellular-egress TTL64, direct native-hook execution or repeatability.
+physical cellular-egress TTL64, direct native-hook execution or long-term
+stability.
 No firmware variant is a stable or generally flash-qualified release. Earlier
 native variants and their hashes remain historical evidence; R4.3's
 Cortex-A9/Thumb-2 forwarding patch is not a compatible reference.
@@ -76,12 +88,12 @@ Historical checkpoint, 2026-09-05: the development increment was the
 [R4.3 fixed64 forwarding release](../firmware/community-r4.3/README.md).
 It rewrites eligible IPv4 packet TTL in emitted-machine tests, preserves the
 original output ABI, and contains no custom state or diagnostic callback.
-A reproducible full R4.3 container and distinct UI are available through
-`--variant community-r4.3`; 60 structural conditions and independent container
-inspection passed. There is no runtime Off switch, direction filter or live
+Its historical full-container builder and distinct UI remain in source;
+the common wrapper now rejects `community-r4.3`. Its historical 60 structural
+conditions and independent container inspection passed. There is no runtime Off switch, direction filter or live
 packet qualification. R4.2 remains the separate guarded context-read
 full-container builder. Neither is a qualified functional TTL release. The public export contains no binary image or delivery runner. R3.5 remains
-a historical build-wrapper example, not an installation recommendation.
+a quarantined historical profile, not an installation recommendation.
 
 Per-variant READMEs, manifests and stage safety metadata are retained snapshots
 from their original build/research checkpoints. In particular, fields such as

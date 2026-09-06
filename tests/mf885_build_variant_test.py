@@ -310,30 +310,30 @@ class BuildVariantTests(unittest.TestCase):
                     "MF885_Community_0.2.9-community-r2-cafe-r2.bin",
                 )
 
-    def test_community_r35_uses_exact_native_builder_and_risk_gate(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            with mock.patch.object(wrapper.r35_native_builder, "main", return_value=0) as main:
-                result = wrapper.main(
-                    [
-                        "--variant",
-                        "community-r3.5",
-                        "--golden",
-                        "golden.bin",
-                        "--identity-xml",
-                        "base.xml",
-                        "--output-dir",
-                        temporary,
-                        "--acknowledge-brick-risk",
-                    ]
-                )
-                self.assertEqual(result, 0)
-                arguments = main.call_args.args[0]
-                self.assertIn("--confirm-native-ttl-risk", arguments)
-                self.assertNotIn("--confirm-structural-only", arguments)
-                self.assertEqual(
-                    Path(arguments[arguments.index("--output") + 1]).name,
-                    "MF885_Community_0.3.5-community-r2-native-r9-cafe-r2.bin",
-                )
+    def test_quarantined_target_profiles_do_not_read_inputs_or_invoke_builders(self):
+        for name, module in (("community-r3.5", wrapper.r35_native_builder),
+                             ("community-r4.2", wrapper.r42_native_builder),
+                             ("community-r4.3", wrapper.r43_native_builder)):
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as temporary:
+                with mock.patch.object(module, "main") as main, \
+                     mock.patch.object(Path, "read_bytes", side_effect=AssertionError("input opened")), \
+                     contextlib.redirect_stderr(io.StringIO()) as stderr:
+                    result = wrapper.main(["--variant", name, "--output-dir", temporary,
+                                           "--acknowledge-brick-risk"])
+                self.assertEqual(result, 2)
+                main.assert_not_called()
+                self.assertEqual(list(Path(temporary).iterdir()), [])
+                self.assertIn("quarantined", stderr.getvalue())
+                self.assertIn("ARMv5TE/Thumb-1", stderr.getvalue())
+
+    def test_list_exposes_quarantine_without_hiding_history(self):
+        variants = {item["name"]: item for item in wrapper.describe_variants()}
+        for name in ("community-r3.5", "community-r4.2", "community-r4.3"):
+            self.assertFalse(variants[name]["build_allowed"])
+            self.assertEqual(variants[name]["status"], "quarantined-target-mismatch")
+        for name in ("community-r4.4", "community-r4.5", "community-r4.6"):
+            self.assertTrue(variants[name]["build_allowed"])
+            self.assertIn("never flash-qualified", variants[name]["qualification"])
 
 
 if __name__ == "__main__":
