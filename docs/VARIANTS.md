@@ -8,6 +8,7 @@ historical checkpoint descriptions, not current device status. See
 
 | Wrapper name | Logical ID | Source | Status |
 |---|---|---|---|
+| `community-r4.5` | `0.4.5-community-r2-native-r19-cafe2` | `firmware/community-r4.5/` plus native/full-container builders | Byte-wide IPv4 access at all alignments; full emitted-chain tests and reproducible container; uninstalled, no live TTL qualification |
 | `community-r4.4` | `0.4.4-community-r2-native-r18-cafe2` | `firmware/community-r4.4/` plus native/full-container builders | ARMv5/Thumb-1 profile and complete call-chain tests; reproducible full container; uninstalled, no hardware or live TTL qualification |
 | `community-r4.3` | `0.4.3-community-r2-native-r17-cafe2` | `firmware/community-r4.3/` plus native/full-container builders | Historical build with erroneous Cortex-A9/Thumb-2 assumptions; retained unchanged for analysis, not a compatible forwarding reference |
 | `community-r4.2` | `0.4.2-community-r2-native-r16-cafe2` | `firmware/community-r4.2/` plus native/full-container builders | Deterministic full-container build with a 12-byte guarded context read and distinct R4.2 UI; 79 structural conditions passed; not installed, no live qualification, delivery runner or TTL implementation |

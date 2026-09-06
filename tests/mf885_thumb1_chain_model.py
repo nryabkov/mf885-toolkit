@@ -23,8 +23,15 @@ def checksum(raw):
 
 
 class Machine:
+    # Defaults retain the exact R44 model. New releases subclass these layout
+    # and write contracts; the instruction decoder remains independent.
+    BODY_BYTES = 148
+    EXECUTABLE_BYTES = 140
+    OUTPUT_RETURN_OFFSET = 138
+    PACKET_WRITE_PLAN = ((8, 4),)
+
     def __init__(self, helper, packet, *, alignment=0, total=None, contiguous=None, arm_output=False):
-        assert len(helper) == 148
+        assert len(helper) == self.BODY_BYTES
         self.packet_address = 0x21000000 + alignment
         self.pbuf = 0x21001000
         self.netif = 0x22000000
@@ -45,7 +52,7 @@ class Machine:
                                         len(packet) if contiguous is None else contiguous), False, 'pbuf')
         self.map(self.netif+0x58, struct.pack('<I', self.output), False, 'netif')
         self.map(0x24000000, bytes(512), True, 'stack')
-        self.code = ((A,A+6),(CONT,CONT+2),(ENTRY,BODY+140))
+        self.code = ((A,A+6),(CONT,CONT+2),(ENTRY,BODY+self.EXECUTABLE_BYTES))
         self.reads = []
         self.writes = []
         self.trace = []
@@ -100,7 +107,7 @@ class Machine:
             assert target==self.output
             assert self.r[:3]==[self.netif,self.pbuf,0x0702c14c]
             assert self.r[13]%8==0
-            assert self.r[14]==(BODY+138)|1
+            assert self.r[14]==(BODY+self.OUTPUT_RETURN_OFFSET)|1
             self.calls.append({'target_thumb':bool(target&1),'return':self.r[14]})
             assert len(self.calls)==1
             self.output_packet=self.packet()
@@ -200,7 +207,7 @@ class Machine:
         assert self.r[0]==self.r[3]==self.output_return
         assert self.output_packet==self.packet()
         packet_writes=[(a,n) for a,n,region in self.writes if region!='stack']
-        assert packet_writes in ([],[(self.packet_address+8,4)])
+        assert packet_writes in ([],[(self.packet_address+offset,width) for offset,width in self.PACKET_WRITE_PLAN])
         return self.packet(),packet_writes
 
 

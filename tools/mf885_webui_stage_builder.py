@@ -43,6 +43,7 @@ import mf885_community_r41 as community_r41
 import mf885_community_r42 as community_r42
 import mf885_community_r43 as community_r43
 import mf885_community_r44 as community_r44
+import mf885_community_r45 as community_r45
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -1197,6 +1198,17 @@ STAGE_PROFILES[community_r44.PROFILE] = {
     },
 }
 
+STAGE_PROFILES[community_r45.PROFILE] = {
+    **STAGE_PROFILES[community_r44.PROFILE],
+    "marker": community_r45.MARKER,
+    "artifact": "MF885_Community_0.4.5-community-r2-webi-stage-only.bin",
+    "patcher": "community-r4.5",
+    "safety": {
+        **STAGE_PROFILES[community_r44.PROFILE]["safety"],
+        "buildPinned": bool(community_r45.OUTPUT_RECORDS and community_r45.ADDITION_OUTPUT_RECORDS),
+    },
+}
+
 DERIVED_PATCHERS = {
     "community-r2": (community_r2, community_r2.CommunityR2Error),
     "community-r2.1": (community_r21, community_r21.CommunityR21Error),
@@ -1223,6 +1235,7 @@ DERIVED_PATCHERS = {
     "community-r4.2": (community_r42, community_r42.CommunityR42Error),
     "community-r4.3": (community_r43, community_r43.CommunityR43Error),
     "community-r4.4": (community_r44, community_r44.CommunityR44Error),
+    "community-r4.5": (community_r45, community_r45.CommunityR45Error),
 }
 
 

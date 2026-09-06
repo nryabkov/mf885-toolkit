@@ -1,0 +1,61 @@
+{
+  "artifact": {
+    "bytes": 8323644,
+    "file": "MF885_Community_0.4.5-community-r2-native-r19-cafe-r2.bin",
+    "portable_plaintext_sha256": "7de178f4bdf7c6d382a8b767b6de668a1d81abb345675ba8367e9da663173b31",
+    "reference_raw_sha256": "a5c2dc109101156d3c707231d269968c6fa65ab80e86025f4af50a0b8c764583"
+  },
+  "compiled_body_bytes": 124,
+  "component": "community-r4.5-fixed64-forward-byte-access-thumb1",
+  "component_artifact_flashable": false,
+  "custom_state": false,
+  "diagnostic_callbacks": false,
+  "direction_filter": false,
+  "entry_stub_bytes": 8,
+  "fixed_ttl": 64,
+  "flash_qualified": false,
+  "flashable": false,
+  "full_firmware_container_built": true,
+  "hardware_execution_proven": false,
+  "header_alignment": "any byte alignment",
+  "helper_bytes": 132,
+  "helper_code_bytes": 124,
+  "helper_sha256": "02ce2cf936f5265d3a0eb7e6f2450cd9e5c359d516c857609006dd07182aa62a",
+  "helper_unreachable_padding_bytes": 2,
+  "hook_hex": "014b984702e0a1120006c046",
+  "installed": false,
+  "live_packet_ttl_verified": false,
+  "oslo_sha256": "b10de9270439557ef4aa409b5c453bb5989c5d33f92322e60dc0794398f2d8f1",
+  "packet_hook_in_candidate": true,
+  "packet_ownership": "Inherited exclusive mutation until output; asynchronous observers are not modeled.",
+  "packet_store_offsets": [
+    10,
+    11,
+    8
+  ],
+  "packet_store_width_bytes": 1,
+  "packet_update_atomic": false,
+  "profile": "0.4.5-community-r2",
+  "runtime_off": false,
+  "schema": "mf885-offline-native-release/v1",
+  "source": "native/ttl_forward_fixed64_bytes_armv5.ll",
+  "source_sha256": "3cc62316cbe312888f15643e6b32dd9bf2455c46750d4036c77daa7ccd303317",
+  "status": "experimental-unflashed",
+  "target_abi": "ARM EABI5",
+  "target_architecture": "ARMv5TE/Thumb-1",
+  "target_cpu_profile": "arm926ej-s",
+  "target_endianness": "little",
+  "target_features": "+thumb-mode,-thumb2,-neon,-vfp2,+strict-align",
+  "verification": {
+    "changed_partitions": [
+      "OSLO",
+      "WEBI"
+    ],
+    "double_build_equal": true,
+    "emitted_chain_matrix_cases": 18432,
+    "full_container_conditions": 63,
+    "independent_container_status": "verified",
+    "other_partitions_byte_identical": true
+  },
+  "webui_entry": "/r45.html"
+}
