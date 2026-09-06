@@ -4,6 +4,7 @@ Public, source-only tools for the ZMI MF885:
 
 - a Scriptable management dashboard;
 - read-only firmware inspection;
+- the current on-device Community WebUI, with a Russian usage guide;
 - deterministic WebUI patch builders;
 - reviewed source variants and tests.
 
@@ -42,6 +43,21 @@ from AI coding and research systems. Source and stated results were reviewed
 and tested to the extent documented, but AI involvement is not a warranty and
 may leave errors or incorrect assumptions. Independently inspect everything
 before relying on it.
+
+## Community WebUI R4.5
+
+Start with the [Russian usage and reproduction guide](docs/WEB_INTERFACE_RU.md).
+The current [HTML, JavaScript and CSS](webui/r4.5/) are published as exact source
+files. On a device with the corresponding firmware, open `/r45.html` at its
+management address. The UI provides Home, Messages, Diagnostics, Modem and a
+fixed-TTL status page; TTL64 has no value editor or Off switch in this version.
+It runs on the MF885 and uses the router's existing API and MD5 library. These
+files are not a standalone website or a ready-to-flash firmware download.
+
+R4.5 was installed and its assets verified on one research device; a bounded
+packet experiment observed equalized received TTLs in both directions. See
+[current results and limits](docs/RELEASES.md). Browser console logging still
+includes raw router responses; keep logs and reports private.
 
 ## Scriptable dashboard
 
@@ -83,7 +99,7 @@ python -m pip install -r requirements.txt
 mkdir -p out
 python tools/mf885_build_variant.py --list
 python tools/mf885_build_variant.py \
-  --variant community-r3.5 \
+  --variant community-r4.5 \
   --acknowledge-brick-risk
 ```
 
@@ -98,7 +114,7 @@ reference-unit raw hash is documented only as a reproducibility example. Any
 semantic mismatch is rejected; do not bypass this check or use another unit's
 built binary.
 
-`community-r3.5` is a historical wrapper example, not a current installation
+`community-r3.5` is a historical profile, not a current installation
 recommendation. Its source contract and immutable build hashes remain in
 `firmware/community-r3.5/`. No native TTL variant is a qualified functional
 release.
@@ -109,9 +125,14 @@ As of 2026-09-06, the current development candidate is
 IPv4 headers at non-four-byte-aligned addresses. Actual Thumb-1 bytes pass a
 complete 18,432-case alignment/checksum/ABI matrix; two full builds match.
 Three byte stores finish before stock output under inherited packet ownership;
-the update is not atomic. The candidate is uninstalled and live TTL remains
-unproved. Earlier native variants and their hashes remain historical evidence;
-R4.3's Cortex-A9/Thumb-2 forwarding patch is not a compatible reference.
+the update is not atomic. R4.5 is now installed on one research unit. In one
+bounded UDP experiment, four source TTLs 32/96/32/96 arrived at the server as
+49/49/49/49; four replies with source TTLs 32/96/32/96 arrived at the receiving
+GL interface as 64/64/64/64. This establishes those host-tap observations, not
+physical cellular-egress TTL64, direct native-hook execution or repeatability.
+No firmware variant is a stable or generally flash-qualified release. Earlier
+native variants and their hashes remain historical evidence; R4.3's
+Cortex-A9/Thumb-2 forwarding patch is not a compatible reference.
 
 Historical checkpoint: the prior development increment was the [R4.3 fixed64 forwarding
 release](firmware/community-r4.3/README.md), available through `--variant

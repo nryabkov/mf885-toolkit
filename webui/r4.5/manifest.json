@@ -1,0 +1,20 @@
+{
+  "entry": "r45.html",
+  "files": {
+    "css/r45ui.css": {
+      "bytes": 7925,
+      "sha256": "50b977ba920c226a4a9c03895c47d1457439adba0eefd169c20e2cca21244578"
+    },
+    "js/r45app.js": {
+      "bytes": 63060,
+      "sha256": "7f6dbb0fc17441c4dd3e769af03ab674f234f2c8cf00e726d46ac32ce5f20be6"
+    },
+    "r45.html": {
+      "bytes": 13856,
+      "sha256": "dd1b29d3b6e3f03942515a5e3b6610656bbdb44bff93b95d0caa71e07a988dbe"
+    }
+  },
+  "runtime": "MF885 stock web server and API; not a standalone hosted application",
+  "schema": "mf885-webui-source-snapshot/v1",
+  "version": "0.4.5"
+}

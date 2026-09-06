@@ -42,9 +42,28 @@ As of 2026-09-06, the current development candidate is
 IPv4 headers at non-four-byte-aligned addresses. Actual Thumb-1 bytes pass a
 complete 18,432-case alignment/checksum/ABI matrix; two full builds match.
 Three byte stores finish before stock output under inherited packet ownership;
-the update is not atomic. The candidate is uninstalled and live TTL remains
-unproved. Earlier native variants and their hashes remain historical evidence;
-R4.3's Cortex-A9/Thumb-2 forwarding patch is not a compatible reference.
+the update is not atomic. R4.5 is now installed on one research unit. In one
+bounded UDP experiment, four source TTLs 32/96/32/96 arrived at the server as
+49/49/49/49; four replies with source TTLs 32/96/32/96 arrived at the receiving
+GL interface as 64/64/64/64. This establishes those host-tap observations, not
+physical cellular-egress TTL64, direct native-hook execution or repeatability.
+No firmware variant is a stable or generally flash-qualified release. Earlier
+native variants and their hashes remain historical evidence; R4.3's
+Cortex-A9/Thumb-2 forwarding patch is not a compatible reference.
+
+The 2026-09-06 R4.5 observation used four requests and four causal replies, with
+no automatic retries. All captured IPv4 and incoming UDP checksums were valid.
+The server's outgoing host captures carried kernel metadata for an unfinished
+checksum; matching incoming frames had completed valid checksums. The result
+is therefore qualified host-tap evidence, not a physical-wire checksum claim.
+Temporary test routing was removed and host services remained healthy.
+Other protocols, cold boot, longer dwell and a matched control experiment remain
+future work. This public summary contains no packet captures or unit identity.
+
+The [current WebUI source](../webui/r4.5/) is byte-identical to the installed
+community assets. Its original pending-measurement wording and per-variant
+build-time flags remain unchanged; this document provides the later status.
+See the [Russian guide](WEB_INTERFACE_RU.md) and [updated roadmap](ARCHITECTURE.md).
 
 Historical checkpoint, 2026-09-05: the development increment was the
 [R4.3 fixed64 forwarding release](../firmware/community-r4.3/README.md).

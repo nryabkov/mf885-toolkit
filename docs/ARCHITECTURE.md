@@ -73,26 +73,35 @@ does not authorize cross-flashing or reuse of native offsets.
    not established. Routed WISP is the first plausible target; transparent WDS
    is not promised.
 
-## Current cumulative development order
+## Current development order — 2026-09-06
 
-1. **Community R3.5 TTL** — keep boot state Off and volatile; prove one strict
-   same-model read before any write, then separately qualify setter/readback
-   and the real forwarded IPv4 packet with checksum repair. The UI accepts
-   `off` or canonical `1..255` and offers recommended presets without limiting
-   the operator to them.
-2. **Community R3.6 repeater/WISP** — add routed station-plus-AP behavior only
-   after coexistence, recovery and UI state ownership are proved. Transparent
-   WDS is not promised.
-3. **Community R3.7 on-device USSD** — no GL.iNet runtime dependency: one
-   request in flight, bounded result states, SMS-delivered and direct replies,
-   no automatic replay.
-4. **Community R3.8 IMEI laboratory workflow** — backup the exact original,
-   require explicit mutation, verify readback and demonstrate restoration
-   before any broader product claim.
-5. **Community R3.9 cumulative integration** — combine only independently
-   qualified milestones and rerun the complete UI, native, device and recovery
-   evidence set. A feature remains labelled unproved until its own live proof
-   is green.
+R4.5 is installed on one research device. One bounded UDP experiment observed
+source TTLs 32/96 becoming 49 at the server and reply TTLs 32/96 becoming 64 at the
+GL receiver. Fixed64 has passed this observation; repeatability, physical egress
+and direct execution of the exact hook remain separately unproved. The earlier
+R3.x milestone numbers above are historical, not future release assignments.
+
+1. **Publish and document R4.5.** Expose the exact community HTML/JS/CSS,
+   build source and Russian usage guide; keep binary images, raw evidence and
+   identities private. Preserve immutable build/source hashes.
+2. **Repeatability and privacy.** Plan bounded tests after restart and across
+   additional flows/protocols; qualify USB/hub recovery separately. Remove raw
+   response bodies and private fields from browser console logging in a future
+   UI revision. Do not rewrite the exact R4.5 asset snapshot.
+3. **Controlled TTL settings.** Establish a narrow authenticated on-device
+   control path, then separately verify Off, value changes, readback, packet
+   checksums and return to baseline. R4.5 currently offers none of these runtime
+   controls. Persistence, direction selection and IPv6 are separate decisions.
+4. **Repeater/WISP.** Prove routed station-plus-AP coexistence and recovery
+   before integrating its UI. Transparent WDS is not promised.
+5. **On-device USSD.** One operation at a time, bounded result/cancel states,
+   direct or SMS-delivered replies, and no automatic replay or GL dependency.
+6. **IMEI laboratory workflow and integration.** First demonstrate original
+   backup, explicit mutation, readback and restoration. Combine independently
+   qualified features only after boot, dwell and recovery checks.
+
+Each hardware experiment should have a bounded scope, recorded results and a
+checked recovery procedure before its feature is integrated.
 
 ## Release discipline
 

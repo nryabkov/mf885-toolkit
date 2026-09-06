@@ -6,9 +6,14 @@ As of 2026-09-06, the current development candidate is
 IPv4 headers at non-four-byte-aligned addresses. Actual Thumb-1 bytes pass a
 complete 18,432-case alignment/checksum/ABI matrix; two full builds match.
 Three byte stores finish before stock output under inherited packet ownership;
-the update is not atomic. The candidate is uninstalled and live TTL remains
-unproved. Earlier native variants and their hashes remain historical evidence;
-R4.3's Cortex-A9/Thumb-2 forwarding patch is not a compatible reference.
+the update is not atomic. R4.5 is now installed on one research unit. In one
+bounded UDP experiment, four source TTLs 32/96/32/96 arrived at the server as
+49/49/49/49; four replies with source TTLs 32/96/32/96 arrived at the receiving
+GL interface as 64/64/64/64. This establishes those host-tap observations, not
+physical cellular-egress TTL64, direct native-hook execution or repeatability.
+No firmware variant is a stable or generally flash-qualified release. Earlier
+native variants and their hashes remain historical evidence; R4.3's
+Cortex-A9/Thumb-2 forwarding patch is not a compatible reference.
 
 Variant installation and qualification statements below are historical
 checkpoint descriptions; see [release and research status](RELEASES.md). The
@@ -95,7 +100,7 @@ set. Never weaken a failed gate to make an unknown image fit.
 mkdir -p out
 python tools/mf885_build_variant.py --list
 python tools/mf885_build_variant.py \
-  --variant community-r3.5 \
+  --variant community-r4.5 \
   --golden input/MF885_golden.bin \
   --identity-xml input/mf885-base.xml \
   --output-dir out \
@@ -104,7 +109,7 @@ python tools/mf885_build_variant.py \
 
 The Logs variants are research observers and `sms-r1` is a historical
 send/delete prototype. Choose them only after reading their source and
-manifest; `community-r3.5` above is a historical wrapper example. The
+manifest; `community-r4.5` above is the current experimental source profile. The
 output and a JSON report are created exclusively; rerunning does not overwrite
 them. Delete or move an old local output deliberately before rebuilding.
 
@@ -114,11 +119,18 @@ them. Delete or move an old local output deliberately before rebuilding.
 python tools/mf885_firmware_inspect.py \
   input/MF885_golden.bin \
   --identity-xml input/mf885-base.xml \
-  --compare out/MF885_Community_0.3.5-community-r2-native-r9-cafe-r2.bin \
+  --compare out/MF885_Community_0.4.5-community-r2-native-r19-cafe-r2.bin \
   --json
 ```
 
-For `community-r3.5`, the retained reference candidate is exactly 8,323,644
+For R4.5, the reference image is 8,323,644 bytes with SHA-256
+`a5c2dc109101156d3c707231d269968c6fa65ab80e86025f4af50a0b8c764583`.
+This raw hash is unit-bound; use the builder and independent inspector for your
+own lawful inputs. All 63 R4.5 container conditions passed on the research image.
+The exact [WebUI source snapshot](../webui/r4.5/) and
+[Russian usage guide](WEB_INTERFACE_RU.md) are also available.
+
+Historical R3.5 reference: the retained candidate is exactly 8,323,644
 bytes with SHA-256
 `efd74c1ff0127961f8036d0f6e51b7fec35856b128f23b3f18de5191663087f3`.
 Only OSLO and WEBI may differ; the independent inspector, all 47 final
