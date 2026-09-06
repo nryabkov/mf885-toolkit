@@ -59,6 +59,9 @@ and tested to the extent documented, but AI involvement is not a warranty and
 may leave errors or incorrect assumptions. Independently inspect everything
 before relying on it.
 
+For future firmware names, base-version compatibility and legacy aliases, see
+[versioning rules (Russian)](docs/VERSIONING_RU.md) and [the registry](versioning.json).
+
 ## Community WebUI R4.5
 
 Start with the [Russian usage and reproduction guide](docs/WEB_INTERFACE_RU.md).

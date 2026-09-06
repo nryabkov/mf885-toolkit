@@ -15,7 +15,11 @@ generated firmware image for flashing.
 
 ## Firmware variants
 
-Each variant has a logical ID and a container revision. For example,
+Future versions separate the Community version from the exact vendor base.
+See [versioning and backward compatibility](VERSIONING_RU.md); existing R4.5
+and R4.6 identifiers and artifact bytes remain unchanged.
+
+Legacy variants have a logical ID and a container revision. For example,
 `0.0-logs-r1-cafe2` means Logs r1 content rebuilt with the second reviewed CAFE
 container encoding. A new container revision always gets a new ID and output
 filename; old hashes are never silently replaced.

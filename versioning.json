@@ -1,0 +1,38 @@
+{
+  "schema": "mf885-community-versioning/v1",
+  "applies_to": "new firmware artifacts after legacy R4.6",
+  "next_patch_candidate_example": "0.4.7-dev.1",
+  "new_display_name_template": "MF885 Community {community_version} · base {base_version}",
+  "new_artifact_name_template": "MF885-Community-{community_version}-base-{base_version}.bin",
+  "base_profiles": {
+    "mf96d-2.5.94": {
+      "display_version": "2.5.94",
+      "reported_software_version": "2.5.94_release_MF855_NZ_CP_2.12",
+      "reported_hardware": "MF96 Ver.D",
+      "architecture_profile": "ARMv5TE/Thumb-1; little-endian ARM EABI5",
+      "portable_plaintext_sha256": "2bf4151a6e209845fd8d30f576577f6a66fe4cdf6d770c8bb45f0204c3486850"
+    }
+  },
+  "legacy_aliases": {
+    "R4.5": {
+      "community_version": "0.4.5",
+      "base_profile": "mf96d-2.5.94",
+      "builder_variant": "community-r4.5",
+      "builder_profile": "0.4.5-community-r2",
+      "artifact_filename": "MF885_Community_0.4.5-community-r2-native-r19-cafe-r2.bin",
+      "web_entry": "/r45.html"
+    },
+    "R4.6": {
+      "community_version": "0.4.6",
+      "base_profile": "mf96d-2.5.94",
+      "builder_variant": "community-r4.6",
+      "builder_profile": "0.4.6-community-r2",
+      "artifact_filename": "MF885_Community_0.4.6-community-r2-native-r20-cafe-r2.bin",
+      "web_entry": "/r46.html"
+    }
+  },
+  "runtime_endpoint_added": false,
+  "existing_artifacts_renamed": false,
+  "version_alone_establishes_hardware_compatibility": false,
+  "toolkit_version_is_separate": true
+}
