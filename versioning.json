@@ -44,6 +44,15 @@
       "native_api": "r47-revision24-ttl8",
       "status": "limited-hardware-qualified-editor-and-ipv4-udp",
       "stable": false
+    },
+    "0.4.7-dev.5": {
+      "base_profile": "mf96d-2.5.94",
+      "builder_variant": "community-0.4.7-dev.5",
+      "artifact_filename": "MF885-Community-0.4.7-dev.5-base-2.5.94.bin",
+      "web_entry": "/c047d5.html",
+      "native_api": "r47-revision24-ttl8",
+      "status": "limited-hardware-qualified-engineering-editor",
+      "stable": false
     }
   }
 }

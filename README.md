@@ -17,6 +17,7 @@ under the ignored `input/` directory.
 
 | Version | Evidence and status |
 |---|---|
+| 0.4.7-dev.5 | Installed on one research MF885; Engineering Read / Enabled / changing readings / Disabled and registration recovery passed. Native unchanged from dev.4; long-term stability and exact measurement age unknown. |
 | 0.4.7-dev.4 | Installed on one research MF885; guided Read / Off /64 and repeatable bidirectional IPv4 UDP host-tap behavior passed. Development version; persistence, all protocols and general recovery remain unproved. |
 | R4.5 | Installed on one research MF885; exact assets checked and two bounded TTL packet observations passed. USB disconnects remain unexplained; not stable. |
 | R4.6 | Quarantined after hardware test: boot/static passed; first native TTL GET timed out with USB identity drift. Do not use the editor; SET and Off were not tested. |
@@ -63,7 +64,18 @@ before relying on it.
 For future firmware names, base-version compatibility and legacy aliases, see
 [versioning rules (Russian)](docs/VERSIONING_RU.md) and [the registry](versioning.json).
 
-## Community WebUI 0.4.7-dev.4
+## Community WebUI 0.4.7-dev.5
+
+The [current interface](webui/0.4.7-dev.5/) adds an explicit Engineering readings
+switch with readback and delayed-response handling. On the matching firmware,
+open `/c047d5.html` and select Modem. See the [Russian guide](docs/ENGINEERING_047D5_RU.md).
+Detailed readings can take about a minute to appear; disabling can interrupt
+mobile registration briefly, and retained values have no known measurement age.
+The exact new UI was tested on the router before this source publication.
+No firmware binary is supplied. Build from your own exact original using
+`--variant community-0.4.7-dev.5`. Earlier versions and aliases remain available.
+
+## Previous Community WebUI 0.4.7-dev.4
 
 Read the [Russian TTL editor and build guide](docs/TTL_EDITOR_047D4_RU.md).
 The [HTML, JavaScript, CSS and capability JSON](webui/0.4.7-dev.4/) match the

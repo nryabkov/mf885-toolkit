@@ -1,0 +1,12 @@
+        <section class="ttl-panel" aria-labelledby="engineeringTitle">
+          <h2 id="engineeringTitle">Engineering readings</h2>
+          <p>Collect detailed LTE signal readings. The first values can take about a minute to appear. Refresh all to read them, or leave live refresh on.</p>
+          <p>Current setting: <strong id="engineeringCurrent">Not read</strong></p>
+          <form id="engineeringForm" aria-busy="false">
+            <label for="engineeringMode">Collection</label>
+            <select id="engineeringMode"><option value="0">Disabled</option><option value="1">Enabled · 1 minute interval</option></select>
+            <div class="actions"><button id="engineeringRead" type="button">Read setting</button><button id="engineeringApply" type="submit" disabled>Apply</button></div>
+          </form>
+          <p id="engineeringStatus" class="status" role="status" aria-live="polite">Sign in and read the setting before applying a change.</p>
+          <p class="muted">Turning collection off can briefly interrupt the mobile connection while the modem registers again. Displayed readings may remain after collection stops; their measurement time is unknown.</p>
+        </section>

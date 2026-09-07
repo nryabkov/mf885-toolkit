@@ -1,6 +1,13 @@
 # Source variant registry
 
-Current development variant: `community-0.4.7-dev.4`, Community0.4.7-dev.4 /
+Community0.4.7-dev.5 adds the Engineering readings editor. Exact installed
+assets and actual Read/Enabled/changing readings/Disabled/recovery passed on
+one MF96 Ver.D /2.5.94 unit. Native remains byte-identical to dev.4; TTL packet
+checks were not repeated. Measurement age and long-term cost remain unknown.
+See [the guide](ENGINEERING_047D5_RU.md). Earlier sections retain their historical
+version-specific results and test counts.
+
+Previous development variant: `community-0.4.7-dev.4`, Community0.4.7-dev.4 /
 base2.5.94, [guided editor](TTL_EDITOR_047D4_RU.md). Installed Read/Off/64 and
 limited bidirectional IPv4 UDP host-tap qualification passed on one device;
 not stable or generally flash-qualified. The common wrapper builds it offline
