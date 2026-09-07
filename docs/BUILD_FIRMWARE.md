@@ -1,6 +1,12 @@
 # Build firmware locally
 
-As of 2026-09-06, the last packet-proven research baseline is
+Current development source: **0.4.7-dev.4 / base2.5.94**, with installed editor
+Read/Off/64 and limited bidirectional IPv4 UDP proof on one device. Use
+`--variant community-0.4.7-dev.4`; see the [complete dev.4 guide](TTL_EDITOR_047D4_RU.md)
+for architecture, dependencies, build command and exact limitations. Historical
+R4.6 remains quarantined and older commands below retain their original scope.
+
+Historical checkpoint,2026-09-06: the packet-proven research baseline was
 [R4.5 byte-access ARMv5 fixed64](../firmware/community-r4.5/README.md), available as
 `--variant community-r4.5`. It fixes R4.4's rejection of otherwise eligible
 IPv4 headers at non-four-byte-aligned addresses. Actual Thumb-1 bytes pass a

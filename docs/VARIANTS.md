@@ -1,5 +1,11 @@
 # Source variant registry
 
+Current development variant: `community-0.4.7-dev.4`, Community0.4.7-dev.4 /
+base2.5.94, [guided editor](TTL_EDITOR_047D4_RU.md). Installed Read/Off/64 and
+limited bidirectional IPv4 UDP host-tap qualification passed on one device;
+not stable or generally flash-qualified. The common wrapper builds it offline
+from exact owner-supplied inputs, preserving all older names and quarantines.
+
 All variants are source-only. Eligible profiles build locally from a strictly
 verified compatible backup; quarantined profiles are rejected by the common wrapper.
 None is distributed as a firmware binary. This registry records known status

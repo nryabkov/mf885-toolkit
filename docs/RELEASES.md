@@ -2,6 +2,27 @@
 
 The toolkit and generated firmware variants have separate version streams.
 
+## 2026-09-07 — Community0.4.7-dev.4 source publication
+
+Actual installed editor Read→Off→64 and separate readbacks passed on one MF885
+before publication. With source TTLs32/96, GL→VDS host captures read49/49,
+17/81,49/49; reverse GL captures read64/64,16/80,64/64. Six requests/six replies,
+24 frames, zero capture drops; final64/rev2. Exact assets and native source pins
+are published with the [guide and full limitations](TTL_EDITOR_047D4_RU.md).
+The browser used a bounded proxy with in-memory login bootstrap; core scripts
+were unchanged. No claim of all protocols, physical cellular egress, concurrent
+writers, reboot persistence, universal recovery or long-term stability.
+The preceding delivery cleanup error and separate successful recovery are both
+retained as distinct results. R4.6 remains quarantined; dev.3 was not installed
+and its implementation is excluded from this export. dev.2 files are the pinned
+native dependency of dev.4, not a separate release recommendation.
+
+Publication checks: Python223 tests (161passed,62skipped for absent local
+inputs), Node459 tests (455passed,4historical conditional cases skipped), public
+tree policy passed. All23dev.4 editor cases ran. The public wrapper reproduced
+the exact installed reference image in two equal builds, passed36conditions and
+independent container inspection. Skipped tests are not counted as passed.
+
 ## Toolkit releases
 
 Source/toolkit releases use SemVer tags such as `toolkit-v0.1.0`. A release

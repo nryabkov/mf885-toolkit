@@ -1,0 +1,28 @@
+      <section id="page-ttl" class="page" hidden>
+        <div class="page-head"><div><p class="eyebrow">Connection tools</p><h1>TTL settings</h1><p class="section-intro">Choose how the router handles packet TTL. Changes last until the next restart.</p></div></div>
+        <div class="ttl-layout">
+          <article class="ttl-state" aria-labelledby="ttlCurrentTitle">
+            <span id="ttlCurrentTitle">Last reported setting</span>
+            <strong id="ttlCurrent">Not read</strong>
+            <p id="ttlCurrentHelp">The current setting is not read automatically.</p>
+            <button id="ttlRead" type="button" class="secondary" disabled>Read router setting</button>
+            <p id="ttlReadTime" class="muted">Read the router setting to unlock Apply.</p>
+          </article>
+          <form id="ttlForm" class="ttl-editor" aria-busy="false">
+            <label for="ttlMode">Choose a mode</label>
+            <select id="ttlMode" aria-describedby="ttlChoiceHint ttlPersistence" disabled>
+              <option value="64">64 · replace TTL</option>
+              <option value="off">Off · stop replacing TTL</option>
+            </select>
+            <p id="ttlChoiceHint" class="ttl-hint">Set eligible IPv4 packets to TTL 64. Later routers can reduce the value received at the destination.</p>
+            <p id="ttlPersistence" class="ttl-persistence">After a restart, TTL returns to <strong>64</strong>.</p>
+            <button id="ttlApply" type="submit" disabled>Apply mode</button>
+          </form>
+        </div>
+        <p id="ttlStatus" class="status ttl-status" role="status" aria-live="polite" data-phase="unavailable">Sign in and read the router setting.</p>
+        <details class="terms ttl-notes"><summary>About TTL and this version</summary>
+          <p>TTL limits how far an IPv4 packet can travel. Routers along its route can reduce it, so the destination may receive a value below 64.</p>
+          <p>64 and Off were observed with UDP traffic in both directions on the preceding firmware with the same native code. Other protocols and custom values are still being checked. This editor is a development candidate awaiting its own router test.</p>
+          <p>Use one settings session at a time. The displayed value is the last router response, not continuous monitoring. If a change is not confirmed, read the setting again before deciding what to do.</p>
+        </details>
+      </section>

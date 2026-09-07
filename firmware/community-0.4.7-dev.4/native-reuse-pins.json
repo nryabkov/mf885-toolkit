@@ -1,0 +1,44 @@
+{
+  "schema": "mf885-047d4-native-reuse/v1",
+  "oslo": {
+    "bytes": 9648064,
+    "sha256": "686a5d3138cd6ee930d43d22704463b15c78dbcd3eb993ccd78dc29a45f663b7"
+  },
+  "sources": [
+    {
+      "path": "firmware/community-0.4.7-dev.2/native_payload.py",
+      "bytes": 5677,
+      "sha256": "392b0016450deb263608b82d2530f845c7d4bf82c0b7bb66b71b4177742d2cd0"
+    },
+    {
+      "path": "firmware/community-0.4.7-dev.2/memory_layout.py",
+      "bytes": 3457,
+      "sha256": "71bfd18ced5101216180b3f6044de2f36ed5281e1405301f0e87ad815d764a64"
+    },
+    {
+      "path": "firmware/community-0.4.7-dev.2/native/emitted-pins.json",
+      "bytes": 1448,
+      "sha256": "53c28bfa5b3cb0c35f64b9b161a6983a7f10e315c3732dbb53b5b7aaff0f5d69"
+    },
+    {
+      "path": "firmware/community-0.4.7-dev.2/native/source-pins.json",
+      "bytes": 421,
+      "sha256": "2cecb6a0e4d5db12cb0bb378da68b88d381069ed8900842cf35dbb068f0d45cc"
+    },
+    {
+      "path": "firmware/community-0.4.7-dev.2/native/ttl_forward_configurable_armv5.ll",
+      "bytes": 3645,
+      "sha256": "4c57b52aae1ae21bae0964cbea5daa65564ed11e57132036b2c4ef8182a7c291"
+    },
+    {
+      "path": "firmware/community-0.4.7-dev.2/native/ttl_request_post_set_armv5.ll",
+      "bytes": 6288,
+      "sha256": "52589303d680d1a41784cbab08cab7a4c9bee1cd3272d8b1067a93da6b341a8b"
+    },
+    {
+      "path": "firmware/community-0.4.7-dev.2/native/ttl_state_pre_get_armv5.ll",
+      "bytes": 2296,
+      "sha256": "acd10bf56a085c87faa3a4a48f73207c823b00ad573c5a6020ebe1b061ea5776"
+    }
+  ]
+}

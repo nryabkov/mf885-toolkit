@@ -1,0 +1,32 @@
+{
+  "community_version": "0.4.7-dev.4",
+  "vendor_base": "2.5.94",
+  "files": {
+    "c047d4.html": {
+      "bytes": 15812,
+      "sha256": "799625f88930a642987cf234dccee99dcc11fc408d27830b07d5055fcdb5c306"
+    },
+    "c047d4ttl.json": {
+      "bytes": 179,
+      "sha256": "4b5aca4e58e5d91b19fac718c4f248fea0bf71d68aeb4871c75f5215c595a3b3"
+    },
+    "css/c047d4ttl.css": {
+      "bytes": 1364,
+      "sha256": "5088c0b6244017fb5406d16e9c691c30e5dd1fbe25ca82501e13ba25c86656a5"
+    },
+    "css/c047d4ui.css": {
+      "bytes": 7925,
+      "sha256": "50b977ba920c226a4a9c03895c47d1457439adba0eefd169c20e2cca21244578"
+    },
+    "js/c047d4app.js": {
+      "bytes": 65480,
+      "sha256": "887b3f2cc4322a529e26f075a0272263bf4a670ed5bb19a07b7275fb520a91b1"
+    },
+    "js/c047d4ttl.js": {
+      "bytes": 9207,
+      "sha256": "cf1bfed5cb696a838b447b0639d6539845cb3ffa0bc175fe023d6f5833bc411f"
+    }
+  },
+  "status": "limited-hardware-qualified-editor-and-ipv4-udp",
+  "source_only": true
+}

@@ -17,6 +17,7 @@ under the ignored `input/` directory.
 
 | Version | Evidence and status |
 |---|---|
+| 0.4.7-dev.4 | Installed on one research MF885; guided Read / Off /64 and repeatable bidirectional IPv4 UDP host-tap behavior passed. Development version; persistence, all protocols and general recovery remain unproved. |
 | R4.5 | Installed on one research MF885; exact assets checked and two bounded TTL packet observations passed. USB disconnects remain unexplained; not stable. |
 | R4.6 | Quarantined after hardware test: boot/static passed; first native TTL GET timed out with USB identity drift. Do not use the editor; SET and Off were not tested. |
 | R3.5, R4.2, R4.3 | Historical native profiles using ARMv7/Cortex-A9 assumptions. The common build wrapper rejects them for the verified ARMv5TE/Thumb-1 target. |
@@ -62,20 +63,20 @@ before relying on it.
 For future firmware names, base-version compatibility and legacy aliases, see
 [versioning rules (Russian)](docs/VERSIONING_RU.md) and [the registry](versioning.json).
 
-## Community WebUI R4.5
+## Community WebUI 0.4.7-dev.4
 
-Start with the [Russian usage and reproduction guide](docs/WEB_INTERFACE_RU.md).
-The current [HTML, JavaScript and CSS](webui/r4.5/) are published as exact source
-files. On a device with the corresponding firmware, open `/r45.html` at its
-management address. The UI provides Home, Messages, Diagnostics, Modem and a
-fixed-TTL status page; TTL64 has no value editor or Off switch in this version.
-It runs on the MF885 and uses the router's existing API and MD5 library. These
-files are not a standalone website or a ready-to-flash firmware download.
+Read the [Russian TTL editor and build guide](docs/TTL_EDITOR_047D4_RU.md).
+The [HTML, JavaScript, CSS and capability JSON](webui/0.4.7-dev.4/) match the
+installed tested image byte for byte. On the corresponding firmware, open
+`/c047d4.html`. Home, Messages, Diagnostics and Modem are inherited; TTL now
+provides manual Read and two explained choices,64 andOff, with one write and
+separate readback. Settings are RAM-only. This is an on-device interface, not
+a standalone website. No firmware image or live flashing helper is supplied.
 
-R4.5 was installed and its assets verified on one research device; a bounded
-packet experiment observed equalized received TTLs in both directions. See
-[current results and limits](docs/RELEASES.md). Browser console logging still
-includes raw router responses; keep logs and reports private.
+The actual editor and64→Off→64 IPv4 UDP host observations were tested before
+this source publication. See [current results and limits](docs/RELEASES.md).
+Historical [R4.5 instructions](docs/WEB_INTERFACE_RU.md) and
+[R4.6 quarantine notice](docs/TTL_EDITOR_R46_RU.md) remain available.
 
 ## Scriptable dashboard
 
@@ -117,7 +118,7 @@ python -m pip install -r requirements.txt
 mkdir -p out
 python tools/mf885_build_variant.py --list
 python tools/mf885_build_variant.py \
-  --variant community-r4.5 \
+  --variant community-0.4.7-dev.4 \
   --acknowledge-brick-risk
 ```
 
@@ -135,10 +136,9 @@ built binary.
 `community-r3.5` is a quarantined historical profile rejected by the common
 build wrapper because its native target assumptions do not match the hardware.
 Its source contract and immutable build hashes remain in
-`firmware/community-r3.5/`. No native TTL variant is a qualified functional
-release.
+`firmware/community-r3.5/`. No native TTL variant is a stable or generally flash-qualified release.
 
-As of 2026-09-06, the last packet-proven research baseline is
+Historical checkpoint,2026-09-06: the packet-proven research baseline was
 [R4.5 byte-access ARMv5 fixed64](firmware/community-r4.5/README.md), available as
 `--variant community-r4.5`. It fixes R4.4's rejection of otherwise eligible
 IPv4 headers at non-four-byte-aligned addresses. Actual Thumb-1 bytes pass a
@@ -261,7 +261,7 @@ The standalone target and feature order are recorded in
 
 ```bash
 python -m unittest discover -s tests -p '*_test.py'
-npm install
+npm ci
 npm test
 ```
 

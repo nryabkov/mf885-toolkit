@@ -34,5 +34,16 @@
   "runtime_endpoint_added": false,
   "existing_artifacts_renamed": false,
   "version_alone_establishes_hardware_compatibility": false,
-  "toolkit_version_is_separate": true
+  "toolkit_version_is_separate": true,
+  "published_development": {
+    "0.4.7-dev.4": {
+      "base_profile": "mf96d-2.5.94",
+      "builder_variant": "community-0.4.7-dev.4",
+      "artifact_filename": "MF885-Community-0.4.7-dev.4-base-2.5.94.bin",
+      "web_entry": "/c047d4.html",
+      "native_api": "r47-revision24-ttl8",
+      "status": "limited-hardware-qualified-editor-and-ipv4-udp",
+      "stable": false
+    }
+  }
 }

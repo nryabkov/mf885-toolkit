@@ -12,10 +12,23 @@ class BuildVariantTests(unittest.TestCase):
     def test_registry_is_public_and_structural_only(self):
         self.assertEqual(
             tuple(wrapper.VARIANTS),
-            ("community-r4.6", "community-r4.5", "community-r4.4", "community-r4.3", "community-r4.2", "community-r3.5", "community-r2.9", "community-r2.8", "community-r2.7", "community-r2.6", "community-r2.5", "community-r2.4", "community-r2.3", "community-r2.2", "community-r2.1", "community-r2", "community-r1", "logs-r1", "logs-r2", "sms-r1"),
+            ("community-0.4.7-dev.4", "community-r4.6", "community-r4.5", "community-r4.4", "community-r4.3", "community-r4.2", "community-r3.5", "community-r2.9", "community-r2.8", "community-r2.7", "community-r2.6", "community-r2.5", "community-r2.4", "community-r2.3", "community-r2.2", "community-r2.1", "community-r2", "community-r1", "logs-r1", "logs-r2", "sms-r1"),
         )
         for item in wrapper.describe_variants():
             self.assertIn("structural-only", item["qualification"])
+
+    def test_dev4_uses_isolated_offline_process_and_preserves_failure(self):
+        with tempfile.TemporaryDirectory() as temporary, mock.patch.object(wrapper.subprocess, "run") as run:
+            run.return_value.returncode = 2
+            result = wrapper.main(["--variant", "community-0.4.7-dev.4", "--output-dir", temporary, "--acknowledge-brick-risk"])
+            self.assertEqual(result, 2)
+            args = run.call_args.args[0]
+            self.assertEqual(Path(args[2]).name, "mf885_build_047d4.py")
+            self.assertIn("--acknowledge-brick-risk", args)
+            self.assertEqual(Path(args[args.index("--output") + 1]).name, "MF885-Community-0.4.7-dev.4-base-2.5.94.bin")
+        with tempfile.TemporaryDirectory() as temporary, mock.patch.object(wrapper.subprocess, "run") as run, contextlib.redirect_stderr(io.StringIO()):
+            self.assertEqual(wrapper.main(["--variant", "community-0.4.7-dev.4", "--output-dir", temporary]), 2)
+            run.assert_not_called()
 
     def test_missing_acknowledgement_performs_no_build(self):
         with tempfile.TemporaryDirectory() as temporary:

@@ -14,4 +14,20 @@ class WebUiSnapshotTests(unittest.TestCase):
             raw=(base/name).read_bytes()
             self.assertEqual((len(raw),hashlib.sha256(raw).hexdigest()),(size,pin))
             self.assertEqual(manifest['files'][name],{'bytes':size,'sha256':pin})
+class Dev4SnapshotTests(unittest.TestCase):
+    def test_six_assets_match_frozen_builder_pins(self):
+        base=ROOT/('public/webui/0.4.7-dev.4' if (ROOT/'public-export.json').exists() else 'webui/0.4.7-dev.4')
+        expected=json.loads((ROOT/'firmware/community-0.4.7-dev.4/web-pins.json').read_text())
+        expected={k.removeprefix('www\\').replace('\\','/'):v for k,v in expected.items() if 'c047d4' in k}
+        self.assertEqual(len(expected),6)
+        self.assertEqual(json.loads((base/'manifest.json').read_text())['files'],expected)
+        for name,pin in expected.items():
+            raw=(base/name).read_bytes()
+            self.assertEqual({'bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()},pin)
+    def test_native_dependency_closure_matches_frozen_sources(self):
+        pins=json.loads((ROOT/'firmware/community-0.4.7-dev.4/native-reuse-pins.json').read_text())
+        for pin in pins['sources']:
+            raw=(ROOT/pin['path']).read_bytes()
+            self.assertEqual((len(raw),hashlib.sha256(raw).hexdigest()),(pin['bytes'],pin['sha256']))
+
 if __name__=='__main__':unittest.main()

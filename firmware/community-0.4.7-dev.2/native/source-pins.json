@@ -1,0 +1,14 @@
+{
+  "ttl_forward_configurable_armv5": {
+    "bytes": 3645,
+    "sha256": "4c57b52aae1ae21bae0964cbea5daa65564ed11e57132036b2c4ef8182a7c291"
+  },
+  "ttl_request_post_set_armv5": {
+    "bytes": 6288,
+    "sha256": "52589303d680d1a41784cbab08cab7a4c9bee1cd3272d8b1067a93da6b341a8b"
+  },
+  "ttl_state_pre_get_armv5": {
+    "bytes": 2296,
+    "sha256": "acd10bf56a085c87faa3a4a48f73207c823b00ad573c5a6020ebe1b061ea5776"
+  }
+}

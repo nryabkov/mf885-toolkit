@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -33,6 +34,7 @@ DEFAULT_IDENTITY = ROOT / "input" / "mf885-base.xml"
 DEFAULT_OUTPUT = ROOT / "out"
 
 VARIANTS: dict[str, dict[str, Any]] = {
+    "community-0.4.7-dev.4": {"kind": "native-047d4", "profile": "0.4.7-dev.4", "artifact": "MF885-Community-0.4.7-dev.4-base-2.5.94.bin"},
     "community-r4.6": {"kind": "native-r46", "profile": r46_native_builder.PROFILE, "artifact": r46_native_builder.ARTIFACT},
     "community-r4.5": {
         "kind": "native-r45",
@@ -218,6 +220,8 @@ def build(args: argparse.Namespace) -> int:
         "--report",
         str(report),
     ]
+    if specification["kind"] == "native-047d4":
+        return subprocess.run([sys.executable, "-B", str(TOOLS / "mf885_build_047d4.py"), *common, "--acknowledge-brick-risk"], check=False).returncode
     if specification["kind"] == "native-r46":
         return r46_native_builder.main(common + [r46_native_builder.CONFIRMATION_FLAG])
     if specification["kind"] == "native-r45":
