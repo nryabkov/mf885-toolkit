@@ -2,7 +2,7 @@
   "schema": "mf885-community-versioning/v1",
   "applies_to": "new firmware artifacts after legacy R4.6",
   "next_patch_candidate_example": "0.4.7-dev.1",
-  "new_display_name_template": "MF885 Community {community_version} · base {base_version}",
+  "new_display_name_template": "MF885 Community {community_version} \u00b7 base {base_version}",
   "new_artifact_name_template": "MF885-Community-{community_version}-base-{base_version}.bin",
   "base_profiles": {
     "mf96d-2.5.94": {
@@ -52,6 +52,15 @@
       "web_entry": "/c047d5.html",
       "native_api": "r47-revision24-ttl8",
       "status": "limited-hardware-qualified-engineering-editor",
+      "stable": false
+    },
+    "0.4.7-dev.6": {
+      "base_profile": "mf96d-2.5.94",
+      "builder_variant": "community-0.4.7-dev.6",
+      "artifact_filename": "MF885-Community-0.4.7-dev.6-base-2.5.94.bin",
+      "web_entry": "/c047d6.html",
+      "native_api": "r47-revision24-ttl8",
+      "status": "limited-hardware-qualified-wan-and-power-ui",
       "stable": false
     }
   }

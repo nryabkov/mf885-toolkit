@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MF885 Community extension</title>
+  <link rel="stylesheet" href="css/c047d6ui.css">
+  <link rel="stylesheet" href="css/c047d6ttl.css">
+  <script src="js/library/md5.js"></script>
+  <script defer src="js/c047d6app.js"></script>
+  <script defer src="js/c047d6ttl.js"></script>
+  <script defer src="js/c047d6engineering.js"></script>
+  <script defer src="js/c047d6power.js"></script>
+  <script>window.setTimeout(function(){if(!window.MF885Community047Dev6||!window.MF885Community047Dev6TTL||!window.MF885Community047Dev6Engineering||!window.MF885Community047Dev6Power){var boot=document.getElementById('boot'),status=document.getElementById('runtimeStatus');if(boot)boot.textContent='Interface failed to start. [E_BOOT_TIMEOUT · JS42-BOOT]';if(status){status.textContent='Interface code did not start within 8 seconds. [E_BOOT_TIMEOUT · JS42-BOOT]';status.hidden=false}if(window.console&&console.error)console.error('[MF885][JS42-BOOT][E_BOOT_TIMEOUT] 0.4.7-dev.6 interface modules did not expose their runtime')}} ,8000);</script>
+</head>
+<body>
+  <div id="boot" class="boot" role="status">Loading interface…</div>
+  <p id="runtimeStatus" class="runtime-status status error" role="alert" aria-live="assertive" hidden></p>
+
+  <main id="login" class="login" hidden>
+    <form id="loginForm" class="login-card">
+      <p class="eyebrow">MF885</p>
+      <h1>Community extension</h1>
+      <p class="muted">Extra tools alongside your router settings · 0.4.7-dev.6</p>
+      <label for="password">Router password</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required>
+      <button id="signIn" type="submit">Sign in</button>
+      <p id="loginStatus" class="status" role="status" aria-live="polite">No router request has been sent.</p>
+      <a href="/index.html" class="legacy">Open router settings</a>
+    </form>
+  </main>
+
+  <div id="app" class="app" hidden>
+    <header>
+      <a href="#dashboard" class="brand" data-page="dashboard">MF885 <span>Community extension 0.4.7-dev.6</span></a>
+      <nav aria-label="Primary">
+        <button type="button" data-page="dashboard">Home</button>
+        <button type="button" data-page="messages">Messages</button>
+        <button type="button" data-page="diagnostics">Diagnostics</button>
+        <button type="button" data-page="modem">Modem</button>
+        <button type="button" data-page="ttl">TTL</button>
+      </nav>
+      <button id="refreshAll" type="button" class="quiet">Refresh all</button>
+      <button id="liveToggle" type="button" class="quiet live-toggle" aria-pressed="true">Auto refresh · on</button>
+      <button id="logout" type="button" class="quiet">Sign out</button>
+    </header>
+
+    <main class="content">
+      <section id="page-dashboard" class="page">
+        <p class="eyebrow">Extension home</p>
+        <h1>Extra tools for your MF885</h1>
+        <p>Messages, device health and radio details start loading as soon as sign-in completes. Read the router setting to use the TTL editor. TTL changes last until restart. Universal refresh updates device data and messages; TTL is read only on request. The original router settings remain available and unchanged.</p>
+        <p id="dashboardStatus" class="status" role="status" aria-live="polite">Waiting for sign-in.</p>
+        <div class="cards">
+          <article><strong id="dashboardNetwork">Loading…</strong><span>Network</span></article>
+          <article><strong id="dashboardBattery">Loading…</strong><span>Battery</span></article>
+          <article><strong id="dashboardMessages">Loading…</strong><span>Latest messages</span></article>
+        </div>
+        <div class="actions">
+          <a href="/index.html" class="button-link">Router settings</a>
+        </div>
+      <section class="power-panel" aria-labelledby="powerHeading">
+        <h2 id="powerHeading">Router power</h2>
+        <p>Restart briefly disconnects your devices. Power off requires the physical power button to turn the router on again. TTL settings in RAM reset at restart.</p>
+        <div class="actions"><button type="button" id="routerReboot" class="secondary">Restart router</button><button type="button" id="routerPowerOff" class="danger">Power off</button></div>
+        <p id="powerStatus" class="status" role="status" aria-live="polite">Choose an action, then confirm.</p>
+      </section>
+      </section>
+
+      <section id="page-messages" class="page" hidden>
+        <div class="page-head">
+          <div><p class="eyebrow">Messages</p><h1 id="folderTitle">Device inbox</h1></div>
+          <select id="folder" aria-label="Message folder">
+            <option value="inbox">Device inbox</option>
+            <option value="sent">Sent messages</option>
+            <option value="sim">SIM messages</option>
+            <option value="drafts">Drafts</option>
+          </select>
+        </div>
+        <div class="actions"><button id="messagesRefresh" type="button">Load complete history</button><button id="messagesNew" type="button" class="secondary">New message</button><button id="messagesCancel" type="button" class="secondary" disabled>Cancel</button></div>
+        <p id="messagesStatus" class="status" role="status" aria-live="polite">Latest page will load automatically after sign-in · live refresh every 60 seconds.</p>
+        <form id="messageComposer" class="composer" hidden>
+          <h2>New message</h2>
+          <label for="messageNumber">Phone number</label>
+          <input id="messageNumber" type="tel" inputmode="tel" autocomplete="tel" placeholder="+1234567890">
+          <label for="messageBody">Message</label>
+          <textarea id="messageBody" rows="5" maxlength="268"></textarea>
+          <p id="messageCount" class="muted">0 / 268 · 0 of 4 UCS-2 segments</p>
+          <p class="muted">One explicit send. Carrier charges may apply; a Sent record does not prove delivery.</p>
+          <div class="actions"><button id="messageSend" type="submit">Send once</button><button id="messageDiscard" type="button" class="secondary">Discard</button></div>
+        </form>
+        <div id="messagesList" class="message-list"><p class="empty">Newest messages will appear here after sign-in.</p></div>
+        <div id="messagesPager" class="pager" hidden><button id="messagesPrevious" type="button" class="secondary">Previous</button><span id="messagesPage"></span><button id="messagesNext" type="button" class="secondary">Next</button></div>
+      </section>
+
+      <section id="page-diagnostics" class="page" hidden>
+        <div class="page-head"><div><p class="eyebrow">Device health · read only</p><h1>Diagnostics</h1><p class="section-intro">Identity, SIM, registration, battery and power. Each source reports its own request ID and freshness.</p></div><button id="diagnosticsRefresh" type="button">Refresh all</button></div>
+        <p id="diagnosticsStatus" class="status" role="status" aria-live="polite">Loading automatically after sign-in · live refresh every 30 seconds.</p>
+        <div id="diagnosticsValues" class="values"></div>
+        <h2 class="subheading">Source health</h2>
+        <div id="diagnosticsSources" class="source-grid" aria-label="Diagnostics source health"></div>
+      </section>
+
+      <section id="page-modem" class="page" hidden>
+        <div class="page-head"><div><p class="eyebrow">Cellular radio and readings</p><h1>Modem</h1><p class="section-intro">Network and cell measurements from the same three-source snapshot used by Diagnostics.</p></div><button id="modemRefresh" type="button">Refresh all</button></div>
+        <p id="modemStatus" class="status" role="status" aria-live="polite">Loading automatically after sign-in · live refresh every 30 seconds.</p>
+        <div id="modemValues" class="values"></div>
+        <section aria-labelledby="wanHeading">
+          <h2 id="wanHeading">WAN connection</h2>
+          <p>Addresses and connection settings reported by this router. A mobile WAN address may be private or shared by the carrier; it is not necessarily your public Internet address.</p>
+          <div id="wanValues" class="values"></div>
+          <details id="wanMissing" class="terms"><summary>Fields not returned by the router</summary><div id="wanMissingValues" class="values"></div></details>
+        </section>
+
+        <section class="ttl-panel" aria-labelledby="engineeringTitle">
+          <h2 id="engineeringTitle">Engineering readings</h2>
+          <p>Collect detailed LTE signal readings. The first values can take about a minute to appear. Refresh all to read them, or leave live refresh on.</p>
+          <p>Current setting: <strong id="engineeringCurrent">Not read</strong></p>
+          <form id="engineeringForm" aria-busy="false">
+            <label for="engineeringMode">Collection</label>
+            <select id="engineeringMode"><option value="0">Disabled</option><option value="1">Enabled · 1 minute interval</option></select>
+            <div class="actions"><button id="engineeringRead" type="button">Read setting</button><button id="engineeringApply" type="submit" disabled>Apply</button></div>
+          </form>
+          <p id="engineeringStatus" class="status" role="status" aria-live="polite">Sign in and read the setting before applying a change.</p>
+          <p class="muted">Turning collection off can briefly interrupt the mobile connection while the modem registers again. Displayed readings may remain after collection stops; their measurement time is unknown.</p>
+        </section>
+        <details class="terms modem-help"><summary>What the modem can report</summary><div class="modem-help-body">
+          <p>One universal read collects the router's existing <code>status1</code>, <code>wan</code> and <code>Engineer_parameter</code> models. No separate modem transport or command console is involved. A field appears only when the current radio mode and firmware return it.</p>
+          <section><h3><span class="evidence-badge observed">Observed on this MF885</span> Device, session and LTE</h3><ul>
+            <li>Model, hardware revision and firmware version; current SIM state and registration code; radio access mode/submode, connection state, PDP/IP type and stock signal index.</li>
+            <li>LTE band, downlink and uplink EARFCN, downlink bandwidth and PCI.</li>
+            <li>LTE RSRP, RSRQ, SINR, RSSI and CQI, plus main/diversity antenna RSRP and RSRQ. RSRP/RSRQ are converted only from signed values or the reviewed report indices; SINR/RSSI remain raw.</li>
+            <li>Battery percentage and the current raw battery/charger/output/cable fields; total/session transmitted and received bytes plus cellular connection duration.</li>
+          </ul></section>
+          <section><h3><span class="evidence-badge schema">Router status schema</span> Identity, WAN and local radio</h3><ul>
+            <li>Device name, model, hardware revision, firmware version and build/version date.</li>
+            <li>SIM state; registration code with possible not-registered/home/searching/denied/roaming values; operator, radio mode/submode, PDP state/type and last PDP error/cause.</li>
+            <li>Selected uplink protocol, WAN link and connection state; local access-point enabled/channel; repeater state and signal.</li>
+            <li>Battery percentage, raw battery level/state, charger state/current, output current and cable detection; WAN traffic counters and connection-duration fields.</li>
+          </ul></section>
+          <section><h3><span class="evidence-badge schema">Firmware schema</span> UMTS / 3G fallback</h3><ul>
+            <li>MCC/MNC, LAC, RAC, URA and cell identity; PSC/cell parameter ID and UARFCN.</li>
+            <li>RSCP, CPICH Ec/N0, UTRA RSSI, Srxlev/Squal and modem transmit power.</li>
+            <li>HSDPA/HSUPA support, attachment-detection and HCS flags, nominal mode, CS/PS/UTRAN DRX cycles and T3212/T3312 timers.</li>
+          </ul></section>
+          <section><h3><span class="evidence-badge schema">Firmware schema</span> GSM / 2G fallback</h3><ul>
+            <li>MCC/MNC, LAC/RAC, band, serving and traffic-channel ARFCN, BSIC and cell identity.</li>
+            <li>Signal level including full/sub values, receive quality full/sub, timing advance and transmit-power level.</li>
+            <li>Channel type/mode/timeslot, hopping state/HSN/group, cell priority and C1/C2/C31/C32 criteria.</li>
+            <li>Channel-assignment and handover attempts/successes, forbidden-location state, packet-idle/PBCCH/EGPRS flags, NCO/NOM/NCC permissions, paging and radio-link timers.</li>
+          </ul></section>
+          <section><h3><span class="evidence-badge schema">Firmware schema</span> GPRS / EDGE</h3><ul>
+            <li>Attached state, attach and service type, network mode/control, MAC mode and active PDP-context count.</li>
+            <li>Uplink/downlink coding scheme, modulation, timeslots and throughput, plus transmit power and C-value.</li>
+            <li>EGPRS support, link-quality measurement mode, BEP period, USF granularity and GMM reject cause.</li>
+          </ul></section>
+          <section><h3><span class="evidence-badge private">Private when returned</span> WAN details</h3><ul>
+            <li>SIM/subscriber identifiers, device serial/unit identifiers, serving operator, MCC/MNC, Cell ID/eUTRAN/ECGI and TAC/LAC.</li>
+            <li>Configured and active APN, WAN authentication type and username, IPv4/IPv6 addresses, gateways and DNS; selection modes and local/repeater SSIDs.</li>
+            <li>Current values are deliberately omitted from this static Help text and must never be copied into public logs because they can identify the subscriber, location or local network.</li>
+          </ul></section>
+          <section><h3>Engineering readings</h3><p>Enable collection to populate detailed LTE fields. The first readings can take about a minute. Disabling collection can briefly interrupt mobile registration. The time shown is when the interface read the router; the radio measurement time is unknown.</p></section>
+          <section><h3>Not provided here</h3><p>No free-form modem console, USSD, other modem writes, debug-profile change, reset or firmware control is included.</p></section>
+          <dl class="term-definitions"><div><dt>RSRP</dt><dd>Reference Signal Received Power. Signed values are shown in dBm; report indices 0–97 use the documented LTE mapping.</dd></div><div><dt>RSRQ</dt><dd>Reference Signal Received Quality. Signed values are shown in dB; report indices 0–34 use the documented LTE mapping.</dd></div><div><dt>SINR / RSSI</dt><dd>Shown as raw values because this firmware does not prove their units.</dd></div><div><dt>EARFCN / PCI</dt><dd>Radio channel number and physical cell identity.</dd></div><div><dt>Cell ID / TAC</dt><dd>Private serving-cell and tracking-area identifiers that may be returned by the modem.</dd></div></dl>
+        </div></details>
+        <p id="modemFreshness" class="freshness">Waiting for the first shared snapshot.</p>
+        <p class="muted">Signal measurements are read from the router. Collection changes only when you apply the Engineering setting above.</p>
+      </section>
+      <section id="page-ttl" class="page" hidden>
+        <div class="page-head"><div><p class="eyebrow">Connection tools</p><h1>TTL settings</h1><p class="section-intro">Choose how the router handles packet TTL. Changes last until the next restart.</p></div></div>
+        <div class="ttl-layout">
+          <article class="ttl-state" aria-labelledby="ttlCurrentTitle">
+            <span id="ttlCurrentTitle">Last reported setting</span>
+            <strong id="ttlCurrent">Not read</strong>
+            <p id="ttlCurrentHelp">The current setting is not read automatically.</p>
+            <button id="ttlRead" type="button" class="secondary" disabled>Read router setting</button>
+            <p id="ttlReadTime" class="muted">Read the router setting to unlock Apply.</p>
+          </article>
+          <form id="ttlForm" class="ttl-editor" aria-busy="false">
+            <label for="ttlMode">Choose a mode</label>
+            <select id="ttlMode" aria-describedby="ttlChoiceHint ttlPersistence" disabled>
+              <option value="64">64 · replace TTL</option>
+              <option value="off">Off · stop replacing TTL</option>
+            </select>
+            <p id="ttlChoiceHint" class="ttl-hint">Set eligible IPv4 packets to TTL 64. Later routers can reduce the value received at the destination.</p>
+            <p id="ttlPersistence" class="ttl-persistence">After a restart, TTL returns to <strong>64</strong>.</p>
+            <button id="ttlApply" type="submit" disabled>Apply mode</button>
+          </form>
+        </div>
+        <p id="ttlStatus" class="status ttl-status" role="status" aria-live="polite" data-phase="unavailable">Sign in and read the router setting.</p>
+        <details class="terms ttl-notes"><summary>About TTL and this version</summary>
+          <p>TTL limits how far an IPv4 packet can travel. Routers along its route can reduce it, so the destination may receive a value below 64.</p>
+          <p>64 and Off were observed with UDP traffic in both directions on the preceding firmware with the same native code. Other protocols and custom values are still being checked. This editor is a development candidate awaiting its own router test.</p>
+          <p>Use one settings session at a time. The displayed value is the last router response, not continuous monitoring. If a change is not confirmed, read the setting again before deciding what to do.</p>
+        </details>
+      </section>
+    </main>
+
+    <footer><span>MF885 Community 0.4.7-dev.6 - base 2.5.94</span><a href="/index.html">Router settings</a></footer>
+  </div>
+</body>
+</html>

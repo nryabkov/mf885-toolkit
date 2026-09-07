@@ -1,5 +1,15 @@
 # Releases and stability labels
 
+## 2026-09-07 — Community0.4.7-dev.6
+
+Exact assets/boot, WAN and layout, one reboot, and one operator-observed
+shutdown followed by physical-on and recovery passed on one MF96 Ver.D/2.5.94.
+Native unchanged from dev.5; no new TTL packet claim. USB remained enumerated
+during shutdown observation; electrical zero power was not measured.
+See [usage, proof scope and limits](WAN_POWER_047D6_RU.md).
+
+## Earlier dev.5 qualification
+
 Community0.4.7-dev.5 adds the Engineering readings editor. Exact installed
 assets and actual Read/Enabled/changing readings/Disabled/recovery passed on
 one MF96 Ver.D /2.5.94 unit. Native remains byte-identical to dev.4; TTL packet

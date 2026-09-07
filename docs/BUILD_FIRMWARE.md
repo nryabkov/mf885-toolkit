@@ -216,3 +216,9 @@ different unit.
 There is no public flash command. There is no promise that a normal WebUI,
 service mode, bootloader, FBF tool, or recovery route will accept the output.
 Delivery and recovery must be independently established for the exact unit.
+
+## Community0.4.7-dev.6
+
+Use `--variant community-0.4.7-dev.6` for the WAN and power UI increment.
+Read [its guide and limits](WAN_POWER_047D6_RU.md); original-input, architecture
+and risk-acknowledgment requirements are unchanged. Earlier variants remain.

@@ -1,0 +1,12 @@
+
+/* Comfortable form spacing and navigation at intermediate widths. */
+#engineeringForm{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:10px 14px;margin:18px 0 14px}
+#engineeringForm label{grid-column:1/-1;margin:0}
+#engineeringForm select{margin:0;min-height:44px}
+#engineeringForm .actions{display:flex;gap:10px;margin:0;padding:0}
+#engineeringForm button{min-height:44px}
+.power-panel{margin-top:28px;padding-top:22px;border-top:1px solid var(--line)}
+.power-panel h2{margin:0 0 10px}.power-panel .actions{gap:12px;margin-top:16px}
+#wanMissing .values{margin:0 14px 14px}
+@media(min-width:721px) and (max-width:1100px){header{flex-wrap:wrap;gap:10px}.brand{flex:1}header nav{order:3;flex-basis:100%;justify-content:center}}
+@media(max-width:560px){#engineeringForm{grid-template-columns:minmax(0,1fr);gap:14px}#engineeringForm .actions{width:100%;gap:12px}#engineeringForm .actions button{flex:1}}

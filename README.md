@@ -17,6 +17,7 @@ under the ignored `input/` directory.
 
 | Version | Evidence and status |
 |---|---|
+| 0.4.7-dev.6 | Installed on one MF96 Ver.D /2.5.94; WAN/layout, reboot, operator-observed shutdown and physical-on recovery passed. Native unchanged; limited one-device qualification. |
 | 0.4.7-dev.5 | Installed on one research MF885; Engineering Read / Enabled / changing readings / Disabled and registration recovery passed. Native unchanged from dev.4; long-term stability and exact measurement age unknown. |
 | 0.4.7-dev.4 | Installed on one research MF885; guided Read / Off /64 and repeatable bidirectional IPv4 UDP host-tap behavior passed. Development version; persistence, all protocols and general recovery remain unproved. |
 | R4.5 | Installed on one research MF885; exact assets checked and two bounded TTL packet observations passed. USB disconnects remain unexplained; not stable. |
@@ -64,9 +65,19 @@ before relying on it.
 For future firmware names, base-version compatibility and legacy aliases, see
 [versioning rules (Russian)](docs/VERSIONING_RU.md) and [the registry](versioning.json).
 
-## Community WebUI 0.4.7-dev.5
+## Community WebUI 0.4.7-dev.6
 
-The [current interface](webui/0.4.7-dev.5/) adds an explicit Engineering readings
+The [current interface](webui/0.4.7-dev.6/) adds WAN/PDP values and confirmed
+Restart / Power off controls, removes duplicate Home navigation buttons and
+improves Engineering form spacing. On matching firmware open `/c047d6.html`.
+Read the [Russian usage and qualification guide](docs/WAN_POWER_047D6_RU.md).
+Build from your own exact original with `--variant community-0.4.7-dev.6`.
+Power off requires physical power-on; a successful HTTP response alone does not
+prove the action. Earlier versions and aliases remain available.
+
+## Previous Community WebUI 0.4.7-dev.5
+
+The [dev.5 interface](webui/0.4.7-dev.5/) adds an explicit Engineering readings
 switch with readback and delayed-response handling. On the matching firmware,
 open `/c047d5.html` and select Modem. See the [Russian guide](docs/ENGINEERING_047D5_RU.md).
 Detailed readings can take about a minute to appear; disabling can interrupt
