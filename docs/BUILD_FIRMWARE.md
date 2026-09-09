@@ -97,6 +97,14 @@ Python 3.10 or newer is required. The public requirements file pins the
 reviewed Python dependency version; do not silently substitute a newer
 cryptography stack when comparing reproducible outputs.
 
+The current pin is `cryptography==50.0.1`. Its isolated Linux x86_64 / Python
+3.12 check reproduced the hardware-tested dev15 image byte for byte; this is
+a host build dependency update, with no firmware version or image change.
+Upstream 49+ no longer provides wheels for Intel macOS or 32-bit Windows.
+Intel Mac users should use a compatible Linux build environment; the project's
+native cross-toolchain must also be available on that build host. Do not revert to the old vulnerable pin to work
+around missing wheels. See the [upstream release notes](https://cryptography.io/en/latest/changelog/).
+
 ```bash
 python tools/mf885_firmware_inspect.py \
   input/MF885_golden.bin \
