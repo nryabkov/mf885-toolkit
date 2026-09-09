@@ -17,6 +17,7 @@ under the ignored `input/` directory.
 
 | Version | Evidence and status |
 |---|---|
+| 0.4.7-dev.15 | Installed on one MF96 Ver.D/base2.5.94; boot/assets/recovery, AT+CSQ, AT+CREG? and one attributed text USSD reply passed. Other commands/carriers and long-term USB stability are unqualified. |
 | 0.4.7-dev.6 | Installed on one MF96 Ver.D /2.5.94; WAN/layout, reboot, operator-observed shutdown and physical-on recovery passed. Native unchanged; limited one-device qualification. |
 | 0.4.7-dev.5 | Installed on one research MF885; Engineering Read / Enabled / changing readings / Disabled and registration recovery passed. Native unchanged from dev.4; long-term stability and exact measurement age unknown. |
 | 0.4.7-dev.4 | Installed on one research MF885; guided Read / Off /64 and repeatable bidirectional IPv4 UDP host-tap behavior passed. Development version; persistence, all protocols and general recovery remain unproved. |
@@ -65,7 +66,17 @@ before relying on it.
 For future firmware names, base-version compatibility and legacy aliases, see
 [versioning rules (Russian)](docs/VERSIONING_RU.md) and [the registry](versioning.json).
 
-## Community WebUI 0.4.7-dev.6
+## Community WebUI 0.4.7-dev.15
+
+The [current interface](webui/0.4.7-dev.15/c047d15.html) adds an AT console and an
+editable initial-USSD field immediately after Messages. It distinguishes modem
+errors, empty/raw events and actual text replies, checks SIM/registration before
+USSD and never automatically resends a command. On matching firmware open
+`/c047d15.html`. See the [Russian usage/build guide](docs/AT_USSD_047D15_RU.md).
+Build from your own exact original with `--variant community-0.4.7-dev.15`.
+The HTML is an on-device client, not a hosted remote-control service.
+
+## Previous Community WebUI 0.4.7-dev.6
 
 The [current interface](webui/0.4.7-dev.6/) adds WAN/PDP values and confirmed
 Restart / Power off controls, removes duplicate Home navigation buttons and

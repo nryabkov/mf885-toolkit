@@ -1,5 +1,9 @@
 # Build firmware locally
 
+Current published development source is **0.4.7-dev.15**, with limited actual
+AT/USSD qualification. See [dev15 usage, dependencies and build instructions](AT_USSD_047D15_RU.md).
+Older version statements below describe historical checkpoints.
+
 Current development source: **0.4.7-dev.4 / base2.5.94**, with installed editor
 Read/Off/64 and limited bidirectional IPv4 UDP proof on one device. Use
 `--variant community-0.4.7-dev.4`; see the [complete dev.4 guide](TTL_EDITOR_047D4_RU.md)

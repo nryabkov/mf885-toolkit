@@ -1,0 +1,11 @@
+/* Community 0.4.7-dev.15 TTL editor. */
+.ttl-layout{display:grid;grid-template-columns:minmax(220px,.85fr) minmax(280px,1.35fr);gap:24px;margin:28px 0 18px}
+.ttl-state,.ttl-editor{min-width:0;border:1px solid var(--line,#dce4e8);border-radius:16px;padding:24px;background:var(--panel,#fff)}
+.ttl-state>span{display:block;color:var(--muted,#64748b);font-size:14px}.ttl-state>strong{display:block;font-size:38px;line-height:1.2;margin:14px 0;overflow-wrap:anywhere}
+.ttl-state>p{font-size:14px;line-height:1.6}.ttl-state>button{margin:6px 0}.ttl-editor label{display:block;font-weight:600;margin-bottom:12px}
+.ttl-editor select{width:100%;max-width:400px;box-sizing:border-box;font-size:17px;min-height:48px}.ttl-hint,.ttl-persistence,.ttl-notes{font-size:14px;line-height:1.7}
+.ttl-hint{min-height:72px}.ttl-persistence{padding:12px 14px;border-radius:8px;background:var(--bg,#f4f7f9);margin:18px 0}.ttl-status{overflow-wrap:anywhere}.ttl-notes{max-width:850px}.ttl-notes p{margin:14px 0}
+@media(max-width:720px){.ttl-layout{grid-template-columns:1fr;gap:16px}.ttl-state,.ttl-editor{padding:20px}.ttl-editor button,.ttl-state>button{width:100%}.ttl-hint{min-height:0}}
+
+/* Keep inherited secondary and quiet buttons readable on hover. */
+button.secondary:hover:not(:disabled),button.quiet:hover:not(:disabled){background:#e8f3fa;color:#075b7f;border-color:#76abc3}

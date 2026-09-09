@@ -62,6 +62,15 @@
       "native_api": "r47-revision24-ttl8",
       "status": "limited-hardware-qualified-wan-and-power-ui",
       "stable": false
+    },
+    "0.4.7-dev.15": {
+      "base_profile": "mf96d-2.5.94",
+      "builder_variant": "community-0.4.7-dev.15",
+      "artifact_filename": "MF885-Community-0.4.7-dev.15-base-2.5.94.bin",
+      "web_entry": "/c047d15.html",
+      "native_api": "c1/u4/q2; inherited r47 TTL",
+      "status": "limited-hardware-qualified-at-diagnostics-and-one-ussd-reply",
+      "stable": false
     }
   }
 }

@@ -1,5 +1,9 @@
 # Source variant registry
 
+Current published development source is **0.4.7-dev.15**, with limited actual
+AT/USSD qualification. See [dev15 usage, dependencies and build instructions](AT_USSD_047D15_RU.md).
+Older version statements below describe historical checkpoints.
+
 Community0.4.7-dev.5 adds the Engineering readings editor. Exact installed
 assets and actual Read/Enabled/changing readings/Disabled/recovery passed on
 one MF96 Ver.D /2.5.94 unit. Native remains byte-identical to dev.4; TTL packet

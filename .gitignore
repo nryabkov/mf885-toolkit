@@ -33,3 +33,9 @@ __pycache__/
 *.zip
 *.rar
 *.7z
+
+# Exact reviewed source icons; other images remain excluded.
+!/firmware/community-0.4.7-dev.15/web/favicon.png
+!/firmware/community-0.4.7-dev.15/web/apple-touch-icon.png
+!/webui/0.4.7-dev.15/c047d15favicon.png
+!/webui/0.4.7-dev.15/c047d15touch.png

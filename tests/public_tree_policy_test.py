@@ -1,3 +1,4 @@
+import hashlib
 import subprocess
 import sys
 import unittest
@@ -6,6 +7,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+SOURCE_ICON_HASHES = {'firmware/community-0.4.7-dev.15/web/favicon.png': '7cf2c894a867695a1aa4554114af0fd563dfc91afc7e590e3bc2f1585d600c44', 'webui/0.4.7-dev.15/c047d15favicon.png': '7cf2c894a867695a1aa4554114af0fd563dfc91afc7e590e3bc2f1585d600c44', 'firmware/community-0.4.7-dev.15/web/apple-touch-icon.png': 'a3c18e92b3892c95f8cda1b275c73a891f2a0eecd2ce25ad97f1edde4c32d76f', 'webui/0.4.7-dev.15/c047d15touch.png': 'a3c18e92b3892c95f8cda1b275c73a891f2a0eecd2ce25ad97f1edde4c32d76f'}
 FORBIDDEN_SUFFIXES = {
     ".bin", ".fbf", ".img", ".rom", ".fw", ".dump", ".pcap",
     ".pcapng", ".har", ".jpg", ".jpeg", ".png", ".gif", ".webp",
@@ -49,6 +51,9 @@ class PublicTreePolicyTest(unittest.TestCase):
         for relative, data in files:
             if relative == Path("tests/public_tree_policy_test.py"):
                 continue
+            if str(relative) in SOURCE_ICON_HASHES:
+                self.assertEqual(hashlib.sha256(data).hexdigest(), SOURCE_ICON_HASHES[str(relative)], relative)
+                continue
             lowered = str(relative).lower()
             self.assertFalse(any(part in FORBIDDEN_PARTS for part in relative.parts), relative)
             self.assertNotIn(relative.suffix.lower(), FORBIDDEN_SUFFIXES, relative)
@@ -58,7 +63,7 @@ class PublicTreePolicyTest(unittest.TestCase):
             for marker in FORBIDDEN_TEXT:
                 self.assertNotIn(marker, data, f"{relative}: {marker!r}")
 
-        sources = {str(relative): data.decode("utf-8") for relative, data in files}
+        sources = {str(relative): data.decode("utf-8") for relative, data in files if str(relative) not in SOURCE_ICON_HASHES}
         self.assertNotRegex(sources["scriptable.js"], r"\brunFirmwareRestore\b")
         self.assertNotIn("firmwareFlash", sources["scriptable.js"])
         self.assertNotIn("firmwareFlash", sources["modules/ui-v2.js"])

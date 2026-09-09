@@ -1,5 +1,9 @@
 # Releases and stability labels
 
+Current published development source is **0.4.7-dev.15**, with limited actual
+AT/USSD qualification. See [dev15 usage, dependencies and build instructions](AT_USSD_047D15_RU.md).
+Older version statements below describe historical checkpoints.
+
 ## 2026-09-07 — Community0.4.7-dev.6
 
 Exact assets/boot, WAN and layout, one reboot, and one operator-observed

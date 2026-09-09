@@ -1,0 +1,74 @@
+{
+  "www\\c047d15.html": {
+    "bytes": 21882,
+    "sha256": "2d4de0c4ed7d77b5deedc20b7d3725ae1e555049f9374669fc125bc71eb57316"
+  },
+  "www\\c047d15favicon.png": {
+    "bytes": 1469,
+    "sha256": "7cf2c894a867695a1aa4554114af0fd563dfc91afc7e590e3bc2f1585d600c44"
+  },
+  "www\\c047d15touch.png": {
+    "bytes": 8924,
+    "sha256": "a3c18e92b3892c95f8cda1b275c73a891f2a0eecd2ce25ad97f1edde4c32d76f"
+  },
+  "www\\c047d15ttl.json": {
+    "bytes": 180,
+    "sha256": "b510c4503fdbf9f7aac9fe0624779273706cd42d552fea0f89e8d767a0204ed3"
+  },
+  "www\\css\\c047d15ttl.css": {
+    "bytes": 1365,
+    "sha256": "d53700c8a59659c71d079e80a9202d5e0b9c0c7fb7af3715f43f5c0bc85a8079"
+  },
+  "www\\css\\c047d15ui.css": {
+    "bytes": 9249,
+    "sha256": "8a06c01bf6a211a9b7444360b9949c6cb8e18d4a4d6ef1645ed79cd10aa89cf7"
+  },
+  "www\\help_en.html": {
+    "bytes": 21381,
+    "sha256": "00f8097d158c9bbe9dc28af72d4ce1ea8bd940ca42f0669e51c779a4d6eef7b2"
+  },
+  "www\\html\\adminApp.html": {
+    "bytes": 4764,
+    "sha256": "f22188ca11049bad69e36947b598a74704f0f0926c5d54d66adbbf2091863126"
+  },
+  "www\\index.html": {
+    "bytes": 26640,
+    "sha256": "ba99517d013ebc4430753c359fb44c4c917756895fc25494324a129291634228"
+  },
+  "www\\js\\base\\ajax_calls.js": {
+    "bytes": 21467,
+    "sha256": "f8f2326f9d32a55d3566a9b5b743ae0fcd979c4d755ffec3823086b44068c127"
+  },
+  "www\\js\\base\\utils.js": {
+    "bytes": 16873,
+    "sha256": "5aa5c57d1e194c9ce0d21e946ad4b2358cd754d15c7bfb570bdef327d6c64103"
+  },
+  "www\\js\\c047d15app.js": {
+    "bytes": 71609,
+    "sha256": "fdf46539d261522ecba1da00b1e9a4fd61c90ea7a6afb7b7233300d03d7b5c02"
+  },
+  "www\\js\\c047d15console.js": {
+    "bytes": 25576,
+    "sha256": "e9826a90587b87a57a7af5e2e380aa85c7bc797c8cca0dc3b906812edb3c2c44"
+  },
+  "www\\js\\c047d15engineering.js": {
+    "bytes": 6304,
+    "sha256": "39ecbf3d66bd52de65bfc4fed2755121726a64c90a30e60f310cd4e4f30b4072"
+  },
+  "www\\js\\c047d15power.js": {
+    "bytes": 5317,
+    "sha256": "1edb4a1d26726a59c2db0864b912913db17fc136f1c18f48cddab8fc19d62200"
+  },
+  "www\\js\\c047d15ttl.js": {
+    "bytes": 9213,
+    "sha256": "ee847571ebbb454828108bc8bad3c0cc284341254b9ee6b0d9a42db1b3668065"
+  },
+  "www\\properties\\Messages_en.properties": {
+    "bytes": 46943,
+    "sha256": "2c602877a1d515a8b022136ba289ef887a1eeffba27d13d761403146dc93d60c"
+  },
+  "www\\xmldata\\c047d15console.xml": {
+    "bytes": 164,
+    "sha256": "ee9cb47fa3369dbc7c66668deaf8956ef2c30b385f81bd56899589b353e9e298"
+  }
+}
