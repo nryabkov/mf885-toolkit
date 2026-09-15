@@ -1,0 +1,90 @@
+{
+  "www\\c047d18.html": {
+    "bytes": 24645,
+    "sha256": "27b70e93349bdf4ec58fe634217040acd821dc66cc0e7c1bfbad137780401894"
+  },
+  "www\\c047d18favicon.png": {
+    "bytes": 1469,
+    "sha256": "7cf2c894a867695a1aa4554114af0fd563dfc91afc7e590e3bc2f1585d600c44"
+  },
+  "www\\c047d18touch.png": {
+    "bytes": 8924,
+    "sha256": "a3c18e92b3892c95f8cda1b275c73a891f2a0eecd2ce25ad97f1edde4c32d76f"
+  },
+  "www\\c047d18ttl.json": {
+    "bytes": 286,
+    "sha256": "2b6620d6098c109ef30424877255adb7fab195c6d708be3e7b44ab4dfd84c90e"
+  },
+  "www\\css\\c047d18theme.css": {
+    "bytes": 8184,
+    "sha256": "21acf858018d7e22d77c3c6c47804b73c746d26afd9a92324ee2cc8452eca66b"
+  },
+  "www\\css\\c047d18ttl.css": {
+    "bytes": 1446,
+    "sha256": "ccb2d788f8734d136ecf69347a9d1d4a23d30db749b5aca70ec5a7b1c9e1d2c0"
+  },
+  "www\\css\\c047d18ui.css": {
+    "bytes": 9302,
+    "sha256": "814a86901deab1fe7de02391956b9c75b1e557f42598de89d61ac12a54dea7ba"
+  },
+  "www\\help_en.html": {
+    "bytes": 21381,
+    "sha256": "00f8097d158c9bbe9dc28af72d4ce1ea8bd940ca42f0669e51c779a4d6eef7b2"
+  },
+  "www\\html\\adminApp.html": {
+    "bytes": 4764,
+    "sha256": "aee3225b362d77b036f98438373449a1470cf87ca5f24c24e8d4bf013d31b50b"
+  },
+  "www\\index.html": {
+    "bytes": 26640,
+    "sha256": "416334b4761421632269e4b3c0d548eae3eb2a8b57ac3b812e6d4fe29462781c"
+  },
+  "www\\js\\base\\ajax_calls.js": {
+    "bytes": 21467,
+    "sha256": "f8f2326f9d32a55d3566a9b5b743ae0fcd979c4d755ffec3823086b44068c127"
+  },
+  "www\\js\\base\\utils.js": {
+    "bytes": 16873,
+    "sha256": "5aa5c57d1e194c9ce0d21e946ad4b2358cd754d15c7bfb570bdef327d6c64103"
+  },
+  "www\\js\\c047d18app.js": {
+    "bytes": 82495,
+    "sha256": "f1cd504928da2d5c6422d0ff895c56dbc6339edaaf606a5750b36f1c0001235c"
+  },
+  "www\\js\\c047d18console.js": {
+    "bytes": 25598,
+    "sha256": "ee3b4dfafac8e2dfa811565383866befa05cf90b2190a77564a3bb110d8cecce"
+  },
+  "www\\js\\c047d18cpu.js": {
+    "bytes": 9742,
+    "sha256": "0a5e8657a0378202a6b6e21397bcd938f2710bfa52e9395c6faaa2da244b12cd"
+  },
+  "www\\js\\c047d18engineering.js": {
+    "bytes": 6392,
+    "sha256": "92428aaa7a6206fecc43636e4e306dc2005fcf7e24ba2996a54cddf975460a45"
+  },
+  "www\\js\\c047d18power.js": {
+    "bytes": 6127,
+    "sha256": "cd9e0f442ee97ceb4761644b7911b3af5ad4769fe2c067ad55fe6b51a516a591"
+  },
+  "www\\js\\c047d18theme.js": {
+    "bytes": 9084,
+    "sha256": "199ed1190042d70a6aadcce0293b3093ad536a7d142016cb3b601983b28aa3da"
+  },
+  "www\\js\\c047d18ttl.js": {
+    "bytes": 10766,
+    "sha256": "481645c1fed9ffae2c6032471724dd83a9bc961802e89c4daebad05056c543ae"
+  },
+  "www\\properties\\Messages_en.properties": {
+    "bytes": 46943,
+    "sha256": "2c602877a1d515a8b022136ba289ef887a1eeffba27d13d761403146dc93d60c"
+  },
+  "www\\xmldata\\c047d18console.xml": {
+    "bytes": 164,
+    "sha256": "ee9cb47fa3369dbc7c66668deaf8956ef2c30b385f81bd56899589b353e9e298"
+  },
+  "www\\xmldata\\c047d18cpu.xml": {
+    "bytes": 134,
+    "sha256": "7892f2a5ff2b934802b258116dae402a1e70b2d192d18387fa15ea4cbe8cf8e3"
+  }
+}

@@ -1,0 +1,1 @@
+{"schema":"mf885-ttl-editor/v1","communityVersion":"0.4.7-dev.18","vendorBase":"2.5.94","nativeApi":"r47-revision24-ttl8","modes":["off","manual"],"manualRange":{"min":1,"max":255,"step":1,"canonical":"decimal"},"settings":["off","1-255"],"default":64,"persistence":"ram","bootTtl":64}

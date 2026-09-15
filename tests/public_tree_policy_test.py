@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE_ICON_HASHES = {'firmware/community-0.4.7-dev.15/web/favicon.png': '7cf2c894a867695a1aa4554114af0fd563dfc91afc7e590e3bc2f1585d600c44', 'webui/0.4.7-dev.15/c047d15favicon.png': '7cf2c894a867695a1aa4554114af0fd563dfc91afc7e590e3bc2f1585d600c44', 'firmware/community-0.4.7-dev.15/web/apple-touch-icon.png': 'a3c18e92b3892c95f8cda1b275c73a891f2a0eecd2ce25ad97f1edde4c32d76f', 'webui/0.4.7-dev.15/c047d15touch.png': 'a3c18e92b3892c95f8cda1b275c73a891f2a0eecd2ce25ad97f1edde4c32d76f'}
+SOURCE_ICON_HASHES = {'firmware/community-0.4.7-dev.15/web/favicon.png': '7cf2c894a867695a1aa4554114af0fd563dfc91afc7e590e3bc2f1585d600c44', 'webui/0.4.7-dev.15/c047d15favicon.png': '7cf2c894a867695a1aa4554114af0fd563dfc91afc7e590e3bc2f1585d600c44', 'firmware/community-0.4.7-dev.15/web/apple-touch-icon.png': 'a3c18e92b3892c95f8cda1b275c73a891f2a0eecd2ce25ad97f1edde4c32d76f', 'webui/0.4.7-dev.15/c047d15touch.png': 'a3c18e92b3892c95f8cda1b275c73a891f2a0eecd2ce25ad97f1edde4c32d76f', 'webui/0.4.7-dev.18/c047d18favicon.png': '7cf2c894a867695a1aa4554114af0fd563dfc91afc7e590e3bc2f1585d600c44', 'webui/0.4.7-dev.18/c047d18touch.png': 'a3c18e92b3892c95f8cda1b275c73a891f2a0eecd2ce25ad97f1edde4c32d76f'}
 FORBIDDEN_SUFFIXES = {
     ".bin", ".fbf", ".img", ".rom", ".fw", ".dump", ".pcap",
     ".pcapng", ".har", ".jpg", ".jpeg", ".png", ".gif", ".webp",

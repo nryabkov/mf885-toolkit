@@ -234,3 +234,10 @@ Delivery and recovery must be independently established for the exact unit.
 Use `--variant community-0.4.7-dev.6` for the WAN and power UI increment.
 Read [its guide and limits](WAN_POWER_047D6_RU.md); original-input, architecture
 and risk-acknowledgment requirements are unchanged. Earlier variants remain.
+
+## Community 0.4.7-dev.18
+
+Manual TTL 1–255/Off (boot default 64), System/Light/Dark theme.
+Entry: `/c047d18.html`; offline variant: `community-0.4.7-dev.18`.
+[Usage, observed hardware results and limitations](TTL_THEME_047D18_RU.md).
+CPU accuracy and long-term USB stability remain unqualified.

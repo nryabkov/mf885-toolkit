@@ -12,7 +12,7 @@ class BuildVariantTests(unittest.TestCase):
     def test_registry_is_public_and_structural_only(self):
         self.assertEqual(
             tuple(wrapper.VARIANTS),
-            ("community-0.4.7-dev.15", "community-0.4.7-dev.6", "community-0.4.7-dev.5", "community-0.4.7-dev.4", "community-r4.6", "community-r4.5", "community-r4.4", "community-r4.3", "community-r4.2", "community-r3.5", "community-r2.9", "community-r2.8", "community-r2.7", "community-r2.6", "community-r2.5", "community-r2.4", "community-r2.3", "community-r2.2", "community-r2.1", "community-r2", "community-r1", "logs-r1", "logs-r2", "sms-r1"),
+            ("community-0.4.7-dev.18", "community-0.4.7-dev.15", "community-0.4.7-dev.6", "community-0.4.7-dev.5", "community-0.4.7-dev.4", "community-r4.6", "community-r4.5", "community-r4.4", "community-r4.3", "community-r4.2", "community-r3.5", "community-r2.9", "community-r2.8", "community-r2.7", "community-r2.6", "community-r2.5", "community-r2.4", "community-r2.3", "community-r2.2", "community-r2.1", "community-r2", "community-r1", "logs-r1", "logs-r2", "sms-r1"),
         )
         for item in wrapper.describe_variants():
             self.assertIn("structural-only", item["qualification"])
@@ -31,7 +31,7 @@ class BuildVariantTests(unittest.TestCase):
             run.assert_not_called()
 
     def test_dev5_and_dev6_use_isolated_offline_process_and_preserve_failure(self):
-        for version, compact in (("0.4.7-dev.5", "047d5"), ("0.4.7-dev.6", "047d6"), ("0.4.7-dev.15", "047d15")):
+        for version, compact in (("0.4.7-dev.18", "047d18"), ("0.4.7-dev.5", "047d5"), ("0.4.7-dev.6", "047d6"), ("0.4.7-dev.15", "047d15")):
             with tempfile.TemporaryDirectory() as temporary, mock.patch.object(wrapper.subprocess, "run") as run:
                 run.return_value.returncode = 2
                 result = wrapper.main(["--variant", "community-" + version, "--output-dir", temporary, "--acknowledge-brick-risk"])

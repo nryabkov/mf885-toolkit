@@ -17,6 +17,7 @@ under the ignored `input/` directory.
 
 | Version | Evidence and status |
 |---|---|
+| 0.4.7-dev.18 | Installed on one MF96 Ver.D/base2.5.94; exact assets, authenticated theme UI and bounded IPv4 TTL 1/64/255/Off observations passed within the documented host positions. CPU accuracy and long-term USB stability unqualified. |
 | 0.4.7-dev.15 | Installed on one MF96 Ver.D/base2.5.94; boot/assets/recovery, AT+CSQ, AT+CREG? and one attributed text USSD reply passed. Other commands/carriers and long-term USB stability are unqualified. |
 | 0.4.7-dev.6 | Installed on one MF96 Ver.D /2.5.94; WAN/layout, reboot, operator-observed shutdown and physical-on recovery passed. Native unchanged; limited one-device qualification. |
 | 0.4.7-dev.5 | Installed on one research MF885; Engineering Read / Enabled / changing readings / Disabled and registration recovery passed. Native unchanged from dev.4; long-term stability and exact measurement age unknown. |
@@ -66,9 +67,15 @@ before relying on it.
 For future firmware names, base-version compatibility and legacy aliases, see
 [versioning rules (Russian)](docs/VERSIONING_RU.md) and [the registry](versioning.json).
 
-## Community WebUI 0.4.7-dev.15
+## Community WebUI 0.4.7-dev.18
 
-The [current interface](webui/0.4.7-dev.15/c047d15.html) adds an AT console and an
+The [current interface](webui/0.4.7-dev.18/c047d18.html) supports manual TTL
+1–255/Off (boot default 64) and System/Light/Dark theme. On matching dev18
+firmware open `/c047d18.html`. Read the [usage and qualification limits](docs/TTL_THEME_047D18_RU.md).
+
+## Historical Community WebUI 0.4.7-dev.15
+
+The [dev15 interface](webui/0.4.7-dev.15/c047d15.html) adds an AT console and an
 editable initial-USSD field immediately after Messages. It distinguishes modem
 errors, empty/raw events and actual text replies, checks SIM/registration before
 USSD and never automatically resends a command. On matching firmware open
@@ -311,3 +318,5 @@ backups, screenshots, personal identifiers, credentials, or raw router logs.
 
 See [SECURITY.md](SECURITY.md) for reporting sensitive issues and
 [NOTICE.md](NOTICE.md) for vendor-content, trademark and non-affiliation terms.
+
+Current source release: [dev18 TTL and theme](docs/TTL_THEME_047D18_RU.md).

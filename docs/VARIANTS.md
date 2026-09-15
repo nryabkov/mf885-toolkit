@@ -73,3 +73,10 @@ canary or a raw request/console observer.
    input mismatch, output overwrite, and forbidden routes.
 5. Keep `flash_qualified`, `restore_allowlisted`, and `stable` false until each
    claim has its own evidence. One successful device is not general proof.
+
+## Community 0.4.7-dev.18
+
+Manual TTL 1–255/Off (boot default 64), System/Light/Dark theme.
+Entry: `/c047d18.html`; offline variant: `community-0.4.7-dev.18`.
+[Usage, observed hardware results and limitations](TTL_THEME_047D18_RU.md).
+CPU accuracy and long-term USB stability remain unqualified.

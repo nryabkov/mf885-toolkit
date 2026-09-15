@@ -1,0 +1,278 @@
+/* Community 0.4.7-dev.18 theme.
+ *
+ * Local browser source asset, not a generated file. It is injected verbatim by
+ * release.py theme.py as www/css/c047d18theme.css and referenced from the head
+ * after the existing ui/ttl stylesheets so it wins on equal specificity.
+ *
+ * Light is the legacy palette, unchanged and inline in c047d18ui.css. This file
+ * only supplies the dark palette, the surface aliases the existing rules already
+ * read (--panel/--bg/--surface-soft/--border), the compact selector and the
+ * reduced-motion opt-out. No colour here is load-bearing for content or state:
+ * wording, icons and the light theme all remain readable without it.
+ */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #e7edf4;
+  --muted: #9fb0c4;
+  --line: #2c3a4d;
+  --soft: #1b2534;
+  --blue: #6cb6e8;
+  --blue2: #8ac9f2;
+  --danger: #f0837c;
+  --panel: #151d29;
+  --bg: #1b2534;
+  --border: #2c3a4d;
+  --surface-soft: #1b2534;
+  --accent-soft: #1d3346;
+  --ok: #6fcf97;
+  --warn: #f0b866;
+}
+
+:root[data-theme="dark"] body { background: #0e141d; color: var(--ink); }
+
+/* Boot overlay and runtime alert stay painted before the module JS runs. */
+:root[data-theme="dark"] .boot { background: #0e141d; color: var(--ink); }
+
+:root[data-theme="dark"] .runtime-status {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--danger);
+  color: var(--ink);
+  box-shadow: 0 8px 30px #0009;
+}
+
+/* Authentication card and its form controls. */
+:root[data-theme="dark"] .login-card {
+  background: var(--panel);
+  border-color: var(--line);
+  box-shadow: 0 18px 50px #0007;
+}
+
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea {
+  background: #0f1620;
+  border-color: #3a4b60;
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] input::placeholder,
+:root[data-theme="dark"] textarea::placeholder { color: #7f8fa3; }
+
+/* Chrome, navigation and content surfaces. */
+:root[data-theme="dark"] header {
+  background: var(--panel);
+  border-bottom-color: var(--line);
+}
+
+:root[data-theme="dark"] nav button { color: #c3d0de; }
+
+:root[data-theme="dark"] nav button.active {
+  background: var(--accent-soft);
+  color: #bfe0f7;
+}
+
+:root[data-theme="dark"] .page {
+  background: var(--panel);
+  border-color: var(--line);
+  box-shadow: 0 8px 30px #0006;
+}
+
+:root[data-theme="dark"] .cards article,
+:root[data-theme="dark"] .composer,
+:root[data-theme="dark"] .source-card,
+:root[data-theme="dark"] .terms,
+:root[data-theme="dark"] .ttl-persistence,
+:root[data-theme="dark"] .console-reply {
+  background: var(--soft);
+  border-color: var(--line);
+}
+
+/* The composer textarea repeats the light border/colour inline. */
+:root[data-theme="dark"] .composer textarea {
+  background: #0f1620;
+  border-color: #3a4b60;
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .composer textarea::placeholder { color: #7f8fa3; }
+
+:root[data-theme="dark"] .value { background: var(--panel); }
+
+:root[data-theme="dark"] .modem-help-body section { background: var(--panel); }
+
+:root[data-theme="dark"] .modem-help-body code {
+  background: #22303f;
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .message { border-color: var(--line); }
+
+/* Buttons: solid primary, and the outline secondary/quiet family that the  */
+/* existing sheets hard-code to white.                                      */
+:root[data-theme="dark"] button {
+  border-color: var(--blue);
+  background: #1d5f8c;
+  color: #f4f9fd;
+}
+
+:root[data-theme="dark"] button:hover:not(:disabled) { background: #24719f; }
+
+:root[data-theme="dark"] button.secondary,
+:root[data-theme="dark"] button.quiet,
+:root[data-theme="dark"] .button-link {
+  background: #182231;
+  color: #bcdcf5;
+  border-color: var(--line);
+}
+
+:root[data-theme="dark"] button.secondary:hover:not(:disabled),
+:root[data-theme="dark"] button.quiet:hover:not(:disabled),
+:root[data-theme="dark"] .button-link:hover {
+  background: var(--accent-soft);
+  color: #d6ebfb;
+  border-color: #43617d;
+}
+
+:root[data-theme="dark"] .live-toggle[aria-pressed="true"] {
+  border-color: #2f7d55;
+  background: #16301f;
+  color: #74d69a;
+}
+
+:root[data-theme="dark"] .live-toggle[aria-pressed="false"] {
+  border-color: #3a4b60;
+  background: #182231;
+  color: var(--muted);
+}
+
+/* Disabled controls stay legible: the legacy rule only fades opacity. */
+:root[data-theme="dark"] button:disabled {
+  opacity: 1;
+  background: #22303f;
+  border-color: #33445a;
+  color: #9aa9bb;
+}
+
+:root[data-theme="dark"] input:disabled,
+:root[data-theme="dark"] select:disabled,
+:root[data-theme="dark"] textarea:disabled {
+  background: #1a2532;
+  border-color: #33445a;
+  color: #9aa9bb;
+}
+
+/* Keyboard focus must remain visible on every dark surface. */
+:root[data-theme="dark"] button:focus-visible,
+:root[data-theme="dark"] a:focus-visible,
+:root[data-theme="dark"] input:focus-visible,
+:root[data-theme="dark"] select:focus-visible,
+:root[data-theme="dark"] textarea:focus-visible,
+:root[data-theme="dark"] summary:focus-visible {
+  outline: 3px solid #8fd0ff;
+  outline-offset: 2px;
+}
+
+/* Status family: neutral, pending, success, warning and error. */
+:root[data-theme="dark"] .status {
+  background: var(--soft);
+  border-left-color: #4f7fa4;
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .status.error {
+  border-left-color: var(--danger);
+  color: #ffb4ad;
+}
+
+:root[data-theme="dark"] .status[data-phase="applied"] {
+  border-left-color: var(--ok);
+  color: #9fe3ba;
+}
+
+:root[data-theme="dark"] .status[data-phase="ready"] {
+  border-left-color: var(--ok);
+  color: #c6ecd6;
+}
+
+:root[data-theme="dark"] .status[data-phase="pending"] {
+  border-left-color: var(--warn);
+  color: #f6d29a;
+}
+
+:root[data-theme="dark"] .source-card.ok { border-left-color: var(--ok); }
+
+:root[data-theme="dark"] .source-card.failed { border-left-color: var(--danger); }
+
+:root[data-theme="dark"] .message .danger {
+  border-color: #a4443c;
+  background: #2a1614;
+  color: #ffb4ad;
+}
+
+:root[data-theme="dark"] .message .danger:hover:not(:disabled) { background: #3a1c19; }
+
+:root[data-theme="dark"] .evidence-badge.observed { background: #16301f; color: #86dda8; }
+
+:root[data-theme="dark"] .evidence-badge.schema { background: var(--accent-soft); color: #a9d8f5; }
+
+:root[data-theme="dark"] .evidence-badge.private { background: #38270f; color: #f0bd76; }
+
+:root[data-theme="dark"] .legacy,
+:root[data-theme="dark"] footer a,
+:root[data-theme="dark"] .terms summary { color: #8ec8ef; }
+
+/* TTL editor panels use their own hard-coded white fallbacks. */
+:root[data-theme="dark"] .ttl-state,
+:root[data-theme="dark"] .ttl-editor {
+  background: var(--panel);
+  border-color: var(--line);
+}
+
+/* Compact theme selector: visible signed out and signed in, kept small so it  */
+/* does not disturb the header layout at any width.                            */
+.theme-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.theme-picker span { color: var(--muted); }
+
+.theme-picker select {
+  width: auto;
+  min-width: 96px;
+  min-height: 34px;
+  margin: 0;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+@media (max-width: 720px) {
+  .theme-picker { gap: 5px; }
+  .theme-picker select { min-width: 82px; min-height: 32px; }
+}
+
+/* Respect a reduced-motion preference: no transitions are added by the theme, */
+/* and any inherited one is disabled explicitly.                              */
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theme="dark"] *,
+  :root[data-theme="dark"] *::before,
+  :root[data-theme="dark"] *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Align native picker labels with their controls, including the login card. */
+.theme-picker label { margin: 0; color: var(--muted); }
+.login-card .theme-picker { margin-top: 18px; }
+:root[data-theme="dark"] .value-source { color: var(--muted); }
+:root[data-theme="dark"] nav button:not(.active) { background: transparent; border-color: transparent; }
+:root[data-theme="dark"] nav button:hover:not(:disabled) { background: var(--accent-soft); }

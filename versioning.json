@@ -71,6 +71,15 @@
       "native_api": "c1/u4/q2; inherited r47 TTL",
       "status": "limited-hardware-qualified-at-diagnostics-and-one-ussd-reply",
       "stable": false
+    },
+    "0.4.7-dev.18": {
+      "base_profile": "mf96d-2.5.94",
+      "builder_variant": "community-0.4.7-dev.18",
+      "artifact_filename": "MF885-Community-0.4.7-dev.18-base-2.5.94.bin",
+      "web_entry": "/c047d18.html",
+      "native_api": "c1/u4/q2/cpu2; r47-revision24-ttl8",
+      "status": "limited-one-device-ttl-and-theme-observations; CPU accuracy unqualified",
+      "stable": false
     }
   }
 }

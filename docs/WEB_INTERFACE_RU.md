@@ -77,3 +77,10 @@ python tools/mf885_build_variant.py \
 ## Следующая версия: редактор TTL
 
 В R4.6 подготовлены отдельные исходники редактора с подсказками, Off и проверкой фактического значения. Проверка этой версии на устройстве ещё впереди. См. [описание R4.6](TTL_EDITOR_R46_RU.md). Установленная R4.5 и её файлы остаются прежними.
+
+## Community 0.4.7-dev.18
+
+Manual TTL 1–255/Off (boot default 64), System/Light/Dark theme.
+Entry: `/c047d18.html`; offline variant: `community-0.4.7-dev.18`.
+[Usage, observed hardware results and limitations](TTL_THEME_047D18_RU.md).
+CPU accuracy and long-term USB stability remain unqualified.

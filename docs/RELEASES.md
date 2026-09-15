@@ -157,3 +157,10 @@ or what it read; it would not qualify tree helpers, state or packet TTL.
 
 Operation-safety records are not toolkit releases and are never stability
 labels.
+
+## Community 0.4.7-dev.18
+
+Manual TTL 1–255/Off (boot default 64), System/Light/Dark theme.
+Entry: `/c047d18.html`; offline variant: `community-0.4.7-dev.18`.
+[Usage, observed hardware results and limitations](TTL_THEME_047D18_RU.md).
+CPU accuracy and long-term USB stability remain unqualified.

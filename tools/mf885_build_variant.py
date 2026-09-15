@@ -34,6 +34,7 @@ DEFAULT_IDENTITY = ROOT / "input" / "mf885-base.xml"
 DEFAULT_OUTPUT = ROOT / "out"
 
 VARIANTS: dict[str, dict[str, Any]] = {
+    "community-0.4.7-dev.18": {"kind": "native-047d18", "profile": "0.4.7-dev.18", "artifact": "MF885-Community-0.4.7-dev.18-base-2.5.94.bin"},
     "community-0.4.7-dev.15": {"kind": "native-047d15", "profile": "0.4.7-dev.15", "artifact": "MF885-Community-0.4.7-dev.15-base-2.5.94.bin"},
     "community-0.4.7-dev.6": {"kind": "native-047d6", "profile": "0.4.7-dev.6", "artifact": "MF885-Community-0.4.7-dev.6-base-2.5.94.bin"},
     "community-0.4.7-dev.5": {"kind": "native-047d5", "profile": "0.4.7-dev.5", "artifact": "MF885-Community-0.4.7-dev.5-base-2.5.94.bin"},
@@ -223,6 +224,8 @@ def build(args: argparse.Namespace) -> int:
         "--report",
         str(report),
     ]
+    if specification["kind"] == "native-047d18":
+        return subprocess.run([sys.executable, "-B", str(TOOLS / "mf885_build_047d18.py"), *common, "--acknowledge-brick-risk"], check=False).returncode
     if specification["kind"] == "native-047d15":
         return subprocess.run([sys.executable, "-B", str(TOOLS / "mf885_build_047d15.py"), *common, "--acknowledge-brick-risk"], check=False).returncode
     if specification["kind"] == "native-047d6":
